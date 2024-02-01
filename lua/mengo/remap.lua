@@ -41,11 +41,16 @@ keymap("n", "<leader>l", "<C-w>l", opts)
 -- Vertical Splits
 keymap("n", "<leader>v", ":vsplit<CR>", opts)
 keymap("n", "<leader>s", ":split<CR>", opts)
+keymap("n", "<leader>c", ":close<CR>", opts)
 
 
 -- Better File Navigation
 keymap("n", "<C-d>", "<C-d>zz", opts)
 keymap("n", "<C-u>", "<C-u>zz", opts)
+keymap("n", "n", "nzz", opts)
+keymap("n", "N", "Nzz", opts)
+keymap("n", "*", "*zz", opts)
+keymap("n", "#", "#zz", opts)
 
 
 -- Resize with arrows
