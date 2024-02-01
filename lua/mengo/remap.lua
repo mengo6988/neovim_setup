@@ -23,6 +23,10 @@ vim.g.maplocalleader = " "
 keymap("n", "<leader>pv", vim.cmd.Ex)
 keymap("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
 keymap("n", "<leader>bd", "<cmd>:Bdelete<CR>")
+keymap("n", "<leader>ibl", "<cmd>:IBLToggle<CR>")
+keymap("n", "<leader>f", "<cmd>:Format<CR>")
+
+-- Save quit etc
 keymap("n", "<leader>w", ":w!<CR>", opts)
 keymap("n", "<leader>x", ":x!<CR>", opts)
 keymap("n", "<leader>q", ":q!<CR>", opts)

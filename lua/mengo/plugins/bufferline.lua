@@ -1,7 +1,8 @@
 return {
     'akinsho/bufferline.nvim',
-    dependencies = 'famiu/bufdelete.nvim',
+    dependencies = { 'famiu/bufdelete.nvim', 'catppuccin/nvim' },
     config = function()
+        -- local mocha = require("catppuccin.palettes").get_palette "mocha"
         require('bufferline').setup({
             options = {
                 numbers = "none",                    -- | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
@@ -70,6 +71,20 @@ return {
                 -- end
             },
             highlights = {
+                -- require("catppuccin.groups.integrations.bufferline").get({
+                --     styles = { "italic", "bold" },
+                --     custom = {
+                --         all = {
+                --             fill = { bg = "#000000" },
+                --         },
+                --         mocha = {
+                --             background = { fg = mocha.text },
+                --         },
+                --         latte = {
+                --             background = { fg = "#000000" },
+                --         },
+                --     },
+                -- }),
                 fill = {
                     fg = { attribute = "fg", highlight = "Visual" },
                     bg = { attribute = "bg", highlight = "TabLine" },
