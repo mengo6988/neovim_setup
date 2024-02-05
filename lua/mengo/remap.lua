@@ -41,6 +41,7 @@ keymap("n", "<leader>l", "<C-w>l", opts)
 -- Vertical Splits
 keymap("n", "<leader>v", ":vsplit<CR>", opts)
 keymap("n", "<leader>s", ":split<CR>", opts)
+keymap("n", "<leader>o", ":only<CR>", opts)
 keymap("n", "<leader>c", ":close<CR>", opts)
 
 
@@ -99,7 +100,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-        vim.keymap.set('n', '<C-h>', vim.lsp.buf.signature_help, opts)
+        vim.keymap.set('n', '<leader>vh', vim.lsp.buf.signature_help, opts)
         vim.keymap.set('n', '<leader>vwa', vim.lsp.buf.add_workspace_folder, opts)
         vim.keymap.set('n', '<leader>vwr', vim.lsp.buf.remove_workspace_folder, opts)
         vim.keymap.set('n', '<leader>vwl', function()
