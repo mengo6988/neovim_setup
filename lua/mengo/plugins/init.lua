@@ -153,7 +153,8 @@ return {
 	{
 		"giusgad/pets.nvim",
 		dependencies = { "MunifTanjim/nui.nvim", "giusgad/hologram.nvim" },
-		require("pets").setup({
+		config = function()
+			require("pets").setup({
 			row = 1,            -- the row (height) to display the pet at (higher row means the pet is lower on the screen), must be 1<=row<=10
 			col = 0,            -- the column to display the pet at (set to high number to have it stay still on the right side)
 			speed_multiplier = 1, -- you can make your pet move faster/slower. If slower the animation will have lower fps.
@@ -169,6 +170,7 @@ return {
 				-- doesn't work for you then set this to true and the popup will use hl and will be spawned above the statusline (hopefully)
 			}
 		})
+		end
 
 	}
 
