@@ -173,6 +173,38 @@ return {
 	-- 	end
 	--
 	-- }
-
+	{
+		"mg979/vim-visual-multi"
+	},
+	{
+		"kylechui/nvim-surround",
+		version = "*", -- Use for stability; omit to use `main` branch for the latest features
+		event = "VeryLazy",
+		config = function()
+			require("nvim-surround").setup({
+				-- Configuration here, or leave empty to use defaults
+			})
+		end
+	},
+	{
+		'ggandor/leap.nvim',
+		config = function()
+			require('leap').create_default_mappings()
+			case_sensitive = false
+			equivalence_classes = { ' \t\r\n', }
+			max_phase_one_targets = nil
+			highlight_unlabeled_phase_one_targets = false
+			max_highlighted_traversal_targets = 10
+			substitute_chars = {}
+			safe_labels = 'sfnut/SFNLHMUGTZ?'
+			labels = 'sfnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?'
+			special_keys = {
+				next_target = '<enter>',
+				prev_target = '<tab>',
+				next_group = '<space>',
+				prev_group = '<tab>',
+			}
+		end
+	}
 
 }
