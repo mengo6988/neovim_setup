@@ -7,7 +7,7 @@ local keymap = vim.keymap.set
 
 
 -- Remap space as leader key
-keymap("", "<Space>", "<Nop>", opts)
+keymap("", "( Space )", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -23,8 +23,9 @@ vim.g.maplocalleader = " "
 keymap("n", "<leader>pv", vim.cmd.Ex)
 keymap("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
 keymap("n", "<leader>bd", "<cmd>:Bdelete<CR>")
-keymap("n", "<leader>ibl", "<cmd>:IBLToggle<CR>")
-keymap("n", "<leader>f", "<cmd>:Format<CR>")
+keymap("n", "<leader>ibl", "<cmd>:IBLToggle<CR>", { desc = "Indent Blank Line toggle" })
+keymap("n", "<leader>f", "<cmd>:Format<CR>", { desc = "Format" })
+keymap("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 -- Save quit etc
 keymap("n", "<leader>w", ":w!<CR>", opts)
@@ -41,8 +42,8 @@ keymap("n", "<leader>l", "<C-w>l", opts)
 -- Vertical Splits
 keymap("n", "<leader>v", ":vsplit<CR>", opts)
 keymap("n", "<leader>s", ":split<CR>", opts)
-keymap("n", "<leader>o", ":only<CR>", opts)
-keymap("n", "<leader>c", ":close<CR>", opts)
+keymap("n", "<leader>o", ":only<CR>", opts, { desc = "Focus" })
+keymap("n", "<leader>c", ":close<CR>", opts, { desc = "Close" })
 
 
 -- Better File Navigation
@@ -91,26 +92,26 @@ keymap("x", "˚", ":m '<-2<CR>gv=gv", opts)
 -- LSP attach for lsp commands
 
 vim.api.nvim_create_autocmd('LspAttach', {
-    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-    callback = function(ev)
-        -- Buffer local mappings.
-        -- See `:help vim.lsp.*` for documentation on any of the below functions
-        local opts = { buffer = ev.buf }
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-        vim.keymap.set('n', '<leader>vh', vim.lsp.buf.signature_help, opts)
-        vim.keymap.set('n', '<leader>vwa', vim.lsp.buf.add_workspace_folder, opts)
-        vim.keymap.set('n', '<leader>vwr', vim.lsp.buf.remove_workspace_folder, opts)
-        vim.keymap.set('n', '<leader>vwl', function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, opts)
-        vim.keymap.set('n', '<leader>vD', vim.lsp.buf.type_definition, opts)
-        vim.keymap.set('n', '<leader>vws', vim.lsp.buf.workspace_symbol, opts)
-        vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.open_float() end, opts)
-        vim.keymap.set('n', '<leader>vrn', vim.lsp.buf.rename, opts)
-        vim.keymap.set('n', '<leader>vca', vim.lsp.buf.code_action, opts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    end
+	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+	callback = function(ev)
+		-- Buffer local mappings.
+		-- See `:help vim.lsp.*` for documentation on any of the below functions
+		local opts = { buffer = ev.buf }
+		vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts, { desc = "Go Declaration" })
+		vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts, { desc = "Go Definition" })
+		vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts, { desc = "Hover" })
+		vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+		vim.keymap.set('n', '<leader>vh', vim.lsp.buf.signature_help, opts, { desc = "signature_help" })
+		vim.keymap.set('n', '<leader>vwa', vim.lsp.buf.add_workspace_folder, opts, { desc = "add workspace folder" })
+		vim.keymap.set('n', '<leader>vwr', vim.lsp.buf.remove_workspace_folder, opts, { desc = "rm workspace folder" })
+		vim.keymap.set('n', '<leader>vwl', function()
+			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+		end, opts)
+		vim.keymap.set('n', '<leader>vD', vim.lsp.buf.type_definition, opts, { desc = "type definition" })
+		vim.keymap.set('n', '<leader>vws', vim.lsp.buf.workspace_symbol, opts, { desc = "workspace symbol" })
+		vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.open_float() end, opts)
+		vim.keymap.set('n', '<leader>vrn', vim.lsp.buf.rename, opts)
+		vim.keymap.set('n', '<leader>vca', vim.lsp.buf.code_action, opts, { desc = "code action" })
+		vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts, { desc = "references" })
+	end
 })
