@@ -21,12 +21,14 @@ vim.g.maplocalleader = " "
 
 --  Plugin related
 keymap("n", "<leader>pv", vim.cmd.Ex)
+keymap("n", "<Esc>", "<cmd>nohlsearch<CR>")
 keymap("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
 keymap("n", "<leader>bd", "<cmd>:Bdelete<CR>")
 keymap("n", "<leader>ibl", "<cmd>:IBLToggle<CR>", { desc = "Indent Blank Line toggle" })
 keymap("n", "<leader>f", "<cmd>:Format<CR>", { desc = "Format" })
 keymap("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- Save quit etc
 keymap("n", "<leader>w", ":w!<CR>", opts)
 keymap("n", "<leader>x", ":x!<CR>", opts)
@@ -92,7 +94,7 @@ keymap("x", "˚", ":m '<-2<CR>gv=gv", opts)
 -- LSP attach for lsp commands
 
 vim.api.nvim_create_autocmd('LspAttach', {
-	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+	group = vim.api.nvim_create_augroup('UserLspConfig', { clear = true }),
 	callback = function(ev)
 		-- Buffer local mappings.
 		-- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -112,6 +114,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.open_float() end, opts)
 		vim.keymap.set('n', '<leader>vrn', vim.lsp.buf.rename, opts)
 		vim.keymap.set('n', '<leader>vca', vim.lsp.buf.code_action, opts, { desc = "code action" })
-		vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts, { desc = "references" })
+		-- vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts, { desc = "references" })
+		vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, opts, { desc = "references" })
+		-- vim.keymap.set('n', 'gI', require('telescope.builtin').lsp_implementations, opts, '[G]oto [I]mplementation')
+		-- vim.keymap.set('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 	end
 })
