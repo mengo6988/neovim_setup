@@ -47,6 +47,7 @@
   "plenary.nvim": { "branch": "master", "commit": "08e301982b9a057110ede7a735dd1b5285eb341f" },
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "dd1156723eb8483e4403eb8765bbdff456b6981d" },
   "refactoring.nvim": { "branch": "master", "commit": "d2786877c91aa409c824f27b4ce8a9f560dda60a" },
+  "rest.nvim": { "branch": "main", "commit": "f96edb54a2940322bc7ed81a1031be04db7d3a99" },
   "telescope.nvim": { "branch": "master", "commit": "6f6bb8065567b56c42e283b06e8a1c670c0092a1" },
   "todo-comments.nvim": { "branch": "main", "commit": "a7e39ae9e74f2c8c6dc4eea6d40c3971ae84752d" },
   "trouble.nvim": { "branch": "main", "commit": "b9cf677f20bb2faa2dacfa870b084e568dca9572" },

@@ -20,6 +20,7 @@ vim.g.maplocalleader = " "
 --   command_mode = "c",
 
 --  Plugin related
+keymap("n", "<leader>rr", "<cmd>Rest run<CR>", { desc = "[R]est [R]un" })
 keymap("n", "<leader>pv", vim.cmd.Ex)
 keymap("n", "<Esc>", "<cmd>nohlsearch<CR>")
 keymap("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
