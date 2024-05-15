@@ -33,9 +33,13 @@ return {
 					python = { "black", "isort" },
 					lua = { "stylua" },
 					javascript = { "prettier" },
+					typescript = { "prettier" },
 					rust = { "rustfmt" },
-					cpp = { "clang-d" },
-					c = { "clang-d" }
+					cpp = { "clang-format" },
+					c = { "clang-format" },
+					java = { "clang-format" },
+					json = { "prettier" },
+
 				},
 				format_on_save = function(bufnr)
 					-- Disable with a global or buffer-local variable

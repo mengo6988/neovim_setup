@@ -106,7 +106,7 @@ return {
 					['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
 					['<C-Space>'] = cmp.mapping.complete(),
 					['<C-e>'] = cmp.mapping.abort(),
-					['<CR>'] = cmp.mapping.confirm({ select = true }),
+					['<C-y>'] = cmp.mapping.confirm({ select = true }),
 					['<Tab>'] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item()
@@ -177,6 +177,13 @@ return {
 				'confirm_done',
 				cmp_autopairs.on_confirm_done()
 			)
+
+			cmp.setup.filetype({ "sql" }, {
+				sources = {
+					{ name = "vim-dadbod-completion" },
+					{ name = "buffer" },
+				},
+			})
 
 			vim.diagnostic.config({
 				virtual_text = false,
