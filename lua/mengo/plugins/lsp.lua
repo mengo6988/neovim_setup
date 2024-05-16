@@ -99,57 +99,36 @@ return {
 						border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
 					},
 				},
-				mapping = cmp.mapping.preset.insert({
-					['<C-i>'] = cmp.mapping.scroll_docs(-4),
-					['<C-u>'] = cmp.mapping.scroll_docs(4),
-					['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-					['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+				mapping = {
 					['<C-Space>'] = cmp.mapping.complete(),
+					['<C-u>'] = cmp.mapping.scroll_docs(4),
+					['<C-i>'] = cmp.mapping.scroll_docs(-4),
 					['<C-e>'] = cmp.mapping.abort(),
-					['<C-y>'] = cmp.mapping.confirm({ select = true }),
-					['<Tab>'] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_next_item()
-						else
-							fallback()
-						end
-					end, { "i", "s", }),
-					['<S-Tab>'] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_prev_item()
-						else
-							fallback()
-						end
-					end, { "i", "s", }),
-					-- ["<Tab>"] = cmp.mapping(function(fallback)
-					--     if cmp.visible() then
-					--         cmp.select_next_item()
-					--     elseif require('luasnip').expandable() then
-					--         require('luasnip').expand()
-					--     elseif require('luasnip').expand_or_jumpable() then
-					--         require('luasnip').expand_or_jump()
-					--     elseif check_backspace() then
-					--         fallback()
-					--     else
-					--         fallback()
-					--     end
-					-- end, {
-					--         "i",
-					--         "s",
-					--     }),
-					-- ["<S-Tab>"] = cmp.mapping(function(fallback)
-					--     if cmp.visible() then
-					--         cmp.select_prev_item()
-					--     elseif require('luasnip').jumpable(-1) then
-					--         require('luasnip').jump(-1)
-					--     else
-					--         fallback()
-					--     end
-					-- end, {
-					--         "i",
-					--         "s",
-					-- }),
-				}),
+					["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+					["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+					["<C-y>"] = cmp.mapping(
+						cmp.mapping.confirm {
+							behavior = cmp.ConfirmBehavior.Insert,
+							select = true,
+						},
+						{ "i", "c" }
+					),
+				},
+
+				-- ['<Tab>'] = cmp.mapping(function(fallback)
+				-- 	if cmp.visible() then
+				-- 		cmp.select_next_item()
+				-- 	else
+				-- 		fallback()
+				-- 	end
+				-- end, { "i", "s", }),
+				-- ['<S-Tab>'] = cmp.mapping(function(fallback)
+				-- 	if cmp.visible() then
+				-- 		cmp.select_prev_item()
+				-- 	else
+				-- 		fallback()
+				-- 	end
+				-- end, { "i", "s", }),
 				formatting = {
 					fields = { "kind", "abbr", "menu" },
 					format = function(entry, vim_item)
@@ -184,6 +163,27 @@ return {
 					{ name = "buffer" },
 				},
 			})
+
+			local ls = require "luasnip"
+			ls.config.set_config {
+				history = false,
+				updateevents = "TextChanged,TextChangedI",
+			}
+			for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/custom/snippets/*.lua", true)) do
+				loadfile(ft_path)()
+			end
+
+			vim.keymap.set({ "i", "s" }, "<c-k>", function()
+				if ls.expand_or_jumpable() then
+					ls.expand_or_jump()
+				end
+			end, { silent = true })
+
+			vim.keymap.set({ "i", "s" }, "<c-j>", function()
+				if ls.jumpable(-1) then
+					ls.jump(-1)
+				end
+			end, { silent = true })
 
 			vim.diagnostic.config({
 				virtual_text = false,
