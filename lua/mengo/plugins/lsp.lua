@@ -24,6 +24,7 @@ return {
 
 			require("fidget").setup({})
 			require("mason").setup()
+			require('java').setup()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"lua_ls",
