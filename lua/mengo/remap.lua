@@ -28,6 +28,7 @@ keymap("n", "<leader>bd", "<cmd>:Bdelete<CR>")
 keymap("n", "<leader>ibl", "<cmd>:IBLToggle<CR>", { desc = "Indent Blank Line toggle" })
 keymap("n", "<leader>f", "<cmd>:Format<CR>", { desc = "Format" })
 keymap("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+keymap("n", "<leader>db", "<CMD>DBUIToggle<CR>", { desc = "[D][B]UI Toggle" })
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- Save quit etc
