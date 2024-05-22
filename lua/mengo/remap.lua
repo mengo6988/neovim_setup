@@ -37,6 +37,7 @@ keymap("n", "<leader>x", ":x!<CR>", opts)
 keymap("n", "<leader>q", ":q!<CR>", opts)
 keymap("n", "<leader>wq", ":wq!<CR>", opts)
 
+keymap("i", "jk", "<Esc>", opts)
 -- Better window navigation
 keymap("n", "<leader>h", "<C-w>h", opts)
 keymap("n", "<leader>j", "<C-w>j", opts)
