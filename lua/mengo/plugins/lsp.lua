@@ -84,6 +84,11 @@ return {
 				Misc = " ",
 			}
 
+			local lsp = vim.lsp
+			lsp.handlers["textDocument/hover"] = lsp.with(vim.lsp.handlers.hover, {
+				border = "rounded",
+			})
+
 			local cmp = require('cmp')
 			local cmp_select = { behavior = cmp.SelectBehavior.Select }
 			local cmp_autopairs = require('nvim-autopairs.completion.cmp')
