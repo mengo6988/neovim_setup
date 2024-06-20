@@ -58,6 +58,7 @@ keymap("n", "n", "nzz", opts)
 keymap("n", "N", "Nzz", opts)
 keymap("n", "*", "*zz", opts)
 keymap("n", "#", "#zz", opts)
+keymap("n", "G", "Gzz", opts)
 
 
 -- Resize with arrows
