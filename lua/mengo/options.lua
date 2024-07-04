@@ -42,6 +42,9 @@ for k, v in pairs(options) do
 	vim.opt[k] = v
 end
 
+-- Disables autoformatting on default
+vim.b.disable_autoformat = true
+vim.g.disable_autoformat = true
 -- vim.opt.shortmess = "ilmnrx"                        -- flags to shorten vim messages, see :help 'shortmess'
 vim.opt.shortmess:append "c"                          -- don't give |ins-completion-menu| messages
 vim.opt.iskeyword:append "-"                          -- hyphenated words recognized by searches
