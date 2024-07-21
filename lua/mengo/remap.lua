@@ -172,3 +172,8 @@ vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
 
 vim.keymap.set("n", "<leader>pp", ":Telescope neovim-project discover<CR>")
 vim.keymap.set("n", "<leader>pph", ":Telescope neovim-project history<CR>")
+vim.keymap.set("n", "<leader>g", ":Git<CR>")
+vim.keymap.set("n", "<leader>gc", ":Git commit<CR>")
+vim.keymap.set("n", "<leader>gp", ":Git push<CR>")
+vim.keymap.set("n", "<leader>gu", ":Git pull<CR>")
+
