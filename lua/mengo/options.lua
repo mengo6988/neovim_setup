@@ -28,6 +28,9 @@ local options = {
 	number = true,                                -- set numbered lines
 	relativenumber = true,                        -- set relative numbered lines
 	numberwidth = 4,                              -- set number column width to 2 {default 4}
+	foldmethod = "indent",
+	foldlevel = 99,
+	foldenable = true,
 
 	signcolumn = "yes",                           -- always show the sign column, otherwise it would shift the text each time
 	wrap = true,                                  -- display lines as one long line

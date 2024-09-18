@@ -21,11 +21,11 @@ return {
 		workspaces = {
 			{
 				name = "zattlekasten",
-				path = "~/Documents/Zattelkasten",
+				path = "~/Documents/obsidian/Zattelkasten",
 			},
 			{
 				name = "work",
-				path = "~/Documents/vault",
+				path = "~/Documents/obsidian/vault",
 			},
 		},
 		-- Optional, set the log level for obsidian.nvim. This is an integer corresponding to one of the log
