@@ -48,7 +48,7 @@ keymap("n", "<leader>l", "<C-w>l", opts)
 -- Vertical Splits
 keymap("n", "<leader>v", ":vsplit<CR>", opts)
 keymap("n", "<leader>s", ":split<CR>", opts)
-keymap("n", "<leader>o", ":only<CR>", opts, { desc = "Focus" })
+keymap("n", "<leader>,", ":only<CR>", opts, { desc = "Focus" })
 keymap("n", "<leader>c", ":close<CR>", opts, { desc = "Close" })
 
 
