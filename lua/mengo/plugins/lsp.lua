@@ -32,6 +32,7 @@ return {
 					"clangd",
 					"tsserver",
 					"pyright",
+					"solidity_ls_nomicfoundation",
 				},
 				handlers = {
 					function(server_name) -- default handler (optional)

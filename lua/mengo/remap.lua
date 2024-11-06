@@ -179,4 +179,6 @@ vim.keymap.set("n", "<leader>gc", ":Git commit<CR>")
 vim.keymap.set("n", "<leader>gp", ":Git push<CR>")
 vim.keymap.set("n", "<leader>gu", ":Git pull<CR>")
 vim.keymap.set("n", "<leader>gd", ":Gvdiffsplit!<CR>")
+vim.keymap.set("n", "<leader>gdp", ":diffput ")
+vim.keymap.set("n", "<leader>gdg", ":diffget")
 
