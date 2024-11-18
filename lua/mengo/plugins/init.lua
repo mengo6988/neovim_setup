@@ -17,7 +17,6 @@ return {
     event = "InsertEnter",
     opts = {} -- this is equalent to setup({}) function
   },
-  'github/copilot.vim',
   'eandrju/cellular-automaton.nvim',
   {
     "lewis6991/gitsigns.nvim",
