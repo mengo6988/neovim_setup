@@ -198,7 +198,8 @@ return {
   {
     'ggandor/leap.nvim',
     config = function()
-      local leap = require('leap').create_default_mappings()
+      require('leap').create_default_mappings()
+      local leap = require('leap')
       leap.opts.case_sensitive = false
       leap.opts.equivalence_classes = { ' \t\r\n', }
       leap.opts.max_phase_one_targets = nil
