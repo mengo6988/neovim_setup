@@ -30,7 +30,7 @@ return {
 					"lua_ls",
 					"rust_analyzer",
 					"clangd",
-					"tsserver",
+					"ts_ls",
 					"pyright",
 					"solidity_ls_nomicfoundation",
 				},
