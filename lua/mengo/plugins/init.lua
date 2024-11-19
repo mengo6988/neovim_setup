@@ -198,16 +198,16 @@ return {
   {
     'ggandor/leap.nvim',
     config = function()
-      require('leap').create_default_mappings()
-      case_sensitive = false
-      equivalence_classes = { ' \t\r\n', }
-      max_phase_one_targets = nil
-      highlight_unlabeled_phase_one_targets = false
-      max_highlighted_traversal_targets = 10
-      substitute_chars = {}
-      safe_labels = 'sfnut/SFNLHMUGTZ?'
-      labels = 'sfnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?'
-      special_keys = {
+      local leap = require('leap').create_default_mappings()
+      leap.opts.case_sensitive = false
+      leap.opts.equivalence_classes = { ' \t\r\n', }
+      leap.opts.max_phase_one_targets = nil
+      leap.opts.highlight_unlabeled_phase_one_targets = false
+      leap.opts.max_highlighted_traversal_targets = 10
+      leap.opts.substitute_chars = {}
+      leap.opts.safe_labels = 'sfnut/SFNLHMUGTZ?'
+      leap.opts.labels = 'sfnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?'
+      leap.opts.special_keys = {
         next_target = '<enter>',
         prev_target = '<tab>',
         next_group = '<space>',
