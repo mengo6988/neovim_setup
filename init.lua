@@ -1,5 +1,4 @@
 require "mengo"
-vim.cmd(":Copilot disable")
 -- clangd fix
 local cmp_nvim_lsp = require "cmp_nvim_lsp"
 require("lspconfig").clangd.setup {
