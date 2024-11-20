@@ -39,6 +39,8 @@ return {
           end,
           javascript = { "prettier" },
           typescript = { "prettier" },
+          typescriptreact = { "prettier" },
+          javascriptreact = { "prettier" },
           rust = { "rustfmt" },
           cpp = { "clang-format" },
           c = { "clang-format" },
@@ -289,12 +291,12 @@ return {
     }
 
   },
-  {
-    "folke/drop.nvim",
-    opts = {
-      -- ...
-    }
-  },
+  -- {
+  --   "folke/drop.nvim",
+  --   opts = {
+  --     -- ...
+  --   }
+  -- },
   {
     'brianhuster/live-preview.nvim',
     dependencies = {
