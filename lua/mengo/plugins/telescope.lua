@@ -4,25 +4,39 @@ return {
 
     dependencies = {
       'nvim-lua/plenary.nvim',
-      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
 
     config = function()
+      local custom_cursor_theme = {
+        sorting_strategy = "ascending",
+        results_title = false,
+        layout_strategy = "cursor",
+        layout_config = {
+          width = 200,
+          height = 21,
+        },
+        borderchars = {
+          prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+          results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+          preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+        },
+      }
       require('telescope').setup({
         defaults = {
-            sorting_strategy = "ascending",
+          sorting_strategy = "ascending",
 
-            layout_strategy = "bottom_pane",
-            layout_config = {
-              height = 0.5,
-            },
+          layout_strategy = "bottom_pane",
+          layout_config = {
+            height = 0.5,
+          },
 
-            border = true,
-            borderchars = {
-              prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
-              results = { " " },
-              preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-            },
+          border = true,
+          borderchars = {
+            prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+            results = { " " },
+            preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+          },
         },
         pickers = {
           grep_string = {
@@ -39,10 +53,99 @@ return {
               preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
             },
           },
+          lsp_definitions = {
+            sorting_strategy = "ascending",
+            results_title = false,
+            layout_strategy = "cursor",
+            layout_config = {
+              width = 200,
+              height = 21,
+            },
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+              results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+              preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            },
+          },
+          lsp_references = {
+            sorting_strategy = "ascending",
+            results_title = false,
+            layout_strategy = "cursor",
+            layout_config = {
+              width = 200,
+              height = 21,
+            },
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+              results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+              preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            },
+          },
+          lsp_implementations = {
+            sorting_strategy = "ascending",
+            results_title = false,
+            layout_strategy = "cursor",
+            layout_config = {
+              width = 200,
+              height = 21,
+            },
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+              results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+              preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            },
+          },
+          lsp_type_definitions = {
+            sorting_strategy = "ascending",
+            results_title = false,
+            layout_strategy = "cursor",
+            layout_config = {
+              width = 200,
+              height = 21,
+            },
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+              results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+              preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            },
+          },
+          lsp_dynamic_workspace_symbols = {
+            sorting_strategy = "ascending",
+            results_title = false,
+            layout_strategy = "cursor",
+            layout_config = {
+              width = 200,
+              height = 21,
+            },
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+              results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+              preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            },
+          },
+          lsp_document_symbols = {
+            sorting_strategy = "ascending",
+            results_title = false,
+            layout_strategy = "cursor",
+            layout_config = {
+              width = 200,
+              height = 21,
+            },
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+              results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+              preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            },
+          },
+        },
+        extensions = {
+          fzf = {}
         }
       })
-      pcall(require('telescope').load_extension, 'fzf')
-      pcall(require('telescope').load_extension, 'ui-select')
+      require("telescope").load_extension("fzf")
+      require("telescope").load_extension("ui-select")
+      -- pcall(require('telescope').load_extension, 'fzf')
+      -- pcall(require('telescope').load_extension, 'ui-select')
 
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>ph', builtin.help_tags, { desc = '[S]earch [H]elp' })
@@ -67,6 +170,12 @@ return {
       vim.keymap.set('n', '<leader>psn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      vim.keymap.set('n', '<leader>psp', function()
+        builtin.find_files { cwd = vim.fs.joinpath(vim.fn.stdpath('data'), 'lazy') }
+      end, { desc = '[S]earch [P]ackages' })
+
+      require("mengo.telescope.multigrep").setup()
     end
   },
   {
