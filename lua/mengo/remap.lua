@@ -30,7 +30,23 @@ keymap("n", "<leader>f", "<cmd>:Format<CR>", { desc = "Format" })
 keymap("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 keymap("n", "<leader>db", "<CMD>DBUIToggle<CR>", { desc = "[D][B]UI Toggle" })
 
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+-- Terminal related
+keymap('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+keymap('t', '< C-d >', '<C-\\><C-n><cmd>bd!<CR>', { desc = 'Exit terminal mode' })
+keymap('n', '<leader>st', function ()
+  vim.cmd.vnew()
+  vim.cmd.term()
+  vim.cmd.wincmd("J")
+  vim.api.nvim_win_set_height(0, 17)
+
+  job_id = vim.bo.channel
+end)
+-- Testing here, Idk what to put yet, but maybe can have a complicated one to use, suggestion (send highlighted command into terminal)
+keymap('n', "<leader>example", function ()
+  vim.fn.chansend(job_id, { 'echo "hi"\r\n'})
+  
+end)
+
 -- Save quit etc
 keymap("n", "<leader>w", ":w!<CR>", opts)
 keymap('n', '<leader>wf', '<cmd>FormatEnable<CR><cmd>w<cr><cmd>FormatDisable<CR>', opts)
@@ -45,6 +61,9 @@ keymap("n", "<leader>j", "<C-w>j", opts)
 keymap("n", "<leader>k", "<C-w>k", opts)
 keymap("n", "<leader>l", "<C-w>l", opts)
 
+keymap("n", "]c", "<cmd>cnext<CR>", { desc = "[C]uikfix Next"})
+keymap("n", "[c", "<cmd>cprev<CR>", { desc = "[C]uikfix Prev"})
+
 -- Vertical Splits
 keymap("n", "<leader>v", ":vsplit<CR>", opts)
 keymap("n", "<leader>s", ":split<CR>", opts)
@@ -52,7 +71,7 @@ keymap("n", "<leader>,", ":only<CR>", opts, { desc = "Focus" })
 keymap("n", "<leader>c", ":close<CR>", opts, { desc = "Close" })
 
 -- Duplicate a line and comment out the first line
-keymap('n', 'yc', 'yy<cmd>normal gcc<CR>p', opts, { desc = "Copy paste and comment the line copied" })
+keymap('n', 'yc', 'yy<cmd>normal gcc<CR>p', { desc = "Copy paste and comment the line copied" })
 
 -- Better File Navigation
 keymap("n", "<C-d>", "<C-d>zz", opts)
