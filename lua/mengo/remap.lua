@@ -30,6 +30,8 @@ keymap("n", "<leader>f", "<cmd>:Format<CR>", { desc = "Format" })
 keymap("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 keymap("n", "<leader>db", "<CMD>DBUIToggle<CR>", { desc = "[D][B]UI Toggle" })
 
+keymap('n', '<leader>sr', ':source %<CR>')
+
 -- Terminal related
 keymap('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 keymap('t', '< C-d >', '<C-\\><C-n><cmd>bd!<CR>', { desc = 'Exit terminal mode' })
@@ -43,7 +45,7 @@ keymap('n', '<leader>st', function ()
 end)
 -- Testing here, Idk what to put yet, but maybe can have a complicated one to use, suggestion (send highlighted command into terminal)
 keymap('n', "<leader>example", function ()
-  vim.fn.chansend(job_id, { 'echo "hi"\r\n'})
+  vim.fn.chansend(job_id, { 'echo "hello"\r\n'})
   
 end)
 

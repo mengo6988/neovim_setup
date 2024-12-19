@@ -313,5 +313,6 @@ return {
       sync_scroll = false,      -- If true, the plugin will sync the scrolling in the browser as you scroll in the Markdown files in Neovim.
       picker = nil,             -- Picker to use for opening files. 3 choices are available: 'telescope', 'fzf-lua', 'mini.pick'. If nil, the plugin look for the first available picker when you call the `pick` command.
     },
-  }
+  },
+  { 'wakatime/vim-wakatime', lazy = false },
 }

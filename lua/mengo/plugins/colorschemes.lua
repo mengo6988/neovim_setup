@@ -81,6 +81,7 @@ return {
 				},
 				leap = false,
 				ufo = true,
+        blink_cmp = false,
 
 
 
