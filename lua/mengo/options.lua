@@ -76,3 +76,4 @@ vim.api.nvim_create_autocmd('TermOpen', {
 
 -- Don't show completion related messages
 vim.opt.shortmess:append "c"
+vim.opt.inccommand = "split"
