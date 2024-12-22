@@ -3,13 +3,6 @@ return {
     'nvim-lua/plenary.nvim',
     name = 'plenary'
   },
-  {
-    'numToStr/Comment.nvim',
-    lazy = false,
-    opts = {
-
-    },
-  },
   -- git
   'tpope/vim-fugitive',
   {
