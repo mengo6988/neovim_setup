@@ -70,7 +70,7 @@ return {
         jump = function(direction) require('luasnip').jump(direction) end,
       },
       sources = {
-        default = { 'lsp', 'path', 'luasnip', 'buffer', 'digraphs' },
+        default = { 'lsp', 'path', 'luasnip', 'snippets', 'buffer', 'digraphs' },
       },
     },
     -- allows extending the providers array elsewhere in your config
