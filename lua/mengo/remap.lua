@@ -21,7 +21,7 @@ vim.g.maplocalleader = " "
 
 --  Plugin related
 keymap("n", "<leader>rr", "<cmd>Rest run<CR>", { desc = "[R]est [R]un" })
-keymap("n", "<leader>pv", vim.cmd.Ex)
+keymap("n", "-", "<cmd>Oil<CR>")
 keymap("n", "<Esc>", "<cmd>nohlsearch<CR>")
 keymap("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
 keymap("n", "<leader>bd", "<cmd>:Bdelete<CR>")
@@ -183,17 +183,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- Refactor nvim remaps
-vim.keymap.set("x", "<leader>re", ":Refactor extract ")
-vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ")
-
-vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ")
-
-vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var")
-
-vim.keymap.set("n", "<leader>rI", ":Refactor inline_func")
-
-vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
-vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
+-- vim.keymap.set("x", "<leader>re", ":Refactor extract ")
+-- vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ")
+--
+-- vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ")
+--
+-- vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var")
+--
+-- vim.keymap.set("n", "<leader>rI", ":Refactor inline_func")
+--
+-- vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
+-- vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
 
 vim.keymap.set("n", "<leader>pp", ":Telescope neovim-project discover<CR>")
 vim.keymap.set("n", "<leader>pph", ":Telescope neovim-project history<CR>")
@@ -202,6 +202,6 @@ vim.keymap.set("n", "<leader>gc", ":Git commit<CR>")
 vim.keymap.set("n", "<leader>gp", ":Git push<CR>")
 vim.keymap.set("n", "<leader>gu", ":Git pull<CR>")
 vim.keymap.set("n", "<leader>gd", ":Gvdiffsplit!<CR>")
--- vim.keymap.set("n", "<leader>gd", ":Gvdiff<CR>")
 vim.keymap.set("n", "<leader>gdh", ":diffget //2<CR>")
 vim.keymap.set("n", "<leader>gdl", ":diffget //3<CR>")
+
