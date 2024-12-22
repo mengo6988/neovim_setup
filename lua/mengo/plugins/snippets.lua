@@ -196,12 +196,36 @@ return {
         t("lamw25wmal"),
       }),
 
-      s("td", {
+      s("todo", {
         f(function()
           return get_comment_string()
         end),
         t("TODO: "),
         i(1, "todo text")
+      }),
+
+      s("note", {
+        f(function()
+          return get_comment_string()
+        end),
+        t("NOTE: "),
+        i(1, "note text")
+      }),
+
+      s("warn", {
+        f(function()
+          return get_comment_string()
+        end),
+        t("WARN: "),
+        i(1, "warn text")
+      }),
+
+      s("bug", {
+        f(function()
+          return get_comment_string()
+        end),
+        t("BUG: "),
+        i(1, "bug text")
       }),
     })
   end
