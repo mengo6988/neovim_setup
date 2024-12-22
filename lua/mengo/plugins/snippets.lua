@@ -37,6 +37,15 @@ return {
       })
     end
 
+    -- Helper function to get comment string based on filetype
+    local function get_comment_string()
+      local comment_string = vim.bo.commentstring
+      if comment_string == "" then
+        return "// %s"                        -- Default to C-style comments
+      end
+      return comment_string:gsub("%%s", "")   -- Remove the %s placeholder
+    end
+
     -- Define languages for code blocks
     local languages = {
       "txt",
@@ -185,6 +194,14 @@ return {
         desc = "Add this -> lamw25wmal",
       }, {
         t("lamw25wmal"),
+      }),
+
+      s("td", {
+        f(function()
+          return get_comment_string()
+        end),
+        t("TODO: "),
+        i(1, "todo text")
       }),
     })
   end
