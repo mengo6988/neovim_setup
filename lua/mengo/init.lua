@@ -1,5 +1,5 @@
 require("mengo.remap")
 require("mengo.options")
 require("mengo.lazy_init")
-require("lua.mengo.others.floaterminal")
-require("lua.mengo.others.menu")
+require("mengo.others.floaterminal")
+require("mengo.others.menu")
