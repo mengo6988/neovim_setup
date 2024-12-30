@@ -39,6 +39,7 @@ return {
           c = { "clang-format" },
           java = { "clang-format" },
           json = { "prettier" },
+          markdown = { "prettier" },
 
         },
         format_on_save = function(bufnr)
