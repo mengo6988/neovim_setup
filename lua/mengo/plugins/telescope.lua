@@ -139,7 +139,14 @@ return {
           },
         },
         extensions = {
-          fzf = {}
+          fzf = {},
+          -- media_files = {
+          --   -- filetypes whitelist
+          --   -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
+          --   filetypes = { "png", "webp", "jpg", "jpeg", "ico", "pdf" },
+          --   -- find command (defaults to `fd`)
+          --   find_cmd = "rg"
+          -- }
         }
       })
       require("telescope").load_extension("fzf")
@@ -234,4 +241,10 @@ return {
     lazy = false,
     priority = 100,
   },
+  -- {
+  --   "nvim-telescope/telescope-media-files.nvim",
+  --   config = function()
+  --     require('telescope').load_extension('media_files')
+  --   end
+  -- }
 }

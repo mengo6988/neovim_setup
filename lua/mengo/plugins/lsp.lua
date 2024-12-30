@@ -91,6 +91,14 @@ return {
       -- 'L3MON4D3/LuaSnip',
       -- 'saadparwaiz1/cmp_luasnip',
       'j-hui/fidget.nvim',
+      {
+        "folke/lazydev.nvim",
+        opts = {
+          library = {
+            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+          },
+        },
+      },
     },
 
     config = function()
