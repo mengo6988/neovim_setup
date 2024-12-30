@@ -48,6 +48,7 @@ return {
 
     -- Define languages for code blocks
     local languages = {
+      "prisma",
       "txt",
       "lua",
       "sql",

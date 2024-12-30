@@ -14,7 +14,7 @@ return {
     dependencies = { 'rafamadriz/friendly-snippets', 'dmitmel/cmp-digraphs' },
     version = 'v0.*',
     ---@module 'blink.cmp'
-    ---@type blink.cmp.Config
+    -- -@type blink.cmp.Config
     opts = {
       keymap = { preset = 'default' },
 
