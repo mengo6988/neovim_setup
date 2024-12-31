@@ -227,6 +227,7 @@ return {
         "~/Downloads/projects/*",
         "~/Downloads/projects/elvtd/*",
         "~/.config/*",
+        "~/Documents/obsidian/*",
       },
     },
     init = function()
