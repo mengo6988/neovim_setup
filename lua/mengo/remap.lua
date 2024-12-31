@@ -205,3 +205,5 @@ vim.keymap.set("n", "<leader>gd", ":Gvdiffsplit!<CR>")
 vim.keymap.set("n", "<leader>gdh", ":diffget //2<CR>")
 vim.keymap.set("n", "<leader>gdl", ":diffget //3<CR>")
 
+vim.keymap.set("n", "<leader>sc", "<cmd>Scratch<cr>")
+vim.keymap.set("n", "<leader>sco", "<cmd>ScratchOpen<cr>")

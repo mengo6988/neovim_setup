@@ -87,7 +87,5 @@ return {
         opts = { buffer = true, expr = true },
       }
     },
-
-    -- see below for full list of options 👇
   },
 }

@@ -28,8 +28,8 @@ return {
           min_width = 20,
           max_height = 15,
           scrollbar = false,
-          columns = { { "label", "label_description", gap = 0 }, { "kind_icon", "kind" } },
           draw = {
+            columns = { { "label", "label_description", gap = 0 }, { "kind_icon", "kind" } },
             treesitter = { 'lsp' },
           },
         },
@@ -44,20 +44,10 @@ return {
           }
         },
       },
-      providers = {
-        digraphs = {
-          name = 'digraphs',
-          module = 'blink.compat.source',
-          score_offset = -3,
-          opts = {
-            cache_digraphs_on_start = true,
-          }
-        }
-      },
       -- experimental signature help support
       signature = {
         enabled = true,
-        border = vim.g.border_style
+        -- border = vim.g.border_style
       },
       snippets = {
         expand = function(snippet) require('luasnip').lsp_expand(snippet) end,
@@ -71,6 +61,16 @@ return {
       },
       sources = {
         default = { 'lsp', 'path', 'luasnip', 'snippets', 'buffer', 'digraphs' },
+        providers = {
+          digraphs = {
+            name = 'digraphs',
+            module = 'blink.compat.source',
+            score_offset = -3,
+            opts = {
+              cache_digraphs_on_start = true,
+            }
+          }
+        },
       },
     },
     -- allows extending the providers array elsewhere in your config
