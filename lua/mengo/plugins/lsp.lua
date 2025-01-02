@@ -47,7 +47,7 @@ return {
       -- experimental signature help support
       signature = {
         enabled = true,
-        -- border = vim.g.border_style
+        window = {border = vim.g.border_style}
       },
       snippets = {
         expand = function(snippet) require('luasnip').lsp_expand(snippet) end,

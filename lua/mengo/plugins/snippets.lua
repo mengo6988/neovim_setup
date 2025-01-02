@@ -41,9 +41,9 @@ return {
     local function get_comment_string()
       local comment_string = vim.bo.commentstring
       if comment_string == "" then
-        return "// %s"                        -- Default to C-style comments
+        return "// %s"                      -- Default to C-style comments
       end
-      return comment_string:gsub("%%s", "")   -- Remove the %s placeholder
+      return comment_string:gsub("%%s", "") -- Remove the %s placeholder
     end
 
     -- Define languages for code blocks
@@ -151,6 +151,20 @@ return {
       })
     )
 
+    table.insert(
+      markdown_snippets,
+      s({
+        trig = "todolist",
+        name = "Add TODO-list: item",
+        desc = "Add TODO-list: item",
+      }, {
+        t({ "## Todo-list", "", "" }), -- Using table for multiline text
+        t("- [ ] "),
+        i(1),
+        t({ "", "" }), -- New lines after todo item
+        i(0)
+      })
+    )
     -- Paste clipboard contents in link section, move cursor to ()
     table.insert(
       markdown_snippets,
