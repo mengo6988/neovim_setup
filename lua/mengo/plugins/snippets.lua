@@ -182,6 +182,69 @@ return {
     )
 
     ls.add_snippets("markdown", markdown_snippets)
+    ls.add_snippets("json", {
+      s("prettier", {
+        t({
+          "{",
+          '  "printWidth": ',
+        }),
+        i(1, "80"),
+        t({
+          ",",
+          '  "tabWidth": ',
+        }),
+        i(2, "2"),
+        t({
+          ",",
+          '  "useTabs": ',
+        }),
+        i(3, "false"),
+        t({
+          ",",
+          '  "semi": ',
+        }),
+        i(4, "true"),
+        t({
+          ",",
+          '  "singleQuote": ',
+        }),
+        i(5, "true"),
+        t({
+          ",",
+          '  "trailingComma": ',
+        }),
+        i(6, '"all"'),
+        t({
+          ",",
+          '  "bracketSpacing": ',
+        }),
+        i(7, "true"),
+        t({
+          ",",
+          '  "arrowParens": ',
+        }),
+        i(8, '"always"'),
+        t({
+          ",",
+          '  "proseWrap": ',
+        }),
+        i(9, '"preserve"'),
+        t({
+          ",",
+          '  "endOfLine": ',
+        }),
+        i(10, '"auto"'),
+        t({
+          ",",
+          '  "embeddedLanguageFormatting": ',
+        }),
+        i(11, '"auto"'),
+        t({
+          "",
+          "}"
+        }),
+      }),
+    })
 
     -- #####################################################################
     --                         all the filetypes

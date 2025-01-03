@@ -92,7 +92,8 @@ local parse_slides = function(lines)
     blocks = {}
   }
 
-  local separator = "^#"
+  -- local separator = "^#"
+  local separator = "^#[^#]"  -- Matches single # not followed by another #
   for _, line in ipairs(lines) do
     if line:find(separator) then
       if #current_slide.title > 0 then
