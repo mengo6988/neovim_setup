@@ -46,9 +46,9 @@ end)
 -- Testing here, Idk what to put yet, but maybe can have a complicated one to use, suggestion (send highlighted command into terminal)
 keymap('n', "<leader>example", function ()
   vim.fn.chansend(job_id, { 'echo "hello"\r\n'})
-  
 end)
 
+keymap('n' , '<C-s><C-s>' , ':.!sh<cr>' , { noremap = true , desc = 'Send current line to sh and REPLACE with the output' })
 -- Save quit etc
 keymap("n", "<leader>w", ":w!<CR>", opts)
 keymap('n', '<leader>wf', '<cmd>FormatEnable<CR><cmd>w<cr><cmd>FormatDisable<CR>', opts)

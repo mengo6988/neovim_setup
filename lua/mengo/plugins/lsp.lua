@@ -47,7 +47,7 @@ return {
       -- experimental signature help support
       signature = {
         enabled = true,
-        window = {border = vim.g.border_style}
+        window = { border = vim.g.border_style }
       },
       snippets = {
         expand = function(snippet) require('luasnip').lsp_expand(snippet) end,
@@ -60,8 +60,13 @@ return {
         jump = function(direction) require('luasnip').jump(direction) end,
       },
       sources = {
-        default = { 'lsp', 'path', 'luasnip', 'snippets', 'buffer', 'digraphs' },
+        default = { 'lsp', 'path', 'luasnip', 'snippets', 'buffer', 'markdown', 'digraphs' },
         providers = {
+          markdown = {
+            name = 'RenderMarkdown',
+            module = 'render-markdown.integ.blink',
+            fallbacks = { 'lsp' },
+          },
           digraphs = {
             name = 'digraphs',
             module = 'blink.compat.source',
