@@ -48,7 +48,10 @@ keymap('n', "<leader>example", function ()
   vim.fn.chansend(job_id, { 'echo "hello"\r\n'})
 end)
 
-keymap('n' , '<C-s><C-s>' , ':.!sh<cr>' , { noremap = true , desc = 'Send current line to sh and REPLACE with the output' })
+-- Better navigation
+keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
 -- Save quit etc
 keymap("n", "<leader>w", ":w!<CR>", opts)
 keymap('n', '<leader>wf', '<cmd>FormatEnable<CR><cmd>w<cr><cmd>FormatDisable<CR>', opts)
@@ -74,6 +77,7 @@ keymap("n", "<leader>c", ":close<CR>", opts, { desc = "Close" })
 
 -- Duplicate a line and comment out the first line
 keymap('n', 'yc', 'yy<cmd>normal gcc<CR>p', { desc = "Copy paste and comment the line copied" })
+keymap('n' , '<C-s><C-s>' , ':.!sh<cr>' , { noremap = true , desc = 'Send current line to sh and REPLACE with the output' })
 
 -- Better File Navigation
 keymap("n", "<C-d>", "<C-d>zz", opts)
