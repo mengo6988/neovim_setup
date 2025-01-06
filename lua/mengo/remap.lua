@@ -35,7 +35,7 @@ keymap('n', '<leader>sr', ':source %<CR>')
 -- Terminal related
 keymap('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 keymap('t', '< C-d >', '<C-\\><C-n><cmd>bd!<CR>', { desc = 'Exit terminal mode' })
-keymap('n', '<leader>st', function ()
+keymap('n', '<leader>st', function()
   vim.cmd.vnew()
   vim.cmd.term()
   vim.cmd.wincmd("J")
@@ -44,13 +44,9 @@ keymap('n', '<leader>st', function ()
   job_id = vim.bo.channel
 end)
 -- Testing here, Idk what to put yet, but maybe can have a complicated one to use, suggestion (send highlighted command into terminal)
-keymap('n', "<leader>example", function ()
-  vim.fn.chansend(job_id, { 'echo "hello"\r\n'})
+keymap('n', "<leader>example", function()
+  vim.fn.chansend(job_id, { 'echo "hello"\r\n' })
 end)
-
--- Better navigation
-keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Save quit etc
 keymap("n", "<leader>w", ":w!<CR>", opts)
@@ -59,25 +55,28 @@ keymap("n", "<leader>x", ":x!<CR>", opts)
 keymap("n", "<leader>q", ":q!<CR>", opts)
 keymap("n", "<leader>wq", ":wq!<CR>", opts)
 
-keymap("i", "jk", "<Esc>", opts)
 -- Better window navigation
 keymap("n", "<leader>h", "<C-w>h", opts)
 keymap("n", "<leader>j", "<C-w>j", opts)
 keymap("n", "<leader>k", "<C-w>k", opts)
 keymap("n", "<leader>l", "<C-w>l", opts)
 
-keymap("n", "]c", "<cmd>cnext<CR>", { desc = "[C]uikfix Next"})
-keymap("n", "[c", "<cmd>cprev<CR>", { desc = "[C]uikfix Prev"})
+keymap("n", "]c", "<cmd>cnext<CR>", { desc = "[C]uikfix Next" })
+keymap("n", "[c", "<cmd>cprev<CR>", { desc = "[C]uikfix Prev" })
 
 -- Vertical Splits
 keymap("n", "<leader>v", ":vsplit<CR>", opts)
 keymap("n", "<leader>s", ":split<CR>", opts)
-keymap("n", "<leader>,", ":only<CR>", opts, { desc = "Focus" })
-keymap("n", "<leader>c", ":close<CR>", opts, { desc = "Close" })
+keymap("n", "<leader>,", ":only<CR>", { noremap = true, silent = true, desc = "Focus" })
+keymap("n", "<leader>c", ":close<CR>", { noremap = true, silent = true, desc = "Close" })
 
--- Duplicate a line and comment out the first line
+-- Special Remaps
 keymap('n', 'yc', 'yy<cmd>normal gcc<CR>p', { desc = "Copy paste and comment the line copied" })
-keymap('n' , '<C-s><C-s>' , ':.!sh<cr>' , { noremap = true , desc = 'Send current line to sh and REPLACE with the output' })
+keymap('n', '<C-s><C-s>', ':.!sh<cr>', { noremap = true, desc = 'Send current line to sh and REPLACE with the output' })
+keymap("i", "jk", "<Esc>", opts)
+-- Better navigation
+keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Better File Navigation
 keymap("n", "<C-d>", "<C-d>zz", opts)

@@ -40,4 +40,3 @@ Can execute python code, when they are in the slide
 ```python
 print("ayyayaayya python")
 ```
-

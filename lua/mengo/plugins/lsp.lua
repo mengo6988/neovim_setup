@@ -175,7 +175,49 @@ return {
                 "--offset-encoding=utf-16",
               },
             }
-          end
+          end,
+          ["solidity"] = function()
+            local lspconfig = require("lspconfig")
+            local root_files = {
+              'foundry.toml', -- Foundry project
+              'hardhat.config.js', -- Hardhat project
+              'hardhat.config.ts', -- Hardhat TypeScript
+              'remappings.txt', -- Alternative Foundry indicator
+            }
+
+            local root_dir = require("lspconfig.util").root_pattern(unpack(root_files))
+            local current_root = root_dir(vim.fn.getcwd())
+
+            -- Check if it's a Foundry project
+            local is_foundry = vim.fn.filereadable(current_root .. '/foundry.toml') == 1
+                or vim.fn.filereadable(current_root .. '/remappings.txt') == 1
+
+            if is_foundry then
+              -- Use nomicfoundation LSP with Foundry settings
+              lspconfig.solidity_ls_nomicfoundation.setup {
+                capabilities = capabilities,
+                settings = {
+                  -- Foundry-specific settings
+                  noHardHat = true,
+                  solidity = {
+                    packageDefaultDependenciesDirectory = "lib",
+                    formatter = "forge fmt"
+                  }
+                }
+              }
+            else
+              -- Fallback to Hardhat settings
+              lspconfig.solidity_ls_nomicfoundation.setup {
+                capabilities = capabilities,
+                settings = {
+                  solidity = {
+                    includePath = '',
+                    remapping = {}
+                  }
+                }
+              }
+            end
+          end,
         }
       })
       local kind_icons = {
