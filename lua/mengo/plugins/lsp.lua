@@ -11,7 +11,11 @@ return {
   {
     'saghen/blink.cmp',
     -- optional: provides snippets for the snippet source
-    dependencies = { 'rafamadriz/friendly-snippets', 'dmitmel/cmp-digraphs' },
+    dependencies = {
+      "moyiz/blink-emoji.nvim",
+      'rafamadriz/friendly-snippets',
+      'dmitmel/cmp-digraphs',
+    },
     version = 'v0.*',
     ---@module 'blink.cmp'
     -- -@type blink.cmp.Config
@@ -50,6 +54,7 @@ return {
         window = { border = vim.g.border_style }
       },
       snippets = {
+        preset = "luasnip",
         expand = function(snippet) require('luasnip').lsp_expand(snippet) end,
         active = function(filter)
           if filter and filter.direction then
@@ -60,7 +65,7 @@ return {
         jump = function(direction) require('luasnip').jump(direction) end,
       },
       sources = {
-        default = { 'lsp', 'path', 'luasnip', 'snippets', 'buffer', 'markdown', 'digraphs' },
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'markdown', "emoji", 'digraphs' },
         providers = {
           markdown = {
             name = 'RenderMarkdown',
@@ -74,6 +79,12 @@ return {
             opts = {
               cache_digraphs_on_start = true,
             }
+          },
+          emoji = {
+            module = "blink-emoji",
+            name = "Emoji",
+            score_offset = 15,      -- Tune by preference
+            opts = { insert = true }, -- Insert emoji (default) or complete its name
           }
         },
       },
@@ -179,10 +190,10 @@ return {
           ["solidity"] = function()
             local lspconfig = require("lspconfig")
             local root_files = {
-              'foundry.toml', -- Foundry project
+              'foundry.toml',      -- Foundry project
               'hardhat.config.js', -- Hardhat project
               'hardhat.config.ts', -- Hardhat TypeScript
-              'remappings.txt', -- Alternative Foundry indicator
+              'remappings.txt',    -- Alternative Foundry indicator
             }
 
             local root_dir = require("lspconfig.util").root_pattern(unpack(root_files))
