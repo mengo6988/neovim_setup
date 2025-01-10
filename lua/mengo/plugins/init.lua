@@ -192,27 +192,41 @@ return {
     end
   },
   {
-    'ggandor/leap.nvim',
-    dependencies = { 'tpope/vim-repeat' },
-    config = function()
-      require('leap').create_default_mappings()
-      local leap = require('leap')
-      leap.opts.case_sensitive = false
-      leap.opts.equivalence_classes = { ' \t\r\n', }
-      leap.opts.max_phase_one_targets = nil
-      leap.opts.highlight_unlabeled_phase_one_targets = false
-      leap.opts.max_highlighted_traversal_targets = 10
-      leap.opts.substitute_chars = {}
-      leap.opts.safe_labels = 'sfnut/SFNLHMUGTZ?'
-      leap.opts.labels = 'sfnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?'
-      leap.opts.special_keys = {
-        next_target = '<enter>',
-        prev_target = '<tab>',
-        next_group = '<space>',
-        prev_group = '<tab>',
-      }
-    end
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    ---@type Flash.Config
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+    },
   },
+  -- {
+  --   'ggandor/leap.nvim',
+  --   dependencies = { 'tpope/vim-repeat' },
+  --   config = function()
+  --     require('leap').create_default_mappings()
+  --     local leap = require('leap')
+  --     leap.opts.case_sensitive = false
+  --     leap.opts.equivalence_classes = { ' \t\r\n', }
+  --     leap.opts.max_phase_one_targets = nil
+  --     leap.opts.highlight_unlabeled_phase_one_targets = false
+  --     leap.opts.max_highlighted_traversal_targets = 10
+  --     leap.opts.substitute_chars = {}
+  --     leap.opts.safe_labels = 'sfnut/SFNLHMUGTZ?'
+  --     leap.opts.labels = 'sfnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?'
+  --     leap.opts.special_keys = {
+  --       next_target = '<enter>',
+  --       prev_target = '<tab>',
+  --       next_group = '<space>',
+  --       prev_group = '<tab>',
+  --     }
+  --   end
+  -- },
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -300,13 +314,13 @@ return {
       'nvim-telescope/telescope.nvim',
     },
     opts = {
-      cmd = "LivePreview", -- Main command of live-preview.nvim
-      port = 5500,        -- Port to run the live preview server on.
-      autokill = false,   -- If true, the plugin will autokill other processes running on the same port (except for Neovim) when starting the server.
-      browser = 'default', --~/.co- Terminal command to open the browser for live-previewing (eg. 'firefox', 'flatpak run com.vivaldi.Vivaldi'). By default, it will use the default browser.
+      cmd = "LivePreview",  -- Main command of live-preview.nvim
+      port = 5500,          -- Port to run the live preview server on.
+      autokill = false,     -- If true, the plugin will autokill other processes running on the same port (except for Neovim) when starting the server.
+      browser = 'default',  --~/.co- Terminal command to open the browser for live-previewing (eg. 'firefox', 'flatpak run com.vivaldi.Vivaldi'). By default, it will use the default browser.
       dynamic_root = false, -- If true, the plugin will set the root directory to the previewed file's directory. If false, the root directory will be the current working directory (`:lua print(vim.uv.cwd())`).
-      sync_scroll = false, -- If true, the plugin will sync the scrolling in the browser as you scroll in the Markdown files in Neovim.
-      picker = nil,       -- Picker to use for opening files. 3 choices are available: 'telescope', 'fzf-lua', 'mini.pick'. If nil, the plugin look for the first available picker when you call the `pick` command.
+      sync_scroll = false,  -- If true, the plugin will sync the scrolling in the browser as you scroll in the Markdown files in Neovim.
+      picker = nil,         -- Picker to use for opening files. 3 choices are available: 'telescope', 'fzf-lua', 'mini.pick'. If nil, the plugin look for the first available picker when you call the `pick` command.
     },
   },
   { 'wakatime/vim-wakatime',          lazy = false },
