@@ -61,8 +61,8 @@ keymap("n", "<leader>j", "<C-w>j", opts)
 keymap("n", "<leader>k", "<C-w>k", opts)
 keymap("n", "<leader>l", "<C-w>l", opts)
 
-keymap("n", "]c", "<cmd>cnext<CR>", { desc = "[C]uikfix Next" })
-keymap("n", "[c", "<cmd>cprev<CR>", { desc = "[C]uikfix Prev" })
+-- keymap("n", "]c", "<cmd>cnext<CR>", { desc = "[C]uikfix Next" })
+-- keymap("n", "[c", "<cmd>cprev<CR>", { desc = "[C]uikfix Prev" })
 
 -- Vertical Splits
 keymap("n", "<leader>v", ":vsplit<CR>", opts)
@@ -71,6 +71,7 @@ keymap("n", "<leader>,", ":only<CR>", { noremap = true, silent = true, desc = "F
 keymap("n", "<leader>c", ":close<CR>", { noremap = true, silent = true, desc = "Close" })
 
 -- Special Remaps
+keymap('n', 'gV', '`[v`]', { noremap = true, desc = 'Select last changed or yanked text' })
 keymap('n', 'yc', 'yy<cmd>normal gcc<CR>p', { desc = "Copy paste and comment the line copied" })
 keymap('n', '<C-s><C-s>', ':.!sh<cr>', { noremap = true, desc = 'Send current line to sh and REPLACE with the output' })
 keymap("i", "jk", "<Esc>", opts)
