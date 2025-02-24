@@ -9,7 +9,7 @@ local keymap = vim.keymap.set
 -- Remap space as leader key
 keymap("", "( Space )", "<Nop>", opts)
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.maplocalleader = "\\"
 
 -- Modes
 --   normal_mode = "n",
@@ -211,3 +211,4 @@ vim.keymap.set("n", "<leader>gdl", ":diffget //3<CR>")
 
 vim.keymap.set("n", "<leader>sc", "<cmd>Scratch<cr>")
 vim.keymap.set("n", "<leader>sco", "<cmd>ScratchOpen<cr>")
+vim.keymap.set("n", "<leader>srf", ":lua require('grug-far').open({ prefills = { paths = vim.fn.expand('%'), transient=true, engine='astgrep' } })<CR>")
