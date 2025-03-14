@@ -75,6 +75,7 @@ keymap('n', 'gV', '`[v`]', { noremap = true, desc = 'Select last changed or yank
 keymap('n', 'yc', 'yy<cmd>normal gcc<CR>p', { desc = "Copy paste and comment the line copied" })
 keymap('n', '<C-s><C-s>', ':.!sh<cr>', { noremap = true, desc = 'Send current line to sh and REPLACE with the output' })
 keymap("i", "jk", "<Esc>", opts)
+
 -- Better navigation
 keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })

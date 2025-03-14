@@ -44,6 +44,7 @@ return {
 				nvimtree = true,
 				treesitter = true,
 				notify = false,
+        noice = false,
 				rainbow_delimiters = true,
 				indent_blankline = {
 					enabled = true,

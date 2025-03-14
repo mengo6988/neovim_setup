@@ -18,7 +18,7 @@ return {
     },
     version = 'v0.*',
     ---@module 'blink.cmp'
-    -- -@type blink.cmp.Config
+    ---@type blink.cmp.Config
     opts = {
       keymap = {
         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
@@ -143,6 +143,7 @@ return {
       require("mason").setup()
       require('java').setup()
       require("mason-lspconfig").setup({
+        automatic_installation = true,
         ensure_installed = {
           "lua_ls",
           "rust_analyzer",
@@ -209,7 +210,7 @@ return {
               'remappings.txt',    -- Alternative Foundry indicator
             }
 
-            local root_dir = require("lspconfig.util").root_pattern(unpack(root_files))
+            local root_dir = lspconfig.util.root_pattern(unpack(root_files))
             local current_root = root_dir(vim.fn.getcwd())
 
             -- Check if it's a Foundry project
@@ -273,10 +274,10 @@ return {
         Misc = " ",
       }
 
-      local lsp = vim.lsp
-      lsp.handlers["textDocument/hover"] = lsp.with(vim.lsp.handlers.hover, {
-        border = "rounded",
-      })
+      -- local lsp = vim.lsp
+      -- lsp.handlers["textDocument/hover"] = lsp.with(vim.lsp.handlers.hover, {
+      --   border = "rounded",
+      -- })
 
       -- local cmp = require('cmp')
       -- local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -387,7 +388,7 @@ return {
           focusable = false,
           style = "minimal",
           border = "rounded",
-          source = "always",
+          source = true,
           header = "",
           prefix = "",
         },

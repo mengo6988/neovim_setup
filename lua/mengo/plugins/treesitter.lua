@@ -4,6 +4,7 @@ return {
     build = ':TSUpdate',
     dependencies = {
       "nvim-treesitter/nvim-treesitter-context",
+      { "nushell/tree-sitter-nu", build = ":TSUpdate nu" },
       -- "nvim-treesitter/nvim-treesitter-textobjects"
     },
 
@@ -53,12 +54,6 @@ return {
         },
       })
     end,
-
-    dependencies = {
-      -- NOTE: additional parser
-      { "nushell/tree-sitter-nu", build = ":TSUpdate nu" },
-    },
-    build = ":TSUpdate",
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
