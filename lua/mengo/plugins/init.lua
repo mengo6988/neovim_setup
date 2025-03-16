@@ -326,6 +326,22 @@ return {
       picker = nil,         -- Picker to use for opening files. 3 choices are available: 'telescope', 'fzf-lua', 'mini.pick'. If nil, the plugin look for the first available picker when you call the `pick` command.
     },
   },
-  { 'wakatime/vim-wakatime',            lazy = false },
+  -- { 'wakatime/vim-wakatime',            lazy = false },
   { 'dmmulroy/ts-error-translator.nvim' },
+  {
+    'nacro90/numb.nvim',
+    config = function()
+      require('numb').setup()
+    end,
+  },
+  {
+    "shortcuts/no-neck-pain.nvim",
+    version = "*",
+    config = function ()
+      require("no-neck-pain").setup({
+        width = 150
+      })
+    end
+  }
+
 }

@@ -305,6 +305,14 @@ return {
         t("BUG: "),
         i(1, "bug text")
       }),
+
+      s("test", {
+        f(function()
+          return get_comment_string()
+        end),
+        t("TEST: "),
+        i(1, "test text")
+      }),
     })
   end
 }
