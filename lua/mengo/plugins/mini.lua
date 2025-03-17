@@ -42,13 +42,13 @@ return {
       require("mini.pairs").setup({})
       require("mini.bracketed").setup({})
       -- require("mini.operators").setup()
-      require("mini.splitjoin").setup({
-        mappings = {
-          toggle = '<leader>m',
-          split = '<leader>M',
-          join = '',
-        },
-      })
+      -- require("mini.splitjoin").setup({
+      --   mappings = {
+      --     toggle = '<leader>m',
+      --     split = '<leader>M',
+      --     join = '',
+      --   },
+      -- })
     end
   },
 }
