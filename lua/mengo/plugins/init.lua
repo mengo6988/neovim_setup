@@ -10,7 +10,6 @@ return {
   --   event = "InsertEnter",
   --   opts = {} -- this is equalent to setup({}) function
   -- },
-  'eandrju/cellular-automaton.nvim',
   {
     "lewis6991/gitsigns.nvim",
     config = function()
