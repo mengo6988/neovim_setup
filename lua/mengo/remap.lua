@@ -30,6 +30,9 @@ keymap("n", "<leader>f", "<cmd>:Format<CR>", { desc = "Format" })
 keymap("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 keymap("n", "<leader>db", "<CMD>DBUIToggle<CR>", { desc = "[D][B]UI Toggle" })
 keymap("n", "<leader>np", "<CMD>NoNeckPain<CR>", { desc = "No[N]eck[Pain]" })
+keymap("n", "<leader>nl", "<CMD>Noice last<CR>", { desc = "[N]oice [L]ast" })
+keymap("n", "<leader>nd", "<CMD>Noice dismiss<CR>", { desc = "[N]oice [D]ismiss" })
+keymap("n", "<leader>nh", "<CMD>Noice history<CR>", { desc = "[N]oice [H]istory" })
 
 keymap('n', '<leader>sr', ':source %<CR>')
 
