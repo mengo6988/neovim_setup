@@ -114,7 +114,17 @@ return {
         }
       },
       sections = {
-        lualine_a = { 'mode' },
+        lualine_a = { 'mode',{
+          -- Add recording status display
+          function()
+            local recording_register = vim.fn.reg_recording()
+            if recording_register ~= "" then
+              return "Recording @" .. recording_register
+            end
+            return ""
+          end,
+          -- color = { fg = "#ff6077" } -- Red highlight for recording
+        } },
         lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_c = { { 'filename', file_status = true, path = 1 } },
         lualine_x = { 'encoding', 'fileformat', 'filetype' },
