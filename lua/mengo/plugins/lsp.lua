@@ -141,7 +141,7 @@ return {
 
       require("fidget").setup({})
       require("mason").setup()
-      require('java').setup()
+      -- require('java').setup()
       require("mason-lspconfig").setup({
         automatic_installation = true,
         ensure_installed = {
