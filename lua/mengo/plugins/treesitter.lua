@@ -28,7 +28,7 @@ return {
         indent = {
           enable = true
         },
-
+        modules = {}, -- satisfies lua_ls type checker
         highlight = {
           enable = true,
 

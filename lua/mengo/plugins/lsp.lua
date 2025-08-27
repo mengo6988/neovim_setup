@@ -201,7 +201,7 @@ return {
               },
             }
           end,
-          ["solidity"] = function()
+          ["solidity_ls_nomicfoundation"] = function()
             local lspconfig = require("lspconfig")
             local root_files = {
               'foundry.toml',      -- Foundry project
