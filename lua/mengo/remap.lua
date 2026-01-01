@@ -33,6 +33,7 @@ keymap("n", "<leader>np", "<CMD>NoNeckPain<CR>", { desc = "No[N]eck[Pain]" })
 keymap("n", "<leader>nl", "<CMD>Noice last<CR>", { desc = "[N]oice [L]ast" })
 keymap("n", "<leader>nd", "<CMD>Noice dismiss<CR>", { desc = "[N]oice [D]ismiss" })
 keymap("n", "<leader>nh", "<CMD>Noice history<CR>", { desc = "[N]oice [H]istory" })
+keymap("n", "<leader>on", "<CMD>Nvumi<CR>", {desc = "[O]pen [N]vumi"})
 
 keymap('n', '<leader>sr', ':source %<CR>')
 
