@@ -106,8 +106,8 @@ keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
 -- Move text up and down
-keymap("n", "∆", ":m .+1<CR>==", opts)
-keymap("n", "˚", ":m .-2<CR>==", opts)
+keymap("n", "<M-j>", ":m .+1<CR>==", opts)
+keymap("n", "<M-k>", ":m .-2<CR>==", opts)
 
 -- Visual --
 -- Stay in indent mode
@@ -116,8 +116,8 @@ keymap("v", ">", ">gv^", opts)
 keymap("v", "<leader>y", '"+y', opts)
 
 -- Move text up and down
-keymap("v", "˚", ":m '<-2<CR>gv=gv", opts)
-keymap("v", "∆", ":m '>+1<CR>gv=gv", opts)
+keymap("v", "<M-k>", ":m '<-2<CR>gv=gv", opts)
+keymap("v", "<M-j>", ":m '>+1<CR>gv=gv", opts)
 keymap("v", "p", '"_dP', opts)
 
 -- Visual Block --
