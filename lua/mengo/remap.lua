@@ -124,8 +124,8 @@ keymap("v", "p", '"_dP', opts)
 -- Move text up and down
 keymap("x", "J", ":m '>+1<CR>gv=gv", opts)
 keymap("x", "K", ":m '<-2<CR>gv=gv", opts)
-keymap("x", "∆", ":m '>+1<CR>gv=gv", opts)
-keymap("x", "˚", ":m '<-2<CR>gv=gv", opts)
+keymap("x", "<M-j>", ":m '>+1<CR>gv=gv", opts)
+keymap("x", "<M-k>", ":m '<-2<CR>gv=gv", opts)
 
 -- LSP attach for lsp commands
 
