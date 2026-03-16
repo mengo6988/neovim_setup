@@ -207,6 +207,29 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
 -- vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
 
+-- Yank with path
+local yank = require("mengo.yank")
+
+-- Normal mode (operator-pending): <leader>ya{motion}, <leader>yr{motion}
+vim.keymap.set("n", "<leader>ya", function()
+	vim.o.operatorfunc = "v:lua.require'mengo.yank'.op_yank_absolute"
+	return "g@"
+end, { expr = true, desc = "[Y]ank with [A]bsolute path + motion" })
+
+vim.keymap.set("n", "<leader>yr", function()
+	vim.o.operatorfunc = "v:lua.require'mengo.yank'.op_yank_relative"
+	return "g@"
+end, { expr = true, desc = "[Y]ank with [R]elative path + motion" })
+
+-- Visual mode: <leader>ya, <leader>yr
+vim.keymap.set("v", "<leader>ya", function()
+	yank.yank_visual_with_path(yank.get_buffer_absolute(), "absolute")
+end, { desc = "[Y]ank selection with [A]bsolute path" })
+
+vim.keymap.set("v", "<leader>yr", function()
+	yank.yank_visual_with_path(yank.get_buffer_cwd_relative(), "relative")
+end, { desc = "[Y]ank selection with [R]elative path" })
+
 vim.keymap.set("n", "<leader>pp", ":Telescope neovim-project discover<CR>")
 vim.keymap.set("n", "<leader>pph", ":Telescope neovim-project history<CR>")
 vim.keymap.set("n", "<leader>g", ":Git<CR>")
