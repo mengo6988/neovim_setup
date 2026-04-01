@@ -43,30 +43,30 @@ return {
 			color_overrides = {},
 			custom_highlights = {},
 			integrations = {
+				blink_cmp = true,
+				bufferline = true,
 				cmp = true,
+				dap = true,
+				dap_ui = true,
+				dadbod_ui = true,
+				fidget = true,
+				flash = true,
+				fzf = true,
 				gitsigns = true,
-				nvimtree = true,
-				treesitter = true,
-				notify = false,
-				noice = false,
-				rainbow_delimiters = true,
+				grug_far = true,
+				harpoon = true,
 				indent_blankline = {
 					enabled = true,
-					scope_color = "lavender", -- catppuccin color (eg. `lavender`) Default: text
+					scope_color = "lavender",
 					colored_indent_levels = false,
 				},
+				lsp_trouble = true,
+				lualine = {},
+				mason = true,
 				mini = {
 					enabled = true,
 					indentscope_color = "",
 				},
-				lsp_trouble = false,
-				which_key = false,
-				telescope = {
-					enabled = true,
-				},
-				harpoon = false,
-				bufferline = true,
-				lualine = {},
 				native_lsp = {
 					enabled = true,
 					virtual_text = {
@@ -85,11 +85,18 @@ return {
 						background = true,
 					},
 				},
-				leap = false,
+				noice = true,
+				notify = true,
+				rainbow_delimiters = true,
+				render_markdown = true,
+				snacks = true,
+				telescope = {
+					enabled = true,
+				},
+				treesitter = true,
+				-- treesitter_context = true,
 				ufo = true,
-				blink_cmp = false,
-
-				-- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+				which_key = true,
 			},
 		})
 
