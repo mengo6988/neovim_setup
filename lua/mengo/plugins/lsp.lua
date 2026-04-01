@@ -139,7 +139,11 @@ return {
       --   cmp_lsp.default_capabilities())
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-      require("fidget").setup({})
+      require("fidget").setup({
+        notification = {
+          override_vim_notify = false,
+        },
+      })
       require("mason").setup()
       -- require('java').setup()
       require("mason-lspconfig").setup({

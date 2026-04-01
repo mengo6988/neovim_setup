@@ -92,11 +92,11 @@ return {
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
-			"catppuccin/nvim",
+			"catppuccin",
 		},
 		opts = {
 			options = {
-				theme = "catppuccin",
+				theme = "catppuccin-nvim",
 				icons_enabled = true,
 				component_separators = { left = "", right = "" },
 				section_separators = { left = "", right = "" },
@@ -110,8 +110,8 @@ return {
 				refresh = {
 					statusline = 1000,
 					tabline = 1000,
+        },
 					winbar = 1000,
-				},
 			},
 			sections = {
 				lualine_a = {

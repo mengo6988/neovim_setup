@@ -66,6 +66,7 @@ return {
 				},
 				harpoon = false,
 				bufferline = true,
+				lualine = {},
 				native_lsp = {
 					enabled = true,
 					virtual_text = {
