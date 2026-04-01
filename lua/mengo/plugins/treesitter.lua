@@ -14,7 +14,7 @@ return {
 
       -- Install parsers
       require('nvim-treesitter').install {
-        "c", "lua", "vim", "vimdoc", "query", "rust", "javascript", "typescript",
+        "c", "lua", "vim", "vimdoc", "query", "rust", "javascript", "typescript", "tsx", "jsx",
         "prisma", "solidity", "bash", "go", "xml", "http", "json", "graphql",
         "java", "markdown", "markdown_inline",
       }

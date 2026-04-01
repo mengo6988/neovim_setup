@@ -1,7 +1,16 @@
 return {
   {
     "echasnovski/mini.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    dependencies = {
+      {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        init = function()
+          -- Prevent the plugin from loading its vim file (it requires the old nvim-treesitter.configs API).
+          -- We only need it for the textobjects.scm query files that mini.ai uses.
+          require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
+        end,
+      },
+    },
     version = false,
     config = function()
       require('mini.surround').setup({
