@@ -1,4 +1,5 @@
 return {
+	{ "folke/snacks.nvim", lazy = false, priority = 1000, opts = {} },
 	{
 		"nvim-lua/plenary.nvim",
 		name = "plenary",
@@ -91,6 +92,7 @@ return {
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
+			"catppuccin/nvim",
 		},
 		opts = {
 			options = {
