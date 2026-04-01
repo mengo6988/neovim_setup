@@ -16,7 +16,7 @@ return {
       require('nvim-treesitter').install {
         "c", "lua", "vim", "vimdoc", "query", "rust", "javascript", "typescript", "tsx", "jsx",
         "prisma", "solidity", "bash", "go", "xml", "http", "json", "graphql",
-        "java", "markdown", "markdown_inline",
+        "java", "markdown", "markdown_inline", "yaml", "toml", "jsonc", "sql",
       }
 
       -- Enable treesitter highlighting and indentation for all filetypes
