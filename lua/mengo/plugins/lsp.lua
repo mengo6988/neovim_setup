@@ -16,7 +16,7 @@ return {
       'rafamadriz/friendly-snippets',
       'dmitmel/cmp-digraphs',
     },
-    version = 'v0.*',
+    version = '*',
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -68,14 +68,6 @@ return {
       },
       snippets = {
         preset = "luasnip",
-        expand = function(snippet) require('luasnip').lsp_expand(snippet) end,
-        active = function(filter)
-          if filter and filter.direction then
-            return require('luasnip').jumpable(filter.direction)
-          end
-          return require('luasnip').in_snippet()
-        end,
-        jump = function(direction) require('luasnip').jump(direction) end,
       },
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer', 'markdown', "emoji", 'digraphs' },
@@ -367,7 +359,7 @@ return {
       local ls = require "luasnip"
       ls.config.set_config {
         history = false,
-        updateevents = "TextChanged,TextChangedI",
+        update_events = "TextChanged,TextChangedI",
       }
       for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/custom/snippets/*.lua", true)) do
         loadfile(ft_path)()

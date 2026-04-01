@@ -6,7 +6,7 @@ local term_opts = { silent = true }
 local keymap = vim.keymap.set
 
 -- Remap space as leader key
-keymap("", "( Space )", "<Nop>", opts)
+keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
@@ -38,7 +38,12 @@ keymap("n", "<leader>sr", ":source %<CR>")
 
 -- Terminal related
 keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-keymap("t", "< C-d >", "<C-\\><C-n><cmd>bd!<CR>", { desc = "Exit terminal mode" })
+keymap("t", "<C-d>", function()
+	if vim.bo.filetype == "lazygit" then
+		return "<C-d>"
+	end
+	return "<C-\\><C-n><cmd>bd!<CR>"
+end, { expr = true, desc = "Exit terminal mode" })
 keymap("n", "<leader>st", function()
 	vim.cmd.vnew()
 	vim.cmd.term()
@@ -190,7 +195,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("<leader>vwl", function()
 			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 		end, "[W]orkspace Folder [L]ist")
-		map("<leader>vrn", vim.lsp.buf.rename, "Buffer [R]e[N]ame")
 	end,
 })
 
