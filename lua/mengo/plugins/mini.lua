@@ -1,7 +1,7 @@
 return {
   {
     "echasnovski/mini.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     version = false,
     config = function()
       require('mini.surround').setup({
