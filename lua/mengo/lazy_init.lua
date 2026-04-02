@@ -14,5 +14,13 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	spec = "mengo.plugins",
-	change_detection = { enabled = false,notify = false }
+	change_detection = { enabled = false, notify = false },
+	performance = {
+		rtp = {
+			disabled_plugins = {
+				"gzip", "matchit", "matchparen", "netrwPlugin",
+				"tarPlugin", "tohtml", "tutor", "zipPlugin",
+			},
+		},
+	},
 })

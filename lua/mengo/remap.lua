@@ -24,6 +24,7 @@ keymap("n", "-", "<cmd>Oil<CR>")
 keymap("n", "<Esc>", "<cmd>nohlsearch<CR>")
 keymap("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
 keymap("n", "<leader>bd", "<cmd>:Bdelete<CR>")
+keymap("n", "<leader>bo", ":%bd|e#|bd#<CR>", { noremap = true, silent = true, desc = "Close other buffers" })
 keymap("n", "<leader>ibl", "<cmd>:IBLToggle<CR>", { desc = "Indent Blank Line toggle" })
 keymap("n", "<leader>f", "<cmd>:Format<CR>", { desc = "Format" })
 keymap("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "Open parent directory" })
@@ -34,7 +35,8 @@ keymap("n", "<leader>nd", "<CMD>Noice dismiss<CR>", { desc = "[N]oice [D]ismiss"
 keymap("n", "<leader>nh", "<CMD>Noice history<CR>", { desc = "[N]oice [H]istory" })
 keymap("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 
-keymap("n", "<leader>sr", ":source %<CR>")
+keymap("n", "<leader>so", ":source %<CR>")
+keymap("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace word under cursor" })
 
 -- Terminal related
 keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
@@ -137,6 +139,7 @@ keymap("x", "<M-k>", ":m '<-2<CR>gv=gv", opts)
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 	callback = function(event)
+		local client = vim.lsp.get_client_by_id(event.data.client_id)
 		local map = function(keys, func, desc)
 			vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 		end
@@ -195,6 +198,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("<leader>vwl", function()
 			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 		end, "[W]orkspace Folder [L]ist")
+
+		-- Diagnostic navigation
+		map("[d", function() vim.diagnostic.goto_prev() end, "Previous [D]iagnostic")
+		map("]d", function() vim.diagnostic.goto_next() end, "Next [D]iagnostic")
+
+		-- Inlay hints
+		if client and client.supports_method("textDocument/inlayHint") then
+			vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+		end
+		map("<leader>ih", function()
+			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+		end, "Toggle [I]nlay [H]ints")
 	end,
 })
 
