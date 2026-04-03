@@ -200,11 +200,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, "[W]orkspace Folder [L]ist")
 
 		-- Diagnostic navigation
-		map("[d", function() vim.diagnostic.goto_prev() end, "Previous [D]iagnostic")
-		map("]d", function() vim.diagnostic.goto_next() end, "Next [D]iagnostic")
+		map("[d", function() vim.diagnostic.jump({ count = -1 }) end, "Previous [D]iagnostic")
+		map("]d", function() vim.diagnostic.jump({ count = 1 }) end, "Next [D]iagnostic")
 
 		-- Inlay hints
-		if client and client.supports_method("textDocument/inlayHint") then
+		if client and client:supports_method("textDocument/inlayHint") then
 			vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
 		end
 		map("<leader>ih", function()

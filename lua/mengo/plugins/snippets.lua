@@ -59,7 +59,6 @@ return {
       "markdown_inline",
       "yaml",
       "json",
-      "jsonc",
       "cpp",
       "java",
       "javascript",
