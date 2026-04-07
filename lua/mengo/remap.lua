@@ -41,8 +41,12 @@ keymap("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]
 -- Terminal related
 keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 keymap("t", "<C-d>", function()
-	if vim.bo.filetype == "lazygit" then
-		return "<C-d>"
+	local term = vim.b.snacks_terminal
+	if term and term.cmd then
+		local cmd = type(term.cmd) == "table" and table.concat(term.cmd, " ") or tostring(term.cmd)
+		if cmd:find("lazygit") then
+			return "<C-d>"
+		end
 	end
 	return "<C-\\><C-n><cmd>bd!<CR>"
 end, { expr = true, desc = "Exit terminal mode" })
