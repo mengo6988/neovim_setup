@@ -159,23 +159,23 @@ return {
 			},
 		},
 	},
-	{
-		"atiladefreitas/dooing",
-		config = function()
-			require("dooing").setup({
-				window = {
-					width = 100, -- Width of the floating window
-					height = 45, -- Height of the floating window
-					border = "rounded", -- Border style
-					padding = {
-						top = 1,
-						bottom = 1,
-						left = 2,
-						right = 2,
-					},
-				},
-				-- your custom config here (optional)
-			})
-		end,
-	},
+	-- {
+	-- 	"atiladefreitas/dooing",
+	-- 	config = function()
+	-- 		require("dooing").setup({
+	-- 			window = {
+	-- 				width = 100, -- Width of the floating window
+	-- 				height = 45, -- Height of the floating window
+	-- 				border = "rounded", -- Border style
+	-- 				padding = {
+	-- 					top = 1,
+	-- 					bottom = 1,
+	-- 					left = 2,
+	-- 					right = 2,
+	-- 				},
+	-- 			},
+	-- 			-- your custom config here (optional)
+	-- 		})
+	-- 	end,
+	-- },
 }

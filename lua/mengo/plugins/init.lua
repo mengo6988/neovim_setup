@@ -26,7 +26,7 @@ return {
 		name = "plenary",
 	},
 	-- git
-	"tpope/vim-fugitive",
+	-- "tpope/vim-fugitive", -- using snacks lazygit instead
 	-- {
 	--   'windwp/nvim-autopairs',
 	--   event = "InsertEnter",
