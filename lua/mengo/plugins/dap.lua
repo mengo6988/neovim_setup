@@ -9,25 +9,25 @@ return {
 			"williamboman/mason.nvim",
 		},
 		config = function()
-			local dap = require "dap"
-			local ui = require "dapui"
+			local dap = require("dap")
+			local ui = require("dapui")
 
 			require("dapui").setup()
 			require("dap-go").setup()
 			dap.adapters.lldb = {
-				type = 'executable',
-				command = '/opt/homebrew/opt/llvm/bin/lldb-dap', -- adjust as needed, must be absolute path
-				name = 'lldb'
+				type = "executable",
+				command = "/opt/homebrew/opt/llvm/bin/lldb-dap", -- adjust as needed, must be absolute path
+				name = "lldb",
 			}
 			dap.configurations.cpp = {
 				{
-					name = 'Launch',
-					type = 'lldb',
-					request = 'launch',
+					name = "Launch",
+					type = "lldb",
+					request = "launch",
 					program = function()
-						return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+						return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 					end,
-					cwd = '${workspaceFolder}',
+					cwd = "${workspaceFolder}",
 					stopOnEntry = false,
 					args = {},
 
@@ -49,26 +49,27 @@ return {
 			dap.configurations.rust = dap.configurations.cpp
 			dap.configurations.rust = {
 				{
-					name = 'Launch',
-					type = 'lldb',
-					request = 'launch',
+					name = "Launch",
+					type = "lldb",
+					request = "launch",
 					program = function()
-						return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+						return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 					end,
-					cwd = '${workspaceFolder}',
+					cwd = "${workspaceFolder}",
 					stopOnEntry = false,
 					args = {},
 					-- ... the previous config goes here ...,
 					initCommands = function()
 						-- Find out where to look for the pretty printer Python module
-						local rustc_sysroot = vim.fn.trim(vim.fn.system('rustc --print sysroot'))
+						local rustc_sysroot = vim.fn.trim(vim.fn.system("rustc --print sysroot"))
 
-						local script_import = 'command script import "' ..
-							rustc_sysroot .. '/lib/rustlib/etc/lldb_lookup.py"'
-						local commands_file = rustc_sysroot .. '/lib/rustlib/etc/lldb_commands'
+						local script_import = 'command script import "'
+							.. rustc_sysroot
+							.. '/lib/rustlib/etc/lldb_lookup.py"'
+						local commands_file = rustc_sysroot .. "/lib/rustlib/etc/lldb_commands"
 
 						local commands = {}
-						local file = io.open(commands_file, 'r')
+						local file = io.open(commands_file, "r")
 						if file then
 							for line in file:lines() do
 								table.insert(commands, line)
@@ -80,32 +81,31 @@ return {
 						return commands
 					end,
 					-- ...,
-				}
+				},
 			}
 			dap.configurations.java = {
 				{
 					name = "Debug Launch (2GB)",
-					type = 'java',
-					request = 'launch',
-					vmArgs = "" ..
-						"-Xmx2g "
+					type = "java",
+					request = "launch",
+					vmArgs = "" .. "-Xmx2g ",
 				},
 				{
 					name = "Debug Attach (8000)",
-					type = 'java',
-					request = 'attach',
+					type = "java",
+					request = "attach",
 					hostName = "127.0.0.1",
 					port = 8000,
 				},
 				{
 					name = "Debug Attach (5005)",
-					type = 'java',
-					request = 'attach',
+					type = "java",
+					request = "attach",
 					hostName = "127.0.0.1",
 					port = 5005,
 				},
 			}
-			require("nvim-dap-virtual-text").setup {
+			require("nvim-dap-virtual-text").setup({
 				-- This just tries to mitigate the chance that I leak tokens here. Probably won't stop it from happening...
 				-- display_callback = function(variable)
 				-- 	local name = string.lower(variable.name)
@@ -121,8 +121,7 @@ return {
 				-- 	return " " .. variable.value
 				-- end,
 				--
-
-			}
+			})
 
 			-- Handled by nvim-dap-go
 			-- dap.adapters.go = {
@@ -134,7 +133,7 @@ return {
 			--   },
 			-- }
 
-			local elixir_ls_debugger = vim.fn.exepath "elixir-ls-debugger"
+			local elixir_ls_debugger = vim.fn.exepath("elixir-ls-debugger")
 			if elixir_ls_debugger ~= "" then
 				dap.adapters.mix_task = {
 					type = "executable",
@@ -153,8 +152,6 @@ return {
 					},
 				}
 			end
-
-
 
 			vim.keymap.set("n", "<space>b", dap.toggle_breakpoint)
 			vim.keymap.set("n", "<space>gb", dap.run_to_cursor)

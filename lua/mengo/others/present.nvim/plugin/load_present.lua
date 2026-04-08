@@ -1,4 +1,6 @@
-if vim.g.loaded_present == 1 then return end
+if vim.g.loaded_present == 1 then
+  return
+end
 vim.g.loaded_present = 1
 
 -- vim.notify("loading present")

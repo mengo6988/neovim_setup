@@ -40,11 +40,11 @@ local execute_lua_code = function(block)
   return output
 end
 
-M.create_system_executor = function (program)
+M.create_system_executor = function(program)
   return function(block)
     local tempfile = vim.fn.tempname()
-    vim.fn.writefile(vim.split( block.body, "\n"), tempfile)
-    local results = vim.system({program, tempfile}, {text = true}):wait()
+    vim.fn.writefile(vim.split(block.body, "\n"), tempfile)
+    local results = vim.system({ program, tempfile }, { text = true }):wait()
     return vim.split(results.stdout, "\n")
   end
 end
@@ -54,9 +54,9 @@ end
 local options = {
   executors = {
     lua = execute_lua_code,
-    javascript = M.create_system_executor "node" ,
-    python = M.create_system_executor "python3" ,
-  }
+    javascript = M.create_system_executor("node"),
+    python = M.create_system_executor("python3"),
+  },
 }
 
 M.setup = function(opts)
@@ -64,8 +64,9 @@ M.setup = function(opts)
   opts.executors = opts.executors or {}
 
   opts.executors.lua = opts.executors.lua or execute_lua_code
-  opts.executors.javascript = opts.executors.javascriptor M.create_system_executor "node"
-  opts.executors.python = opts.executors.python or M.create_system_executor "python3"
+  opts.executors.javascript = opts.executors.javascriptor
+  M.create_system_executor("node")
+  opts.executors.python = opts.executors.python or M.create_system_executor("python3")
   options = opts
 end
 
@@ -89,11 +90,11 @@ local parse_slides = function(lines)
   local current_slide = {
     title = "",
     body = {},
-    blocks = {}
+    blocks = {},
   }
 
   -- local separator = "^#"
-  local separator = "^#[^#]"  -- Matches single # not followed by another #
+  local separator = "^#[^#]" -- Matches single # not followed by another #
   for _, line in ipairs(lines) do
     if line:find(separator) then
       if #current_slide.title > 0 then
@@ -103,7 +104,7 @@ local parse_slides = function(lines)
       current_slide = {
         title = line,
         body = {},
-        blocks = {}
+        blocks = {},
       }
     else
       table.insert(current_slide.body, line)
@@ -114,7 +115,7 @@ local parse_slides = function(lines)
   for _, slide in ipairs(slides.slides) do
     local block = {
       language = nil,
-      body = ""
+      body = "",
     }
     local inside_block = false
     for _, line in ipairs(slide.body) do
@@ -128,7 +129,7 @@ local parse_slides = function(lines)
           table.insert(slide.blocks, block)
           block = {
             language = nil,
-            body = ""
+            body = "",
           }
         end
       else
@@ -139,15 +140,14 @@ local parse_slides = function(lines)
     end
   end
 
-
   return slides
 end
 
 local create_window_config = function()
   local width = vim.o.columns
   local height = vim.o.lines
-  local header_height = 1 + 2                                        -- 1 + border
-  local footer_height = 1                                            -- 1
+  local header_height = 1 + 2 -- 1 + border
+  local footer_height = 1 -- 1
   local body_height = height - header_height - footer_height - 2 - 1 -- border
 
   ---@type vim.api.keyset.win_config[]
@@ -175,7 +175,7 @@ local create_window_config = function()
       relative = "editor",
       width = width - 8,
       height = body_height,
-      border = { " ", " ", " ", " ", " ", " ", " ", " ", },
+      border = { " ", " ", " ", " ", " ", " ", " ", " " },
       style = "minimal",
       col = 8,
       row = 4,
@@ -189,14 +189,14 @@ local create_window_config = function()
       col = 0,
       row = height - 1,
       zindex = 2,
-    }
+    },
   }
 end
 
 local state = {
   parsed = {},
   current_slide = 1,
-  floats = {}
+  floats = {},
 }
 
 local foreach_float = function(cb)
@@ -207,7 +207,7 @@ end
 
 local present_keymap = function(mode, key, callback)
   vim.keymap.set(mode, key, callback, {
-    buffer = state.floats.body.buf
+    buffer = state.floats.body.buf,
   })
 end
 
@@ -239,16 +239,10 @@ M.start_presentation = function(opts)
     vim.api.nvim_buf_set_lines(state.floats.header.buf, 0, -1, false, { title })
     vim.api.nvim_buf_set_lines(state.floats.body.buf, 0, -1, false, slide.body)
 
-    local footer = string.format(
-      "  %d / %d | %s",
-      state.current_slide,
-      #(state.parsed.slides),
-      state.title
-    )
+    local footer = string.format("  %d / %d | %s", state.current_slide, #state.parsed.slides, state.title)
 
     vim.api.nvim_buf_set_lines(state.floats.footer.buf, 0, -1, false, { footer })
   end
-
 
   present_keymap("n", "n", function()
     state.current_slide = math.min(state.current_slide + 1, #state.parsed.slides)
@@ -288,7 +282,6 @@ M.start_presentation = function(opts)
     vim.list_extend(output, executor(block))
     table.insert(output, "```")
 
-
     local buf = vim.api.nvim_create_buf(false, true)
     local temp_width = math.floor(vim.o.columns * 0.8)
     local temp_height = math.floor(vim.o.lines * 0.8)
@@ -310,8 +303,8 @@ M.start_presentation = function(opts)
   local restore = {
     cmdheight = {
       original = vim.o.cmdheight,
-      present = 0
-    }
+      present = 0,
+    },
   }
 
   for option, config in pairs(restore) do
@@ -328,7 +321,7 @@ M.start_presentation = function(opts)
       foreach_float(function(_, float)
         pcall(vim.api.nvim_win_close, float.win, true)
       end)
-    end
+    end,
   })
 
   vim.api.nvim_create_autocmd("VimResized", {

@@ -36,7 +36,12 @@ keymap("n", "<leader>nh", "<CMD>Noice history<CR>", { desc = "[N]oice [H]istory"
 keymap("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 
 keymap("n", "<leader>so", ":source %<CR>")
-keymap("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace word under cursor" })
+keymap(
+	"n",
+	"<leader>rw",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "Replace word under cursor" }
+)
 
 -- Terminal related
 keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
@@ -204,8 +209,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, "[W]orkspace Folder [L]ist")
 
 		-- Diagnostic navigation
-		map("[d", function() vim.diagnostic.jump({ count = -1 }) end, "Previous [D]iagnostic")
-		map("]d", function() vim.diagnostic.jump({ count = 1 }) end, "Next [D]iagnostic")
+		map("[d", function()
+			vim.diagnostic.jump({ count = -1 })
+		end, "Previous [D]iagnostic")
+		map("]d", function()
+			vim.diagnostic.jump({ count = 1 })
+		end, "Next [D]iagnostic")
 
 		-- Inlay hints
 		if client and client:supports_method("textDocument/inlayHint") then

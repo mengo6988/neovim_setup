@@ -2,9 +2,9 @@ return {
 	"kevinhwang91/nvim-ufo",
 	dependencies = "kevinhwang91/promise-async",
 	config = function()
-		require('ufo').setup({
+		require("ufo").setup({
 			provider_selector = function(bufnr, filetype, buftype)
-				return { 'treesitter', 'indent' }
+				return { "treesitter", "indent" }
 			end,
 			fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
 				local newVirtText = {}
@@ -33,5 +33,5 @@ return {
 				return newVirtText
 			end,
 		})
-	end
+	end,
 }
