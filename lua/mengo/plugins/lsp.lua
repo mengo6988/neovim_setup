@@ -72,6 +72,11 @@ return {
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer", "markdown", "emoji", "digraphs" },
 				providers = {
+					snippets = {
+						name = "Snippets",
+						module = "blink.cmp.sources.snippets",
+						score_offset = 10,
+					},
 					markdown = {
 						name = "RenderMarkdown",
 						module = "render-markdown.integ.blink",

@@ -5,6 +5,7 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+			{ "benfowler/telescope-luasnip.nvim" },
 		},
 
 		config = function()
@@ -151,6 +152,7 @@ return {
 			})
 			require("telescope").load_extension("fzf")
 			require("telescope").load_extension("ui-select")
+			require("telescope").load_extension("luasnip")
 			-- pcall(require('telescope').load_extension, 'fzf')
 			-- pcall(require('telescope').load_extension, 'ui-select')
 
@@ -185,6 +187,10 @@ return {
 			vim.keymap.set("n", "<leader>psp", function()
 				builtin.find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") })
 			end, { desc = "[S]earch [P]ackages" })
+
+			vim.keymap.set("n", "<leader>psc", function()
+				require("telescope").extensions.luasnip.luasnip()
+			end, { desc = "[S]earch [S]nippets" })
 
 			require("mengo.telescope.multigrep").setup()
 		end,

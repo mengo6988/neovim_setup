@@ -249,30 +249,6 @@ return {
 		--                         all the filetypes
 		-- #####################################################################
 		ls.add_snippets("all", {
-			s({
-				trig = "workflow",
-				name = "Add this -> lamw25wmal",
-				desc = "Add this -> lamw25wmal",
-			}, {
-				t("lamw25wmal"),
-			}),
-
-			s({
-				trig = "lam",
-				name = "Add this -> lamw25wmal",
-				desc = "Add this -> lamw25wmal",
-			}, {
-				t("lamw25wmal"),
-			}),
-
-			s({
-				trig = "mw25",
-				name = "Add this -> lamw25wmal",
-				desc = "Add this -> lamw25wmal",
-			}, {
-				t("lamw25wmal"),
-			}),
-
 			s("todo", {
 				f(function()
 					return get_comment_string()
@@ -313,6 +289,552 @@ return {
 				i(1, "test text"),
 			}),
 		})
+		-- Additional "all" snippets
+		ls.add_snippets("all", {
+			s("fixme", {
+				f(function()
+					return get_comment_string()
+				end),
+				t("FIXME: "),
+				i(1, "fixme text"),
+			}),
+
+			s("hack", {
+				f(function()
+					return get_comment_string()
+				end),
+				t("HACK: "),
+				i(1, "hack text"),
+			}),
+
+			s({
+				trig = "date",
+				name = "Insert today's date",
+				desc = "Insert today's date (YYYY-MM-DD)",
+			}, {
+				f(function()
+					return os.date("%Y-%m-%d")
+				end),
+			}),
+
+			s({
+				trig = "time",
+				name = "Insert current datetime",
+				desc = "Insert current datetime (YYYY-MM-DD HH:MM:SS)",
+			}, {
+				f(function()
+					return os.date("%Y-%m-%d %H:%M:%S")
+				end),
+			}),
+		})
+
+		-- #####################################################################
+		--                      TypeScript / JavaScript
+		-- #####################################################################
+		local js_ts_snippets = {
+			s({
+				trig = "cls",
+				name = "console.log string",
+				desc = 'console.log("")',
+			}, {
+				t('console.log("'),
+				i(1),
+				t('");'),
+			}),
+
+			s({
+				trig = "clf",
+				name = "console.log with file context",
+				desc = "console.log with filename and label",
+			}, {
+				t('console.log("['),
+				f(function()
+					return vim.fn.expand("%:t")
+				end),
+				t('] '),
+				i(1, "label"),
+				t(':", '),
+				i(2, "value"),
+				t(");"),
+			}),
+
+			s({
+				trig = "afn",
+				name = "Arrow function",
+				desc = "const name = (params) => {}",
+			}, {
+				t("const "),
+				i(1, "name"),
+				t(" = ("),
+				i(2),
+				t({ ") => {", "\t" }),
+				i(3),
+				t({ "", "};" }),
+			}),
+
+			s({
+				trig = "usee",
+				name = "useEffect",
+				desc = "useEffect with cleanup",
+			}, {
+				t({ "useEffect(() => {", "\t" }),
+				i(1),
+				t({ "", "\treturn () => {", "\t\t" }),
+				i(2),
+				t({ "", "\t};", "" }),
+				t("}, ["),
+				i(3),
+				t("]);"),
+			}),
+
+			s({
+				trig = "usse",
+				name = "useState",
+				desc = "const [state, setState] = useState()",
+			}, {
+				t("const ["),
+				i(1, "state"),
+				t(", set"),
+				f(function(args)
+					local name = args[1][1]
+					return name:sub(1, 1):upper() .. name:sub(2)
+				end, { 1 }),
+				t("] = useState("),
+				i(2),
+				t(");"),
+			}),
+
+			s({
+				trig = "tryc",
+				name = "try/catch/finally",
+				desc = "try/catch/finally block",
+			}, {
+				t({ "try {", "\t" }),
+				i(1),
+				t({ "", "} catch (error) {", "\t" }),
+				i(2),
+				t({ "", "} finally {", "\t" }),
+				i(3),
+				t({ "", "}" }),
+			}),
+
+			s({
+				trig = "imp",
+				name = "import",
+				desc = 'import { } from "module"',
+			}, {
+				t("import { "),
+				i(2),
+				t(' } from "'),
+				i(1, "module"),
+				t('";'),
+			}),
+
+			s({
+				trig = "expd",
+				name = "export default",
+				desc = "export default",
+			}, {
+				t("export default "),
+				i(1),
+				t(";"),
+			}),
+
+			s({
+				trig = "fetcha",
+				name = "Async fetch",
+				desc = "Async fetch with error handling",
+			}, {
+				t({ "try {", '\tconst response = await fetch("' }),
+				i(1, "url"),
+				t({ '");', "\tif (!response.ok) {", '\t\tthrow new Error(`HTTP error! status: ${response.status}`);', "\t}", "\tconst data = await response.json();", "\t" }),
+				i(2),
+				t({ "", "} catch (error) {", "\tconsole.error(error);", "}" }),
+			}),
+
+			s({
+				trig = "tsdis",
+				name = "@ts-expect-error",
+				desc = "// @ts-expect-error comment",
+			}, {
+				t("// @ts-expect-error "),
+				i(1, "reason"),
+			}),
+		}
+
+		for _, ft in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact" }) do
+			ls.add_snippets(ft, js_ts_snippets)
+		end
+
+		-- #####################################################################
+		--                              Python
+		-- #####################################################################
+		ls.add_snippets("python", {
+			s({
+				trig = "ifmain",
+				name = "if __name__ == __main__",
+				desc = 'if __name__ == "__main__": block',
+			}, {
+				t({ 'if __name__ == "__main__":', "\t" }),
+				i(1, "main()"),
+			}),
+
+			s({
+				trig = "pdb",
+				name = "breakpoint",
+				desc = "Insert breakpoint()",
+			}, {
+				t("breakpoint()"),
+			}),
+
+			s({
+				trig = "dclass",
+				name = "dataclass",
+				desc = "@dataclass with fields",
+			}, {
+				t({ "@dataclass", "class " }),
+				i(1, "ClassName"),
+				t({ ":", "\t" }),
+				i(2, "field"),
+				t(": "),
+				i(3, "str"),
+			}),
+
+			s({
+				trig = "typd",
+				name = "TypedDict",
+				desc = "TypedDict definition",
+			}, {
+				t("class "),
+				i(1, "Name"),
+				t({ "(TypedDict):", "\t" }),
+				i(2, "key"),
+				t(": "),
+				i(3, "str"),
+			}),
+
+			s({
+				trig = "ctxm",
+				name = "Context manager",
+				desc = "with statement",
+			}, {
+				t("with "),
+				i(1, "open()"),
+				t(" as "),
+				i(2, "f"),
+				t({ ":", "\t" }),
+				i(3),
+			}),
+
+			s({
+				trig = "logd",
+				name = "logger.debug",
+				desc = "logger.debug with f-string",
+			}, {
+				t('logger.debug(f"'),
+				i(1, "message"),
+				t(' {'),
+				i(2, "var"),
+				t('=}")'),
+			}),
+		})
+
+		-- #####################################################################
+		--                                Go
+		-- #####################################################################
+		ls.add_snippets("go", {
+			s({
+				trig = "iferr",
+				name = "if err != nil return",
+				desc = "if err != nil { return err }",
+			}, {
+				t({ "if err != nil {", "\treturn " }),
+				i(1, "err"),
+				t({ "", "}" }),
+			}),
+
+			s({
+				trig = "ife",
+				name = "if err != nil wrapped",
+				desc = "if err != nil with fmt.Errorf wrap",
+			}, {
+				t({ "if err != nil {", '\treturn fmt.Errorf("' }),
+				i(1, "failed to %s"),
+				t('": %w", '),
+				i(2),
+				t({ "err)", "}" }),
+			}),
+
+			s({
+				trig = "httph",
+				name = "HTTP handler",
+				desc = "HTTP handler function",
+			}, {
+				t("func "),
+				i(1, "handler"),
+				t({ "(w http.ResponseWriter, r *http.Request) {", "\t" }),
+				i(2),
+				t({ "", "}" }),
+			}),
+
+			s({
+				trig = "testf",
+				name = "Test function",
+				desc = "func TestXxx(t *testing.T)",
+			}, {
+				t("func Test"),
+				i(1, "Name"),
+				t({ "(t *testing.T) {", "\t" }),
+				i(2),
+				t({ "", "}" }),
+			}),
+
+			s({
+				trig = "tabltest",
+				name = "Table-driven test",
+				desc = "Table-driven test skeleton",
+			}, {
+				t({ "tests := []struct {", "\tname string", "\t" }),
+				i(1, "input string"),
+				t({ "", "\t" }),
+				i(2, "want  string"),
+				t({ "", "}{", "\t{" }),
+				t({ "", '\t\tname: "' }),
+				i(3, "test case"),
+				t({ '",', "\t}," }),
+				t({ "", "}", "", "for _, tt := range tests {", '\tt.Run(tt.name, func(t *testing.T) {', "\t\t" }),
+				i(4),
+				t({ "", "\t})", "}" }),
+			}),
+
+			s({
+				trig = "ctx",
+				name = "context parameter",
+				desc = "ctx context.Context",
+			}, {
+				t("ctx context.Context"),
+			}),
+		})
+
+		-- #####################################################################
+		--                               Rust
+		-- #####################################################################
+		ls.add_snippets("rust", {
+			s({
+				trig = "testm",
+				name = "Test module",
+				desc = "#[cfg(test)] mod tests",
+			}, {
+				t({ "#[cfg(test)]", "mod tests {", "\tuse super::*;", "", "\t#[test]", "\tfn " }),
+				i(1, "test_name"),
+				t({ "() {", "\t\t" }),
+				i(2),
+				t({ "", "\t}", "}" }),
+			}),
+
+			s({
+				trig = "der",
+				name = "#[derive]",
+				desc = "#[derive(...)]",
+			}, {
+				t("#[derive("),
+				i(1, "Debug, Clone"),
+				t(")]"),
+			}),
+
+			s({
+				trig = "implst",
+				name = "impl block",
+				desc = "impl for struct",
+			}, {
+				t("impl "),
+				i(1, "StructName"),
+				t({ " {", "\t" }),
+				i(2),
+				t({ "", "}" }),
+			}),
+
+			s({
+				trig = "matchr",
+				name = "match Result",
+				desc = "match with Ok/Err arms",
+			}, {
+				t("match "),
+				i(1, "value"),
+				t({ " {", "\tOk(" }),
+				i(2, "val"),
+				t({ ") => {", "\t\t" }),
+				i(3),
+				t({ "", "\t}", "\tErr(" }),
+				i(4, "e"),
+				t({ ") => {", "\t\t" }),
+				i(5),
+				t({ "", "\t}", "}" }),
+			}),
+
+			s({
+				trig = "printd",
+				name = "dbg! macro",
+				desc = "dbg!(value)",
+			}, {
+				t("dbg!("),
+				i(1),
+				t(");"),
+			}),
+		})
+
+		-- #####################################################################
+		--                               Lua
+		-- #####################################################################
+		ls.add_snippets("lua", {
+			s({
+				trig = "plug",
+				name = "Lazy.nvim plugin spec",
+				desc = "Plugin spec skeleton for lazy.nvim",
+			}, {
+				t({ "return {", '\t"' }),
+				i(1, "author/plugin"),
+				t({ '",', "\tconfig = function()", "\t\t" }),
+				i(2),
+				t({ "", "\tend,", "}" }),
+			}),
+
+			s({
+				trig = "auc",
+				name = "nvim_create_autocmd",
+				desc = "vim.api.nvim_create_autocmd",
+			}, {
+				t('vim.api.nvim_create_autocmd("'),
+				i(1, "BufEnter"),
+				t({ '", {', "\tpattern = " }),
+				i(2, '"*"'),
+				t({ ",", "\tcallback = function()", "\t\t" }),
+				i(3),
+				t({ "", "\tend,", "})" }),
+			}),
+
+			s({
+				trig = "map",
+				name = "vim.keymap.set",
+				desc = "vim.keymap.set with desc",
+			}, {
+				t('vim.keymap.set("'),
+				i(1, "n"),
+				t('", "'),
+				i(2, "<leader>"),
+				t('", '),
+				i(3),
+				t(', { desc = "'),
+				i(4, "description"),
+				t('" })'),
+			}),
+
+			s({
+				trig = "augroup",
+				name = "Autocmd group",
+				desc = "Create autocmd group with clear",
+			}, {
+				t('local '),
+				i(1, "group"),
+				t(' = vim.api.nvim_create_augroup("'),
+				i(2, "GroupName"),
+				t({ '", { clear = true })', "" }),
+				t('vim.api.nvim_create_autocmd("'),
+				i(3, "BufEnter"),
+				t({ '", {', "\tgroup = " }),
+				f(function(args)
+					return args[1][1]
+				end, { 1 }),
+				t({ ",", "\tcallback = function()", "\t\t" }),
+				i(4),
+				t({ "", "\tend,", "})" }),
+			}),
+		})
+
+		-- #####################################################################
+		--                             Solidity
+		-- #####################################################################
+		ls.add_snippets("solidity", {
+			s({
+				trig = "cont",
+				name = "Contract",
+				desc = "Contract skeleton",
+			}, {
+				t({ "// SPDX-License-Identifier: " }),
+				i(1, "MIT"),
+				t({ "", "pragma solidity ^" }),
+				i(2, "0.8.20"),
+				t({ ";", "", "contract " }),
+				i(3, "MyContract"),
+				t({ " {", "\t" }),
+				i(4),
+				t({ "", "}" }),
+			}),
+
+			s({
+				trig = "func",
+				name = "Function",
+				desc = "Function with visibility",
+			}, {
+				t("function "),
+				i(1, "name"),
+				t("("),
+				i(2),
+				t(") "),
+				i(3, "public"),
+				t(" "),
+				i(4, "returns ()"),
+				t({ " {", "\t" }),
+				i(5),
+				t({ "", "}" }),
+			}),
+
+			s({
+				trig = "event",
+				name = "Event + emit",
+				desc = "Event declaration and emit",
+			}, {
+				t("event "),
+				i(1, "Transfer"),
+				t("("),
+				i(2, "address indexed from, address indexed to, uint256 value"),
+				t({ ");", "" }),
+				t("emit "),
+				f(function(args)
+					return args[1][1]
+				end, { 1 }),
+				t("("),
+				i(3),
+				t(");"),
+			}),
+
+			s({
+				trig = "mod",
+				name = "Modifier",
+				desc = "Modifier skeleton",
+			}, {
+				t("modifier "),
+				i(1, "onlyOwner"),
+				t({ "() {", '\trequire(' }),
+				i(2, "msg.sender == owner"),
+				t(', "'),
+				i(3, "Not authorized"),
+				t({ '");', "\t_;", "}" }),
+			}),
+
+			s({
+				trig = "req",
+				name = "require",
+				desc = "require(condition, message)",
+			}, {
+				t("require("),
+				i(1, "condition"),
+				t(', "'),
+				i(2, "Error message"),
+				t('");'),
+			}),
+		})
+
 		-- Add a gitignore snippet for all filetypes
 		ls.add_snippets("all", {
 			s({
