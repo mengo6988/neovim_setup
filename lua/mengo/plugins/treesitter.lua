@@ -12,7 +12,18 @@ return {
 		config = function()
 			require("nvim-treesitter").setup({})
 
-			-- Install parsers
+			-- Auto-install missing parsers on file open
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					local ft = vim.bo[args.buf].filetype
+					local lang = vim.treesitter.language.get_lang(ft)
+					if lang and not pcall(vim.treesitter.language.inspect, lang) then
+						require("nvim-treesitter").install(lang)
+					end
+				end,
+			})
+
+			-- Pre-install parsers for common languages
 			require("nvim-treesitter").install({
 				"c",
 				"lua",
@@ -38,6 +49,15 @@ return {
 				"yaml",
 				"toml",
 				"sql",
+				"css",
+				"scss",
+				"html",
+				"python",
+				"cpp",
+				"dockerfile",
+				"make",
+				"regex",
+				"jsonc",
 				"gitcommit",
 				"git_rebase",
 				"diff",
@@ -134,43 +154,14 @@ return {
 	-- },
 	{
 		"Wansmer/treesj",
-		dependencies = { "nvim-treesitter/nvim-treesitter" }, -- if you install parsers with `nvim-treesitter`
-		config = function()
-			local tsj = require("treesj")
-
-			local langs = { --[[ configuration for languages ]]
-			}
-
-			tsj.setup({
-				---@type boolean Use default keymaps (<space>m - toggle, <space>j - join, <space>s - split)
-				use_default_keymaps = false,
-				---@type boolean Node with syntax error will not be formatted
-				check_syntax_error = true,
-				---If line after join will be longer than max value,
-				---@type number If line after join will be longer than max value, node will not be formatted
-				max_join_length = 120,
-				---Cursor behavior:
-				---hold - cursor follows the node/place on which it was called
-				---start - cursor jumps to the first symbol of the node being formatted
-				---end - cursor jumps to the last symbol of the node being formatted
-				---@type 'hold'|'start'|'end'
-				cursor_behavior = "hold",
-				---@type boolean Notify about possible problems or not
-				notify = true,
-				---@type boolean Use `dot` for repeat action
-				dot_repeat = true,
-				---@type nil|function Callback for treesj error handler. func (err_text, level, ...other_text)
-				on_error = nil,
-				---@type table Presets for languages
-				-- langs = {}, -- See the default presets in lua/treesj/langs
-			})
-
-			-- TreeSJ
-			vim.keymap.set("n", "<leader>m", require("treesj").toggle)
-			-- For extending default preset with `recursive = true`
-			vim.keymap.set("n", "<leader>M", function()
-				tsj.toggle({ split = { recursive = true } })
-			end)
-		end,
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		keys = {
+			{ "<leader>m", function() require("treesj").toggle() end, desc = "TreeSJ Toggle" },
+			{ "<leader>M", function() require("treesj").toggle({ split = { recursive = true } }) end, desc = "TreeSJ Toggle Recursive" },
+		},
+		opts = {
+			use_default_keymaps = false,
+			max_join_length = 120,
+		},
 	},
 }

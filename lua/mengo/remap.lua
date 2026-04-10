@@ -84,6 +84,10 @@ keymap("n", "<leader>l", "<C-w>l", opts)
 -- keymap("n", "]c", "<cmd>cnext<CR>", { desc = "[C]uikfix Next" })
 -- keymap("n", "[c", "<cmd>cprev<CR>", { desc = "[C]uikfix Prev" })
 
+-- Swap window layout
+keymap("n", "<leader>wh", "<C-w>t<C-w>H", { noremap = true, silent = true, desc = "Swap to vertical layout" })
+keymap("n", "<leader>wk", "<C-w>t<C-w>K", { noremap = true, silent = true, desc = "Swap to horizontal layout" })
+
 -- Vertical Splits
 keymap("n", "<leader>v", ":vsplit<CR>", opts)
 keymap("n", "<leader>s", ":split<CR>", opts)
