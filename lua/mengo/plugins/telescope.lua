@@ -26,6 +26,15 @@ return {
 			require("telescope").setup({
 				defaults = {
 					sorting_strategy = "ascending",
+					file_ignore_patterns = {
+						"node_modules/",
+						"public/",
+						".git/",
+						"dist/",
+						"build/",
+						".next/",
+						"%.lock",
+					},
 
 					layout_strategy = "bottom_pane",
 					layout_config = {
