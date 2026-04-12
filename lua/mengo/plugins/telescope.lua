@@ -26,6 +26,7 @@ return {
 			require("telescope").setup({
 				defaults = {
 					sorting_strategy = "ascending",
+					hidden = true,
 					file_ignore_patterns = {
 						"node_modules/",
 						"public/",
