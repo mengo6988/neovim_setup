@@ -4,7 +4,7 @@ return {
 		branch = "main",
 		keys = { -- recommended keymap for easy toggle LazyDo in normal and insert modes (arbitrary)
 			{
-				"<leader>ld",
+				"<leader>ltd",
 				"<ESC><CMD>LazyDoToggle<CR>",
 				mode = { "n" },
 			},
