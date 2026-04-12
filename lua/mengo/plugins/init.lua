@@ -67,6 +67,20 @@ return {
 				end,
 				desc = "Lazygit",
 			},
+			{
+				"<leader>ld",
+				function()
+					Snacks.terminal("lazydocker", { win = { style = "lazygit" } })
+				end,
+				desc = "Lazydocker",
+			},
+			{
+				"<leader>ls",
+				function()
+					Snacks.terminal("lazysql", { win = { style = "lazygit" } })
+				end,
+				desc = "Lazysql",
+			},
 		},
 	},
 	{
