@@ -65,6 +65,7 @@ return {
 						},
 					},
 					lsp_definitions = {
+						file_ignore_patterns = {},
 						sorting_strategy = "ascending",
 						results_title = false,
 						layout_strategy = "cursor",
@@ -79,6 +80,7 @@ return {
 						},
 					},
 					lsp_references = {
+						file_ignore_patterns = {},
 						sorting_strategy = "ascending",
 						results_title = false,
 						layout_strategy = "cursor",
@@ -93,6 +95,7 @@ return {
 						},
 					},
 					lsp_implementations = {
+						file_ignore_patterns = {},
 						sorting_strategy = "ascending",
 						results_title = false,
 						layout_strategy = "cursor",
@@ -107,6 +110,7 @@ return {
 						},
 					},
 					lsp_type_definitions = {
+						file_ignore_patterns = {},
 						sorting_strategy = "ascending",
 						results_title = false,
 						layout_strategy = "cursor",
