@@ -16,19 +16,10 @@ return {
 			},
 		},
     -- stylua: ignore
+		event = "VeryLazy",
 		keys = {
-			-- NES keymaps (disabled — no Copilot subscription)
-			-- {
-			-- 	"<Tab>",
-			-- 	function()
-			-- 		return require("sidekick.nes").accept() or "<Tab>"
-			-- 	end,
-			-- 	expr = true,
-			-- 	desc = "Goto/Apply Next Edit Suggestion",
-			-- },
-
 			-- CLI keymaps
-			{ "<c-.>",      function() require("sidekick.cli").focus() end,                                desc = "Sidekick Focus",           mode = { "n", "t", "i", "x" } },
+			-- { "<C-.>",      function() require("sidekick.cli").focus() end,                                desc = "Sidekick Focus",           mode = { "n", "t", "i", "x" } },
 			{ "<leader>aa", function() require("sidekick.cli").toggle() end,                               desc = "Sidekick Toggle CLI" },
 			{ "<leader>as", function() require("sidekick.cli").select() end,                               desc = "Select CLI" },
 			{ "<leader>ad", function() require("sidekick.cli").close() end,                                desc = "Detach a CLI Session" },
