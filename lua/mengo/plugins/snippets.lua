@@ -937,5 +937,97 @@ return {
 				}),
 			}),
 		})
+
+		-- #####################################################################
+		--                      Dev-services env blocks
+		-- #####################################################################
+		-- Pairs: local (host→localhost) and container (app→service DNS on `mengo` network).
+		-- Triggers ending in `c` = container mode.
+		ls.add_snippets("all", {
+			s({ trig = "envpg", name = "Postgres env (local)", desc = "DATABASE_URL via localhost" }, {
+				t({
+					"# Prisma / Postgres — local mode",
+					'DATABASE_URL="postgresql://postgres:postgres@localhost:5432/dev?schema=public"',
+					'DIRECT_URL="postgresql://postgres:postgres@localhost:5432/dev?schema=public"',
+					"POSTGRES_USER=postgres",
+					"POSTGRES_PASSWORD=postgres",
+					"POSTGRES_DB=dev",
+					"POSTGRES_HOST=localhost",
+					"POSTGRES_PORT=5432",
+				}),
+			}),
+			s({ trig = "envpgc", name = "Postgres env (container)", desc = "DATABASE_URL via dev-postgres DNS" }, {
+				t({
+					"# Prisma / Postgres — container mode (network: mengo)",
+					'DATABASE_URL="postgresql://postgres:postgres@dev-postgres:5432/dev?schema=public"',
+					'DIRECT_URL="postgresql://postgres:postgres@dev-postgres:5432/dev?schema=public"',
+					"POSTGRES_USER=postgres",
+					"POSTGRES_PASSWORD=postgres",
+					"POSTGRES_DB=dev",
+					"POSTGRES_HOST=dev-postgres",
+					"POSTGRES_PORT=5432",
+				}),
+			}),
+			s({ trig = "envredis", name = "Redis env (local)" }, {
+				t({
+					"# Redis — local mode",
+					'REDIS_URL="redis://localhost:6379"',
+					"REDIS_HOST=localhost",
+					"REDIS_PORT=6379",
+				}),
+			}),
+			s({ trig = "envredisc", name = "Redis env (container)" }, {
+				t({
+					"# Redis — container mode (network: mengo)",
+					'REDIS_URL="redis://dev-redis:6379"',
+					"REDIS_HOST=dev-redis",
+					"REDIS_PORT=6379",
+				}),
+			}),
+			s({ trig = "envmail", name = "Mailpit env (local)" }, {
+				t({
+					"# Mailpit — local mode (UI http://localhost:8025)",
+					"SMTP_HOST=localhost",
+					"SMTP_PORT=1025",
+					"SMTP_USER=",
+					"SMTP_PASS=",
+					"SMTP_SECURE=false",
+					'MAIL_FROM="dev@localhost"',
+				}),
+			}),
+			s({ trig = "envmailc", name = "Mailpit env (container)" }, {
+				t({
+					"# Mailpit — container mode (network: mengo)",
+					"SMTP_HOST=dev-mailpit",
+					"SMTP_PORT=1025",
+					"SMTP_USER=",
+					"SMTP_PASS=",
+					"SMTP_SECURE=false",
+					'MAIL_FROM="dev@localhost"',
+				}),
+			}),
+			s({ trig = "envs3", name = "MinIO env (local)" }, {
+				t({
+					"# MinIO — local mode (console http://localhost:9001)",
+					'S3_ENDPOINT="http://localhost:9000"',
+					"S3_REGION=us-east-1",
+					"S3_ACCESS_KEY_ID=minioadmin",
+					"S3_SECRET_ACCESS_KEY=minioadmin",
+					"S3_BUCKET=dev",
+					"S3_FORCE_PATH_STYLE=true",
+				}),
+			}),
+			s({ trig = "envs3c", name = "MinIO env (container)" }, {
+				t({
+					"# MinIO — container mode (network: mengo)",
+					'S3_ENDPOINT="http://dev-minio:9000"',
+					"S3_REGION=us-east-1",
+					"S3_ACCESS_KEY_ID=minioadmin",
+					"S3_SECRET_ACCESS_KEY=minioadmin",
+					"S3_BUCKET=dev",
+					"S3_FORCE_PATH_STYLE=true",
+				}),
+			}),
+		})
 	end,
 }
