@@ -17,7 +17,7 @@ local options = {
 	splitright = true, -- force all vertical splits to go to the right of current window
 	splitkeep = "screen", -- Keep text on same screen line (Neovim >=0.9)
 	swapfile = false, -- creates a swapfile
-	-- termguicolors = true,                    -- set term gui colors (most terminals support this)
+	termguicolors = true, -- enable 24-bit truecolor (required for catppuccin)
 	timeoutlen = 300, -- time to wait for a mapped sequence to complete (in milliseconds)
 	undofile = true, -- enable persistent undo
 	updatetime = 300, -- faster completion (4000ms default)
@@ -31,7 +31,9 @@ local options = {
 	numberwidth = 4, -- set number column width to 2 {default 4}
 	foldmethod = "indent",
 	foldlevel = 99,
+	foldlevelstart = 99, -- nvim-ufo: start with all folds open
 	foldenable = true,
+	concealcursor = "nc", -- keep markdown conceal in normal/command mode
 
 	signcolumn = "yes", -- always show the sign column, otherwise it would shift the text each time
 	wrap = true, -- display lines as one long line
@@ -46,9 +48,7 @@ for k, v in pairs(options) do
 	vim.opt[k] = v
 end
 
--- Disables autoformatting on default
-vim.b.disable_autoformat = true
-vim.g.disable_autoformat = true
+-- Autoformat-on-save is ON by default. Use :FormatDisable / :FormatDisable! to opt out.
 -- vim.opt.shortmess = "ilmnrx"                        -- flags to shorten vim messages, see :help 'shortmess'
 vim.opt.shortmess:append("c") -- don't give |ins-completion-menu| messages
 vim.opt.iskeyword:append("-") -- hyphenated words recognized by searches
@@ -72,6 +72,18 @@ vim.api.nvim_create_autocmd("TermOpen", {
 	callback = function()
 		vim.opt.number = false
 		vim.opt.relativenumber = false
+	end,
+})
+
+-- Restore cursor to last known position on file open
+vim.api.nvim_create_autocmd("BufReadPost", {
+	group = vim.api.nvim_create_augroup("restore-cursor", { clear = true }),
+	callback = function(args)
+		local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
+		local lcount = vim.api.nvim_buf_line_count(args.buf)
+		if mark[1] > 0 and mark[1] <= lcount then
+			pcall(vim.api.nvim_win_set_cursor, 0, mark)
+		end
 	end,
 })
 

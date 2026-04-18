@@ -9,7 +9,7 @@ return {
 			title = "CodeSnap.nvim",
 			code_font_family = "CaskaydiaCove Nerd Font",
 			watermark_font_family = "Pacifico",
-			save_path = "/Users/menghongho/Downloads/Codesnap",
+			save_path = vim.fn.expand("~/Downloads/Codesnap"),
 		})
 	end,
 }

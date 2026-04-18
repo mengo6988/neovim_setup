@@ -19,7 +19,6 @@ vim.g.maplocalleader = "\\"
 --   command_mode = "c",
 
 --  Plugin related
-keymap("n", "<leader>rr", "<cmd>Rest run<CR>", { desc = "[R]est [R]un" })
 keymap("n", "-", "<cmd>Oil<CR>")
 keymap("n", "<Esc>", "<cmd>nohlsearch<CR>")
 keymap("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
@@ -61,11 +60,15 @@ keymap("n", "<leader>st", function()
 	vim.cmd.wincmd("J")
 	vim.api.nvim_win_set_height(0, 17)
 
-	job_id = vim.bo.channel
+	vim.g.last_term_job_id = vim.bo.channel
 end)
 -- Testing here, Idk what to put yet, but maybe can have a complicated one to use, suggestion (send highlighted command into terminal)
 keymap("n", "<leader>example", function()
-	vim.fn.chansend(job_id, { 'echo "hello"\r\n' })
+	if vim.g.last_term_job_id then
+		vim.fn.chansend(vim.g.last_term_job_id, { 'echo "hello"\r\n' })
+	else
+		vim.notify("No terminal job — open one with <leader>st first", vim.log.levels.WARN)
+	end
 end)
 
 -- Save quit etc
@@ -83,6 +86,12 @@ keymap("n", "<leader>l", "<C-w>l", opts)
 
 -- keymap("n", "]c", "<cmd>cnext<CR>", { desc = "[C]uikfix Next" })
 -- keymap("n", "[c", "<cmd>cprev<CR>", { desc = "[C]uikfix Prev" })
+
+-- Quickfix
+keymap("n", "]q", "<cmd>cnext<CR>zz", { desc = "Quickfix next" })
+keymap("n", "[q", "<cmd>cprev<CR>zz", { desc = "Quickfix prev" })
+keymap("n", "<leader>qo", "<cmd>copen<CR>", { desc = "[Q]uickfix [O]pen" })
+keymap("n", "<leader>qc", "<cmd>cclose<CR>", { desc = "[Q]uickfix [C]lose" })
 
 -- Swap window layout
 keymap("n", "<leader>wh", "<C-w>t<C-w>H", { noremap = true, silent = true, desc = "Swap to vertical layout" })
@@ -227,6 +236,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("<leader>ih", function()
 			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 		end, "Toggle [I]nlay [H]ints")
+
+		-- Attach navic for winbar breadcrumbs
+		if client and client.server_capabilities.documentSymbolProvider then
+			local ok, navic = pcall(require, "nvim-navic")
+			if ok then
+				navic.attach(client, event.buf)
+			end
+		end
 	end,
 })
 

@@ -1,6 +1,9 @@
 local set = vim.opt_local
 set.shiftwidth = 2
 set.tabstop = 2
+set.wrap = true
+set.linebreak = true
+-- spell off by default. Enable per-buffer with :setlocal spell when proofreading prose.
 vim.keymap.set("n", "<leader>cc", function()
 	local line = vim.api.nvim_get_current_line()
 

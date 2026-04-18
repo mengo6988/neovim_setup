@@ -71,6 +71,14 @@ return {
 			},
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer", "markdown", "emoji", "digraphs" },
+				per_filetype = {
+					markdown = {
+						inherit_defaults = true,
+						"obsidian",
+						"obsidian_new",
+						"obsidian_tags",
+					},
+				},
 				providers = {
 					snippets = {
 						name = "Snippets",
@@ -95,6 +103,21 @@ return {
 						name = "Emoji",
 						score_offset = 15, -- Tune by preference
 						opts = { insert = true }, -- Insert emoji (default) or complete its name
+					},
+					obsidian = {
+						name = "obsidian",
+						module = "blink.compat.source",
+						score_offset = 20,
+					},
+					obsidian_new = {
+						name = "obsidian_new",
+						module = "blink.compat.source",
+						score_offset = 20,
+					},
+					obsidian_tags = {
+						name = "obsidian_tags",
+						module = "blink.compat.source",
+						score_offset = 20,
 					},
 				},
 			},

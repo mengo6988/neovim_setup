@@ -73,11 +73,11 @@ return {
 			return out
 		end,
 
-		-- Optional, completion of wiki links, local markdown links, and tags using nvim-cmp.
+		-- Completion. nvim-cmp is not installed; blink.cmp proxies via blink.compat.
+		-- Keep nvim_cmp = true so obsidian registers its cmp sources into the cmp
+		-- registry that blink.compat polyfills.
 		completion = {
-			-- Set to false to disable completion.
 			nvim_cmp = true,
-			-- Trigger completion at 2 chars.
 			min_chars = 2,
 		},
 

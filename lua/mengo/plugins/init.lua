@@ -5,6 +5,34 @@ return {
 		priority = 1000,
 		opts = {
 			lazygit = { enabled = true },
+			dashboard = {
+				enabled = true,
+				preset = {
+					header = [[
+   ███╗   ███╗███████╗███╗   ██╗ ██████╗  ██████╗
+   ████╗ ████║██╔════╝████╗  ██║██╔════╝ ██╔═══██╗
+   ██╔████╔██║█████╗  ██╔██╗ ██║██║  ███╗██║   ██║
+   ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║██║   ██║
+   ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝╚██████╔╝
+   ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝
+					]],
+					keys = {
+						{ icon = " ", key = "f", desc = "Find File", action = ":Telescope find_files" },
+						{ icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+						{ icon = " ", key = "g", desc = "Grep Text", action = ":Telescope live_grep" },
+						{ icon = " ", key = "r", desc = "Recent Files", action = ":Telescope oldfiles" },
+						{ icon = " ", key = "p", desc = "Projects", action = ":Telescope neovim-project discover" },
+						{ icon = " ", key = "c", desc = "Config", action = ":edit ~/.config/nvim/init.lua" },
+						{ icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy" },
+						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+					},
+				},
+				sections = {
+					{ section = "header" },
+					{ section = "keys", gap = 1, padding = 1 },
+					{ section = "startup" },
+				},
+			},
 			-- indent = {
 			--   enabled = true,
 			--   animate = false,
@@ -96,9 +124,34 @@ return {
 	-- },
 	{
 		"lewis6991/gitsigns.nvim",
-		config = function()
-			require("gitsigns").setup()
-		end,
+		event = { "BufReadPre", "BufNewFile" },
+		opts = {
+			on_attach = function(bufnr)
+				local gs = require("gitsigns")
+				local function map(mode, lhs, rhs, desc)
+					vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+				end
+
+				-- Navigation
+				map("n", "]h", function()
+					if vim.wo.diff then
+						vim.cmd.normal({ "]c", bang = true })
+					else
+						gs.nav_hunk("next")
+					end
+				end, "Next hunk")
+				map("n", "[h", function()
+					if vim.wo.diff then
+						vim.cmd.normal({ "[c", bang = true })
+					else
+						gs.nav_hunk("prev")
+					end
+				end, "Prev hunk")
+
+				-- Actions
+				map("n", "<leader>ghB", gs.toggle_current_line_blame, "[G]it inline [B]lame toggle")
+			end,
+		},
 	},
 	{
 		"stevearc/conform.nvim",
@@ -189,7 +242,7 @@ return {
 				},
 				ignore_focus = {},
 				always_divide_middle = true,
-				globalstatus = false,
+				globalstatus = true,
 				refresh = {
 					statusline = 1000,
 					tabline = 1000,
