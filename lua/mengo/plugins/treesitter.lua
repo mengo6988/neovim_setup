@@ -13,6 +13,7 @@ return {
 			require("nvim-treesitter").setup({})
 
 			-- Auto-install missing parsers on file open
+			local skip_ft = { oil = true, help = true, qf = true, lazy = true, mason = true, TelescopePrompt = true }
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function(args)
 					local buf = args.buf
@@ -21,9 +22,12 @@ return {
 						return
 					end
 					local ft = vim.bo[buf].filetype
+					if skip_ft[ft] then
+						return
+					end
 					local lang = vim.treesitter.language.get_lang(ft)
 					if lang and not pcall(vim.treesitter.language.inspect, lang) then
-						require("nvim-treesitter").install(lang)
+						pcall(require("nvim-treesitter").install, lang)
 					end
 				end,
 			})
