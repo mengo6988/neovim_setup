@@ -50,14 +50,14 @@ return {
 			})
 			require("mini.pairs").setup({})
 			require("mini.bracketed").setup({})
-			-- require("mini.operators").setup()
-			-- require("mini.splitjoin").setup({
-			--   mappings = {
-			--     toggle = '<leader>m',
-			--     split = '<leader>M',
-			--     join = '',
-			--   },
-			-- })
+			-- gx exchange, gs sort, g= evaluate, gm multiply.
+			-- replace disabled: gr belongs to LSP references; visual `p` already pastes without yanking.
+			-- builtin gx (open URL) is remapped to gX in remap.lua.
+			require("mini.operators").setup({
+				replace = { prefix = "" },
+			})
+			-- gS: toggle args/lists between single line and multiline
+			require("mini.splitjoin").setup({})
 		end,
 	},
 }

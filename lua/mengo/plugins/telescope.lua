@@ -9,7 +9,7 @@ return {
 		},
 
 		config = function()
-			local custom_cursor_theme = {
+			local cursor_theme = {
 				sorting_strategy = "ascending",
 				results_title = false,
 				layout_strategy = "cursor",
@@ -23,10 +23,22 @@ return {
 					preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
 				},
 			}
+			-- LSP pickers should never hide results, even in ignored dirs
+			local cursor_theme_no_ignore = vim.tbl_extend("force", cursor_theme, { file_ignore_patterns = {} })
 			require("telescope").setup({
 				defaults = {
 					sorting_strategy = "ascending",
-					hidden = true,
+					-- --hidden so dotfiles are searchable; .git/ stays out via file_ignore_patterns
+					vimgrep_arguments = {
+						"rg",
+						"--color=never",
+						"--no-heading",
+						"--with-filename",
+						"--line-number",
+						"--column",
+						"--smart-case",
+						"--hidden",
+					},
 					file_ignore_patterns = {
 						"node_modules/",
 						"public/",
@@ -50,118 +62,18 @@ return {
 					},
 				},
 				pickers = {
-					grep_string = {
-						sorting_strategy = "ascending",
-						results_title = false,
-						layout_strategy = "cursor",
-						layout_config = {
-							width = 200,
-							height = 21,
-						},
-						borderchars = {
-							prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-							results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-							preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-						},
-					},
-					lsp_definitions = {
-						file_ignore_patterns = {},
-						sorting_strategy = "ascending",
-						results_title = false,
-						layout_strategy = "cursor",
-						layout_config = {
-							width = 200,
-							height = 21,
-						},
-						borderchars = {
-							prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-							results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-							preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-						},
-					},
-					lsp_references = {
-						file_ignore_patterns = {},
-						sorting_strategy = "ascending",
-						results_title = false,
-						layout_strategy = "cursor",
-						layout_config = {
-							width = 200,
-							height = 21,
-						},
-						borderchars = {
-							prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-							results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-							preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-						},
-					},
-					lsp_implementations = {
-						file_ignore_patterns = {},
-						sorting_strategy = "ascending",
-						results_title = false,
-						layout_strategy = "cursor",
-						layout_config = {
-							width = 200,
-							height = 21,
-						},
-						borderchars = {
-							prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-							results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-							preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-						},
-					},
-					lsp_type_definitions = {
-						file_ignore_patterns = {},
-						sorting_strategy = "ascending",
-						results_title = false,
-						layout_strategy = "cursor",
-						layout_config = {
-							width = 200,
-							height = 21,
-						},
-						borderchars = {
-							prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-							results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-							preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-						},
-					},
-					lsp_dynamic_workspace_symbols = {
-						sorting_strategy = "ascending",
-						results_title = false,
-						layout_strategy = "cursor",
-						layout_config = {
-							width = 200,
-							height = 21,
-						},
-						borderchars = {
-							prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-							results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-							preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-						},
-					},
-					lsp_document_symbols = {
-						sorting_strategy = "ascending",
-						results_title = false,
-						layout_strategy = "cursor",
-						layout_config = {
-							width = 200,
-							height = 21,
-						},
-						borderchars = {
-							prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-							results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-							preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-						},
-					},
+					find_files = { hidden = true },
+					grep_string = cursor_theme,
+					lsp_definitions = cursor_theme_no_ignore,
+					lsp_references = cursor_theme_no_ignore,
+					lsp_implementations = cursor_theme_no_ignore,
+					lsp_type_definitions = cursor_theme_no_ignore,
+					lsp_dynamic_workspace_symbols = cursor_theme,
+					lsp_document_symbols = cursor_theme,
 				},
 				extensions = {
 					fzf = {},
-					-- media_files = {
-					--   -- filetypes whitelist
-					--   -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
-					--   filetypes = { "png", "webp", "jpg", "jpeg", "ico", "pdf" },
-					--   -- find command (defaults to `fd`)
-					--   find_cmd = "rg"
-					-- }
+					["ui-select"] = require("telescope.themes").get_dropdown({}),
 				},
 			})
 			require("telescope").load_extension("fzf")
@@ -206,43 +118,25 @@ return {
 				require("telescope").extensions.luasnip.luasnip()
 			end, { desc = "[S]earch [S]nippets" })
 
+			vim.keymap.set("n", "<leader>p.", builtin.resume, { desc = "Resume last picker" })
+			vim.keymap.set("n", "<leader>po", builtin.oldfiles, { desc = "Recent files" })
+			vim.keymap.set("n", "<leader>p/", builtin.current_buffer_fuzzy_find, { desc = "Fuzzy find in buffer" })
+			vim.keymap.set("n", "<leader>pk", builtin.keymaps, { desc = "Search keymaps" })
+			vim.keymap.set("v", "<leader>ps", function()
+				local text = table.concat(vim.fn.getregion(vim.fn.getpos("v"), vim.fn.getpos(".")), "\n")
+				builtin.grep_string({ search = text })
+			end, { desc = "Grep selection" })
+
 			require("mengo.telescope.multigrep").setup()
 		end,
 	},
 	{
+		-- theme + load_extension handled in the main telescope setup above;
+		-- a second telescope.setup() here would clobber the first
 		"nvim-telescope/telescope-ui-select.nvim",
 		dependencies = {
 			"nvim-telescope/telescope.nvim",
 		},
-		config = function()
-			-- This is your opts table
-			require("telescope").setup({
-				extensions = {
-					["ui-select"] = {
-						require("telescope.themes").get_dropdown({
-							-- even more opts
-						}),
-
-						-- pseudo code / specification for writing custom displays, like the one
-						-- for "codeactions"
-						-- specific_opts = {
-						--   [kind] = {
-						--     make_indexed = function(items) -> indexed_items, width,
-						--     make_displayer = function(widths) -> displayer
-						--     make_display = function(displayer) -> function(e)
-						--     make_ordinal = function(e) -> string
-						--   },
-						--   -- for example to disable the custom builtin "codeactions" display
-						--      do the following
-						--   codeactions = false,
-						-- }
-					},
-				},
-			})
-			-- To get ui-select loaded and working with telescope, you need to call
-			-- load_extension, somewhere after setup function:
-			require("telescope").load_extension("ui-select")
-		end,
 	},
 	{
 		"coffebar/neovim-project",

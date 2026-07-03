@@ -103,6 +103,10 @@ keymap("n", "<leader>c", ":close<CR>", { noremap = true, silent = true, desc = "
 
 -- Special Remaps
 keymap("n", "gV", "`[v`]", { noremap = true, desc = "Select last changed or yanked text" })
+-- mini.operators takes gx for exchange; builtin open-URL/file moves to gX
+keymap({ "n", "x" }, "gX", function()
+	vim.ui.open(vim.fn.expand("<cfile>"))
+end, { desc = "Open URL/file under cursor" })
 keymap("n", "yc", "yy<cmd>normal gcc<CR>p", { desc = "Copy paste and comment the line copied" })
 keymap("n", "<C-s><C-s>", ":.!sh<cr>", { noremap = true, desc = "Send current line to sh and REPLACE with the output" })
 keymap("i", "jk", "<Esc>", opts)
@@ -203,9 +207,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.diagnostic.open_float()
 		end, "[D]iagnostic Float")
 
-		-- Rename the variable under your cursor.
+		-- Rename the variable under your cursor with live preview (inc-rename).
 		--  Most Language Servers support renaming across files, etc.
-		map("<leader>vrn", vim.lsp.buf.rename, "[R]e[n]ame")
+		vim.keymap.set("n", "<leader>vrn", function()
+			return ":IncRename " .. vim.fn.expand("<cword>")
+		end, { buffer = event.buf, expr = true, desc = "LSP: [R]e[n]ame" })
 		map("<leader>vh", vim.lsp.buf.signature_help, "Signature [Help]")
 
 		-- Execute a code action, usually your cursor needs to be on top of an error
@@ -285,3 +291,21 @@ vim.keymap.set(
 	"<leader>srf",
 	":lua require('grug-far').open({ prefills = { paths = vim.fn.expand('%'), transient=true, engine='astgrep' } })<CR>"
 )
+
+-- ── Builtin command cheatsheet (reference, no maps needed) ──────────────────
+-- :g/pattern/norm A;           run normal-mode keys on every matching line
+-- :cdo s/foo/bar/g             edit every quickfix entry (telescope <C-q> sends to qf)
+-- :cfdo s/old/new/ge | update  project-wide replace via quickfix files
+-- :earlier 10m  /  :later 10m  time-travel undo by wall clock
+-- g<C-a>  (visual block)       increment as sequence: 0,0,0 -> 1,2,3
+-- gi                           insert mode at last insert position
+-- g; / g,                      jump back/forward through change list
+-- gv                           reselect last visual selection (gV = last change/yank)
+-- Q                            replay last recorded macro
+-- :=vim.o.ft                   lua-print anything (:= is :lua vim.print shorthand)
+-- :%!jq .                      filter buffer through any shell command
+-- <C-r>=  (insert mode)        expression register, e.g. <C-r>=strftime('%Y-%m-%d')
+-- :put =range(1,20)            generate number lines
+-- :sort u / :sort n            sort unique / numeric (works on visual range)
+-- :InspectTree / :EditQuery    builtin treesitter playground
+-- :restart                     restart nvim in place (0.12+)
