@@ -62,15 +62,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
-		vim.highlight.on_yank()
+		vim.hl.on_yank()
 	end,
 })
 
 vim.api.nvim_create_autocmd("TermOpen", {
 	group = vim.api.nvim_create_augroup("custom-term-open", { clear = true }),
 	callback = function()
-		vim.opt.number = false
-		vim.opt.relativenumber = false
+		-- opt_local: plain vim.opt here changes the global default for all new windows
+		vim.opt_local.number = false
+		vim.opt_local.relativenumber = false
 	end,
 })
 

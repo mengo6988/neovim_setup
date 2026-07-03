@@ -11,6 +11,7 @@ return {
 	},
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
+		ft = { "markdown" },
 		opts = {},
 		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
 		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
@@ -64,6 +65,8 @@ return {
 	},
 	{
 		"3rd/diagram.nvim",
+		-- ft trigger matters: eager load here drags image.nvim in at startup
+		ft = { "markdown", "norg", "typst" },
 		dependencies = {
 			"3rd/image.nvim",
 		},

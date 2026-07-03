@@ -8,6 +8,72 @@ return {
 			"nvim-neotest/nvim-nio",
 			"mason-org/mason.nvim",
 		},
+		-- lazy-load on first debug key; saves ~15ms of dap/dapui/nio at startup
+		keys = {
+			{
+				"<leader>b",
+				function()
+					require("dap").toggle_breakpoint()
+				end,
+				desc = "DAP toggle breakpoint",
+			},
+			{
+				"<leader>gb",
+				function()
+					require("dap").run_to_cursor()
+				end,
+				desc = "DAP run to cursor",
+			},
+			{
+				"<leader>?",
+				function()
+					require("dapui").eval(nil, { enter = true })
+				end,
+				desc = "DAP eval under cursor",
+			},
+			{
+				"<F5>",
+				function()
+					require("dap").continue()
+				end,
+				desc = "DAP continue",
+			},
+			{
+				"<F6>",
+				function()
+					require("dap").step_into()
+				end,
+				desc = "DAP step into",
+			},
+			{
+				"<F7>",
+				function()
+					require("dap").step_over()
+				end,
+				desc = "DAP step over",
+			},
+			{
+				"<F8>",
+				function()
+					require("dap").step_out()
+				end,
+				desc = "DAP step out",
+			},
+			{
+				"<F9>",
+				function()
+					require("dap").step_back()
+				end,
+				desc = "DAP step back",
+			},
+			{
+				"<F10>",
+				function()
+					require("dap").restart()
+				end,
+				desc = "DAP restart",
+			},
+		},
 		config = function()
 			local dap = require("dap")
 			local ui = require("dapui")
@@ -152,20 +218,7 @@ return {
 				}
 			end
 
-			vim.keymap.set("n", "<space>b", dap.toggle_breakpoint)
-			vim.keymap.set("n", "<space>gb", dap.run_to_cursor)
-
-			-- Eval var under cursor
-			vim.keymap.set("n", "<space>?", function()
-				require("dapui").eval(nil, { enter = true })
-			end)
-
-			vim.keymap.set("n", "<F5>", dap.continue)
-			vim.keymap.set("n", "<F6>", dap.step_into)
-			vim.keymap.set("n", "<F7>", dap.step_over)
-			vim.keymap.set("n", "<F8>", dap.step_out)
-			vim.keymap.set("n", "<F9>", dap.step_back)
-			vim.keymap.set("n", "<F10>", dap.restart)
+			-- keymaps live in the `keys` spec above (they lazy-load the plugin)
 
 			dap.listeners.before.attach.dapui_config = function()
 				ui.open()
