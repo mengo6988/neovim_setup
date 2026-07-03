@@ -12,6 +12,12 @@ return {
 		config = function()
 			require("nvim-treesitter").setup({})
 
+			-- Neovim has no builtin .prisma filetype detection
+			vim.filetype.add({ extension = { prisma = "prisma" } })
+
+			-- No jsonc parser on the main branch; the json parser handles it
+			vim.treesitter.language.register("json", "jsonc")
+
 			-- Auto-install missing parsers on file open
 			local skip_ft = { oil = true, help = true, qf = true, lazy = true, mason = true, TelescopePrompt = true }
 			vim.api.nvim_create_autocmd("FileType", {
@@ -43,7 +49,6 @@ return {
 				"javascript",
 				"typescript",
 				"tsx",
-				"jsx",
 				"prisma",
 				"solidity",
 				"bash",
@@ -66,7 +71,6 @@ return {
 				"dockerfile",
 				"make",
 				"regex",
-				"jsonc",
 				"gitcommit",
 				"git_rebase",
 				"diff",
@@ -92,6 +96,13 @@ return {
 					vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 				end,
 			})
+
+			-- Catch buffers already open before this config ran (startup file / :Lazy reload)
+			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+				if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].filetype ~= "" then
+					vim.api.nvim_exec_autocmds("FileType", { buffer = buf })
+				end
+			end
 		end,
 	},
 	{
@@ -113,54 +124,6 @@ return {
 			})
 		end,
 	},
-	-- {
-	--   "nvim-treesitter/nvim-treesitter-textobjects",
-	--   config = function()
-	--     require("nvim-treesitter.configs").setup({
-	--       textobjects = {
-	--         select = {
-	--           enable = true,
-	--
-	--           -- Automatically jump forward to textobj, similar to targets.vim
-	--           lookahead = true,
-	--
-	--           keymaps = {
-	--             -- You can use the capture groups defined in textobjects.scm
-	--             ["a="] = { query = "@assignment.outer", desc = "Select outer part of an assignment" },
-	--             ["i="] = { query = "@assignment.inner", desc = "Select inner part of an assignment" },
-	--             ["=l"] = { query = "@assignment.lhs", desc = "Select left hand side of an assignment" },
-	--             ["=r"] = { query = "@assignment.rhs", desc = "Select right hand side of an assignment" },
-	--
-	--             ["aa"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
-	--             ["ia"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/argument" },
-	--
-	--             ["ai"] = { query = "@conditional.outer", desc = "Select outer part of a conditional" },
-	--             ["ii"] = { query = "@conditional.inner", desc = "Select inner part of a conditional" },
-	--
-	--             ["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
-	--             ["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
-	--
-	--             ["af"] = { query = "@function.outer", desc = "Select outer part of a method/function definition" },
-	--             ["if"] = { query = "@function.inner", desc = "Select inner part of a method/function definition" },
-	--
-	--             ["ac"] = { query = "@class.outer", desc = "Select outer part of a class" },
-	--             ["ic"] = { query = "@class.inner", desc = "Select inner part of a class" },
-	--           },
-	--         },
-	--         swap = {
-	--           enable = true,
-	--           swap_next = {
-	--             ["<leader>na"] = "@parameter.inner", -- swap parameters/argument with next
-	--           },
-	--           swap_previous = {
-	--             ["<leader>pa"] = "@parameter.inner", -- swap parameters/argument with prev
-	--           },
-	--         },
-	--
-	--       }
-	--     })
-	--   end
-	-- },
 	{
 		"Wansmer/treesj",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },

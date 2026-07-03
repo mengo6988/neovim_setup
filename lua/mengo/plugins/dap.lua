@@ -6,7 +6,7 @@ return {
 			"rcarriga/nvim-dap-ui",
 			"theHamsta/nvim-dap-virtual-text",
 			"nvim-neotest/nvim-nio",
-			"williamboman/mason.nvim",
+			"mason-org/mason.nvim",
 		},
 		config = function()
 			local dap = require("dap")
@@ -46,7 +46,6 @@ return {
 				},
 			}
 			dap.configurations.c = dap.configurations.cpp
-			dap.configurations.rust = dap.configurations.cpp
 			dap.configurations.rust = {
 				{
 					name = "Launch",

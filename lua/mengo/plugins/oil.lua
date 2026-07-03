@@ -60,6 +60,7 @@ return {
 			["g?"] = "actions.show_help",
 			["<CR>"] = "actions.select",
 			["<C-h>"] = false,
+			["<C-l>"] = false, -- refresh lives on <C-r>; keep <C-l> for window/tmux navigation
 			["<C-s>"] = false,
 			["<C-t>"] = "actions.select_tab",
 			["<C-p>"] = "actions.preview",

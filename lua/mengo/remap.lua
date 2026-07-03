@@ -22,9 +22,22 @@ vim.g.maplocalleader = "\\"
 keymap("n", "-", "<cmd>Oil<CR>")
 keymap("n", "<Esc>", "<cmd>nohlsearch<CR>")
 keymap("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
-keymap("n", "<leader>bd", "<cmd>:Bdelete<CR>")
-keymap("n", "<leader>bo", ":%bd|e#|bd#<CR>", { noremap = true, silent = true, desc = "Close other buffers" })
-keymap("n", "<leader>ibl", "<cmd>:IBLToggle<CR>", { desc = "Indent Blank Line toggle" })
+keymap("n", "<leader>bd", function()
+	Snacks.bufdelete()
+end, { desc = "Delete buffer" })
+keymap("n", "<leader>bo", function()
+	Snacks.bufdelete.other()
+end, { desc = "Close other buffers" })
+keymap("n", "<leader>ibl", function()
+	if Snacks.indent.enabled then
+		Snacks.indent.disable()
+	else
+		Snacks.indent.enable()
+	end
+end, { desc = "Indent guides toggle" })
+keymap("n", "<leader>z", function()
+	Snacks.zen()
+end, { desc = "Zen mode" })
 keymap("n", "<leader>f", "<cmd>:Format<CR>", { desc = "Format" })
 keymap("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 keymap("n", "<leader>db", "<CMD>DBUIToggle<CR>", { desc = "[D][B]UI Toggle" })
@@ -62,27 +75,12 @@ keymap("n", "<leader>st", function()
 
 	vim.g.last_term_job_id = vim.bo.channel
 end)
--- Testing here, Idk what to put yet, but maybe can have a complicated one to use, suggestion (send highlighted command into terminal)
-keymap("n", "<leader>example", function()
-	if vim.g.last_term_job_id then
-		vim.fn.chansend(vim.g.last_term_job_id, { 'echo "hello"\r\n' })
-	else
-		vim.notify("No terminal job — open one with <leader>st first", vim.log.levels.WARN)
-	end
-end)
-
 -- Save quit etc
+-- <leader>w kept prefix-free so saving is instant (no timeoutlen wait)
 keymap("n", "<leader>w", ":w!<CR>", opts)
-keymap("n", "<leader>wf", "<cmd>FormatEnable<CR><cmd>w<cr><cmd>FormatDisable<CR>", opts)
+keymap("n", "<leader>W", "<cmd>FormatEnable<CR><cmd>w<cr><cmd>FormatDisable<CR>", { desc = "Write with format" })
 keymap("n", "<leader>x", ":x!<CR>", opts)
 keymap("n", "<leader>q", ":q!<CR>", opts)
-keymap("n", "<leader>wq", ":wq!<CR>", opts)
-
--- Better window navigation
-keymap("n", "<leader>h", "<C-w>h", opts)
-keymap("n", "<leader>j", "<C-w>j", opts)
-keymap("n", "<leader>k", "<C-w>k", opts)
-keymap("n", "<leader>l", "<C-w>l", opts)
 
 -- keymap("n", "]c", "<cmd>cnext<CR>", { desc = "[C]uikfix Next" })
 -- keymap("n", "[c", "<cmd>cprev<CR>", { desc = "[C]uikfix Prev" })
@@ -93,9 +91,9 @@ keymap("n", "[q", "<cmd>cprev<CR>zz", { desc = "Quickfix prev" })
 keymap("n", "<leader>qo", "<cmd>copen<CR>", { desc = "[Q]uickfix [O]pen" })
 keymap("n", "<leader>qc", "<cmd>cclose<CR>", { desc = "[Q]uickfix [C]lose" })
 
--- Swap window layout
-keymap("n", "<leader>wh", "<C-w>t<C-w>H", { noremap = true, silent = true, desc = "Swap to vertical layout" })
-keymap("n", "<leader>wk", "<C-w>t<C-w>K", { noremap = true, silent = true, desc = "Swap to horizontal layout" })
+-- Swap window layout (mnemonic: <C-w>H / <C-w>K)
+keymap("n", "<leader>H", "<C-w>t<C-w>H", { noremap = true, silent = true, desc = "Swap to vertical layout" })
+keymap("n", "<leader>K", "<C-w>t<C-w>K", { noremap = true, silent = true, desc = "Swap to horizontal layout" })
 
 -- Vertical Splits
 keymap("n", "<leader>v", ":vsplit<CR>", opts)
@@ -155,6 +153,13 @@ keymap("x", "J", ":m '>+1<CR>gv=gv", opts)
 keymap("x", "K", ":m '<-2<CR>gv=gv", opts)
 keymap("x", "<M-j>", ":m '>+1<CR>gv=gv", opts)
 keymap("x", "<M-k>", ":m '<-2<CR>gv=gv", opts)
+
+-- Toggle diagnostic virtual text (off by default in lsp.lua)
+keymap("n", "<leader>vt", function()
+	local on = vim.diagnostic.config().virtual_text
+	vim.diagnostic.config({ virtual_text = not on })
+	vim.notify("diagnostic virtual_text " .. (on and "OFF" or "ON"))
+end, { desc = "Toggle diagnostic [V]irtual [T]ext" })
 
 -- LSP attach for lsp commands
 
@@ -223,10 +228,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		-- Diagnostic navigation
 		map("[d", function()
-			vim.diagnostic.jump({ count = -1 })
+			vim.diagnostic.jump({ count = -1, float = true })
 		end, "Previous [D]iagnostic")
 		map("]d", function()
-			vim.diagnostic.jump({ count = 1 })
+			vim.diagnostic.jump({ count = 1, float = true })
 		end, "Next [D]iagnostic")
 
 		-- Inlay hints
@@ -246,19 +251,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 	end,
 })
-
--- Refactor nvim remaps
--- vim.keymap.set("x", "<leader>re", ":Refactor extract ")
--- vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ")
---
--- vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ")
---
--- vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var")
---
--- vim.keymap.set("n", "<leader>rI", ":Refactor inline_func")
---
--- vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
--- vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
 
 -- Yank with path
 local yank = require("mengo.yank")
@@ -285,13 +277,6 @@ end, { desc = "[Y]ank selection with [R]elative path" })
 
 vim.keymap.set("n", "<leader>pp", ":Telescope neovim-project discover<CR>")
 vim.keymap.set("n", "<leader>pph", ":Telescope neovim-project history<CR>")
--- vim.keymap.set("n", "<leader>g", ":Git<CR>")
--- vim.keymap.set("n", "<leader>gc", ":Git commit<CR>")
--- vim.keymap.set("n", "<leader>gp", ":Git push<CR>")
--- vim.keymap.set("n", "<leader>gu", ":Git pull<CR>")
--- vim.keymap.set("n", "<leader>gd", ":Gvdiffsplit!<CR>")
--- vim.keymap.set("n", "<leader>gdh", ":diffget //2<CR>")
--- vim.keymap.set("n", "<leader>gdl", ":diffget //3<CR>")
 
 vim.keymap.set("n", "<leader>sc", "<cmd>Scratch<cr>")
 vim.keymap.set("n", "<leader>sco", "<cmd>ScratchOpen<cr>")

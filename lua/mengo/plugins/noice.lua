@@ -23,24 +23,7 @@ return {
 		},
 	},
 	dependencies = {
-		-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+		-- notifications rendered by snacks.notifier (replaces nvim-notify)
 		"MunifTanjim/nui.nvim",
-		-- OPTIONAL:
-		--   `nvim-notify` is only needed, if you want to use the notification view.
-		--   If not available, we use `mini` as the fallback
-		{
-			"rcarriga/nvim-notify",
-			opts = {
-
-				background_colour = "#1e1e2e", -- Catppuccin Mocha base color
-				merge_duplicates = true,
-			},
-			-- config = function()
-			--   require("notify").setup({
-			--     background_colour = "#1e1e2e", -- Catppuccin Mocha base color
-			--     merge_duplicates = true,
-			--   })
-			-- end,
-		},
 	},
 }

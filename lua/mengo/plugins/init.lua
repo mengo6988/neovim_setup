@@ -5,6 +5,10 @@ return {
 		priority = 1000,
 		opts = {
 			lazygit = { enabled = true },
+			bufdelete = { enabled = true },
+			indent = { enabled = true, animate = { enabled = false } },
+			notifier = { enabled = true },
+			zen = { enabled = true },
 			dashboard = {
 				enabled = true,
 				preset = {
@@ -33,10 +37,6 @@ return {
 					{ section = "startup" },
 				},
 			},
-			-- indent = {
-			--   enabled = true,
-			--   animate = false,
-			-- },
 		},
 		keys = {
 			{
@@ -115,13 +115,6 @@ return {
 		"nvim-lua/plenary.nvim",
 		name = "plenary",
 	},
-	-- git
-	-- "tpope/vim-fugitive", -- using snacks lazygit instead
-	-- {
-	--   'windwp/nvim-autopairs',
-	--   event = "InsertEnter",
-	--   opts = {} -- this is equalent to setup({}) function
-	-- },
 	{
 		"lewis6991/gitsigns.nvim",
 		event = { "BufReadPre", "BufNewFile" },
@@ -149,6 +142,15 @@ return {
 				end, "Prev hunk")
 
 				-- Actions
+				map("n", "<leader>ghs", gs.stage_hunk, "[G]it [H]unk [S]tage (again to unstage)")
+				map("n", "<leader>ghr", gs.reset_hunk, "[G]it [H]unk [R]eset")
+				map("v", "<leader>ghs", function()
+					gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+				end, "[G]it [H]unk [S]tage selection")
+				map("v", "<leader>ghr", function()
+					gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+				end, "[G]it [H]unk [R]eset selection")
+				map("n", "<leader>ghp", gs.preview_hunk, "[G]it [H]unk [P]review")
 				map("n", "<leader>ghB", gs.toggle_current_line_blame, "[G]it inline [B]lame toggle")
 			end,
 		},
@@ -217,11 +219,6 @@ return {
 				require("conform").format({ async = true, lsp_format = "fallback", range = range })
 			end, { range = true })
 		end,
-	},
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		opts = {},
 	},
 	{ "HiPhish/rainbow-delimiters.nvim" },
 	{
@@ -306,42 +303,9 @@ return {
 			{ "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
 		},
 	},
-	-- {
-	-- 	"giusgad/pets.nvim",
-	-- 	dependencies = { "MunifTanjim/nui.nvim", "giusgad/hologram.nvim" },
-	-- 	config = function()
-	-- 		require("pets").setup({
-	-- 		row = 1,            -- the row (height) to display the pet at (higher row means the pet is lower on the screen), must be 1<=row<=10
-	-- 		col = 0,            -- the column to display the pet at (set to high number to have it stay still on the right side)
-	-- 		speed_multiplier = 1, -- you can make your pet move faster/slower. If slower the animation will have lower fps.
-	-- 		default_pet = "dog", -- the pet to use for the PetNew command
-	-- 		default_style = "brown", -- the style of the pet to use for the PetNew command
-	-- 		random = true,      -- whether to use a random pet for the PetNew command, overrides default_pet and default_style
-	-- 		death_animation = true, -- animate the pet's death, set to false to feel less guilt -- currently no animations are available
-	-- 		popup = {           -- popup options, try changing these if you see a rectangle around the pets
-	-- 			width = "30%",  -- can be a string with percentage like "45%" or a number of columns like 45
-	-- 			winblend = 100, -- winblend value - see :h 'winblend' - only used if avoid_statusline is false
-	-- 			hl = { Normal = "Normal" }, -- hl is only set if avoid_statusline is true, you can put any hl group instead of "Normal"
-	-- 			avoid_statusline = false, -- if winblend is 100 then the popup is invisible and covers the statusline, if that
-	-- 			-- doesn't work for you then set this to true and the popup will use hl and will be spawned above the statusline (hopefully)
-	-- 		}
-	-- 	})
-	-- 	end
-	--
-	-- }
 	{
 		"mg979/vim-visual-multi",
 	},
-	-- {
-	--   "kylechui/nvim-surround",
-	--   version = "*", -- Use for stability; omit to use `main` branch for the latest features
-	--   event = "VeryLazy",
-	--   config = function()
-	--     require("nvim-surround").setup({
-	--       -- Configuration here, or leave empty to use defaults
-	--     })
-	--   end
-	-- },
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
@@ -356,28 +320,6 @@ return {
       { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
 	},
-	-- {
-	--   'ggandor/leap.nvim',
-	--   dependencies = { 'tpope/vim-repeat' },
-	--   config = function()
-	--     require('leap').create_default_mappings()
-	--     local leap = require('leap')
-	--     leap.opts.case_sensitive = false
-	--     leap.opts.equivalence_classes = { ' \t\r\n', }
-	--     leap.opts.max_phase_one_targets = nil
-	--     leap.opts.highlight_unlabeled_phase_one_targets = false
-	--     leap.opts.max_highlighted_traversal_targets = 10
-	--     leap.opts.substitute_chars = {}
-	--     leap.opts.safe_labels = 'sfnut/SFNLHMUGTZ?'
-	--     leap.opts.labels = 'sfnjklhodweimbuyvrgtaqpcxz/SFNJKLHODWEIMBUYVRGTAQPCXZ?'
-	--     leap.opts.special_keys = {
-	--       next_target = '<enter>',
-	--       prev_target = '<tab>',
-	--       next_group = '<space>',
-	--       prev_group = '<tab>',
-	--     }
-	--   end
-	-- },
 	{
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -476,8 +418,9 @@ return {
 			picker = nil, -- Picker to use for opening files. 3 choices are available: 'telescope', 'fzf-lua', 'mini.pick'. If nil, the plugin look for the first available picker when you call the `pick` command.
 		},
 	},
-	-- { 'wakatime/vim-wakatime',            lazy = false },
 	{ "dmmulroy/ts-error-translator.nvim" },
+	-- context-aware commentstring for gcc in jsx/tsx (native {/* */} inside JSX)
+	{ "folke/ts-comments.nvim", event = "VeryLazy", opts = {} },
 	{
 		"nacro90/numb.nvim",
 		config = function()

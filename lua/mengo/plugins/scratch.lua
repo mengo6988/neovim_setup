@@ -21,7 +21,7 @@ return {
 				},
 				["yaml"] = {},
 				go = {
-					requireDir = true, -- true if each scratch file requires a new directory
+					subdir = true, -- each scratch file gets its own directory (was requireDir, deprecated)
 					filename = "main", -- the filename of the scratch file in the new directory
 					content = { "package main", "", "func main() {", "  ", "}" },
 					cursor = {

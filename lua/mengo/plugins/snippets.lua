@@ -5,7 +5,28 @@ return {
 	dependencies = { "rafamadriz/friendly-snippets" },
 	config = function()
 		local ls = require("luasnip")
+		ls.config.set_config({
+			history = false,
+			update_events = "TextChanged,TextChangedI",
+		})
 		require("luasnip.loaders.from_vscode").lazy_load()
+
+		-- Load any extra snippet files from lua/custom/snippets/
+		for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/custom/snippets/*.lua", true)) do
+			loadfile(ft_path)()
+		end
+
+		vim.keymap.set({ "i", "s" }, "<c-j>", function()
+			if ls.expand_or_jumpable() then
+				ls.expand_or_jump()
+			end
+		end, { silent = true })
+
+		vim.keymap.set({ "i", "s" }, "<c-k>", function()
+			if ls.jumpable(-1) then
+				ls.jump(-1)
+			end
+		end, { silent = true })
 
 		local s = ls.s
 		local t = ls.text_node

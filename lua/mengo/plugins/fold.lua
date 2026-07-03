@@ -2,6 +2,13 @@ return {
 	"kevinhwang91/nvim-ufo",
 	dependencies = "kevinhwang91/promise-async",
 	config = function()
+		-- plain zR/zM reset 'foldlevel' and break ufo's state; use ufo's versions
+		vim.keymap.set("n", "zR", function()
+			require("ufo").openAllFolds()
+		end, { desc = "Open all folds" })
+		vim.keymap.set("n", "zM", function()
+			require("ufo").closeAllFolds()
+		end, { desc = "Close all folds" })
 		require("ufo").setup({
 			provider_selector = function(bufnr, filetype, buftype)
 				return { "treesitter", "indent" }

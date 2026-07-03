@@ -1,5 +1,5 @@
 return {
-	"epwalsh/obsidian.nvim",
+	"obsidian-nvim/obsidian.nvim", -- maintained community fork (epwalsh/obsidian.nvim is archived)
 	version = "*", -- recommended, use latest release instead of latest commit
 	lazy = true,
 	ft = "markdown",
