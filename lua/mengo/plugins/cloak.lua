@@ -1,6 +1,6 @@
 return {
 	"laytan/cloak.nvim",
-	config = function()
-		local cloak = require("cloak").setup({})
-	end,
+	-- load before .env & co render so secrets never flash on screen
+	event = { "BufReadPre", "BufNewFile" },
+	opts = {},
 }

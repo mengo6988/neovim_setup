@@ -1,7 +1,8 @@
 return {
 	"mistricky/codesnap.nvim",
 	version = "^1",
-	lazy = true,
+	-- bare `lazy = true` had no trigger; commands didn't exist until manually required
+	cmd = { "CodeSnap", "CodeSnapSave", "CodeSnapHighlight", "CodeSnapSaveHighlight" },
 	config = function()
 		require("codesnap").setup({
 			mac_window_bar = false,

@@ -418,7 +418,8 @@ return {
 			picker = nil, -- Picker to use for opening files. 3 choices are available: 'telescope', 'fzf-lua', 'mini.pick'. If nil, the plugin look for the first available picker when you call the `pick` command.
 		},
 	},
-	{ "dmmulroy/ts-error-translator.nvim" },
+	-- opts = {} required: without it lazy never calls setup() and the plugin does nothing
+	{ "dmmulroy/ts-error-translator.nvim", opts = {} },
 	-- context-aware commentstring for gcc in jsx/tsx (native {/* */} inside JSX)
 	{ "folke/ts-comments.nvim", event = "VeryLazy", opts = {} },
 	{

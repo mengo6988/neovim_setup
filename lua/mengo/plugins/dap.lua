@@ -18,7 +18,8 @@ return {
 				desc = "DAP toggle breakpoint",
 			},
 			{
-				"<leader>gb",
+				-- <leader>gb belongs to snacks git_branches; this stub was silently overwritten
+				"<leader>dr",
 				function()
 					require("dap").run_to_cursor()
 				end,
