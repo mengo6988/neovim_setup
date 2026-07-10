@@ -17,7 +17,7 @@ return {
 					css = true,
 					-- lsp = false: no tailwindcss language server installed, so lsp mode
 					-- never produced colors; regex matching works without it
-					tailwind = { enable = true, lsp = false },
+					tailwind = { enable = true, lsp = true },
 				},
 				display = {
 					mode = "foreground",
