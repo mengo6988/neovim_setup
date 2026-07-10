@@ -185,28 +185,29 @@ return {
 				},
 			})
 
-			-- Foundry vs Hardhat settings, detected from the project root
-			local sol_root = vim.fs.root(
-				vim.fn.getcwd(),
-				{ "foundry.toml", "hardhat.config.js", "hardhat.config.ts", "remappings.txt" }
-			) or vim.fn.getcwd()
-			local is_foundry = vim.fn.filereadable(sol_root .. "/foundry.toml") == 1
-				or vim.fn.filereadable(sol_root .. "/remappings.txt") == 1
+			-- Foundry vs Hardhat settings, detected per-project at server start.
+			-- before_init (not a startup-time computation) so :cd-ing between
+			-- foundry/hardhat projects in one session picks the right settings.
 			vim.lsp.config("solidity_ls_nomicfoundation", {
-				settings = is_foundry
-						and {
-							noHardHat = true,
+				before_init = function(_, config)
+					local root = config.root_dir or vim.fn.getcwd()
+					local is_foundry = vim.fn.filereadable(root .. "/foundry.toml") == 1
+						or vim.fn.filereadable(root .. "/remappings.txt") == 1
+					config.settings = is_foundry
+							and {
+								noHardHat = true,
+								solidity = {
+									packageDefaultDependenciesDirectory = "lib",
+									formatter = "forge fmt",
+								},
+							}
+						or {
 							solidity = {
-								packageDefaultDependenciesDirectory = "lib",
-								formatter = "forge fmt",
+								includePath = "",
+								remapping = {},
 							},
 						}
-					or {
-						solidity = {
-							includePath = "",
-							remapping = {},
-						},
-					},
+				end,
 			})
 
 			require("mason").setup()

@@ -34,6 +34,11 @@ local options = {
 	foldenable = true,
 	concealcursor = "nc", -- keep markdown conceal in normal/command mode
 
+	smoothscroll = true, -- scroll by screen line through wrapped lines instead of jumping
+	confirm = true, -- ask instead of erroring (E37) when :q/:bd with unsaved changes
+	list = true, -- show invisible characters per listchars below
+	listchars = { tab = "» ", trail = "·", nbsp = "␣" },
+
 	signcolumn = "yes", -- always show the sign column, otherwise it would shift the text each time
 	wrap = true, -- display lines as one long line
 	linebreak = true, -- companion to wrap, don't split words
@@ -66,12 +71,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("TermOpen", {
-	group = vim.api.nvim_create_augroup("custom-term-open", { clear = true }),
+-- (terminal number/relativenumber handling removed: builtin nvim.terminal
+-- TermOpen autocmd already does this since 0.10)
+
+-- Pick up files changed outside nvim (autoread only fires on these events)
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+	group = vim.api.nvim_create_augroup("checktime-on-focus", { clear = true }),
 	callback = function()
-		-- opt_local: plain vim.opt here changes the global default for all new windows
-		vim.opt_local.number = false
-		vim.opt_local.relativenumber = false
+		if vim.o.buftype ~= "nofile" then
+			vim.cmd("checktime")
+		end
 	end,
 })
 

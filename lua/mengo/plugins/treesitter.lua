@@ -18,9 +18,13 @@ return {
 			-- No jsonc parser on the main branch; the json parser handles it
 			vim.treesitter.language.register("json", "jsonc")
 
+			-- augroup so :Lazy reload replaces these autocmds instead of stacking duplicates
+			local group = vim.api.nvim_create_augroup("mengo-treesitter", { clear = true })
+
 			-- Auto-install missing parsers on file open
 			local skip_ft = { oil = true, help = true, qf = true, lazy = true, mason = true, TelescopePrompt = true }
 			vim.api.nvim_create_autocmd("FileType", {
+				group = group,
 				callback = function(args)
 					local buf = args.buf
 					-- Skip special/plugin buffers
@@ -78,6 +82,7 @@ return {
 
 			-- Enable treesitter highlighting and indentation for all filetypes
 			vim.api.nvim_create_autocmd("FileType", {
+				group = group,
 				callback = function(args)
 					local buf = args.buf
 					-- Skip oil buffers

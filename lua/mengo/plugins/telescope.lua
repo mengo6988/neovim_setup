@@ -98,12 +98,11 @@ return {
 				builtin.grep_string({ search = vim.fn.input("Grep > ") })
 			end)
 
-			vim.keymap.set(
-				"n",
-				"<leader>pr",
-				require("telescope").extensions.flutter.commands,
-				{ desc = "Open command Flutter" }
-			)
+			-- deferred: indexing extensions.flutter at setup time force-loads
+			-- flutter-tools.nvim at startup, defeating its ft = "dart" lazy trigger
+			vim.keymap.set("n", "<leader>pr", function()
+				require("telescope").extensions.flutter.commands()
+			end, { desc = "Open command Flutter" })
 
 			-- Shortcut for searching your Neovim configuration files
 			vim.keymap.set("n", "<leader>psn", function()

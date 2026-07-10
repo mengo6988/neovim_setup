@@ -10,7 +10,6 @@ return {
 		require("scratch").setup({
 			scratch_file_dir = vim.fn.stdpath("cache") .. "/scratch.nvim", -- where your scratch files will be put
 			window_cmd = "rightbelow vsplit", -- 'vsplit' | 'split' | 'edit' | 'tabedit' | 'rightbelow vsplit'
-			use_telescope = true,
 			-- fzf-lua is recommanded, since it will order the files by modification datetime desc. (require rg)
 			file_picker = "fzflua", -- "fzflua" | "telescope" | nil
 			filetypes = { "lua", "js", "sh", "ts", "py" }, -- you can simply put filetype here
@@ -30,18 +29,8 @@ return {
 					},
 				},
 			},
-			localKeys = {
-				{
-					filenameContains = { "sh" },
-					LocalKeys = {
-						{
-							cmd = "<CMD>RunShellCurrentLine<CR>",
-							key = "<C-r>",
-							modes = { "n", "i", "v" },
-						},
-					},
-				},
-			},
+			-- localKeys removed: it bound <C-r> to :RunShellCurrentLine, a command
+			-- that doesn't exist anywhere (E492 on press)
 			hooks = {
 				{
 					callback = function()

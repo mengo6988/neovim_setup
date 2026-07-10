@@ -149,28 +149,30 @@ return {
 					-- ...,
 				},
 			}
-			dap.configurations.java = {
-				{
-					name = "Debug Launch (2GB)",
-					type = "java",
-					request = "launch",
-					vmArgs = "" .. "-Xmx2g ",
-				},
-				{
-					name = "Debug Attach (8000)",
-					type = "java",
-					request = "attach",
-					hostName = "127.0.0.1",
-					port = 8000,
-				},
-				{
-					name = "Debug Attach (5005)",
-					type = "java",
-					request = "attach",
-					hostName = "127.0.0.1",
-					port = 5005,
-				},
-			}
+			-- Commented out: the "java" adapter was never registered (nvim-java spec is
+			-- disabled in java.lua), so these configs always failed with "adapter not found".
+			-- dap.configurations.java = {
+			-- 	{
+			-- 		name = "Debug Launch (2GB)",
+			-- 		type = "java",
+			-- 		request = "launch",
+			-- 		vmArgs = "" .. "-Xmx2g ",
+			-- 	},
+			-- 	{
+			-- 		name = "Debug Attach (8000)",
+			-- 		type = "java",
+			-- 		request = "attach",
+			-- 		hostName = "127.0.0.1",
+			-- 		port = 8000,
+			-- 	},
+			-- 	{
+			-- 		name = "Debug Attach (5005)",
+			-- 		type = "java",
+			-- 		request = "attach",
+			-- 		hostName = "127.0.0.1",
+			-- 		port = 5005,
+			-- 	},
+			-- }
 			require("nvim-dap-virtual-text").setup({
 				-- This just tries to mitigate the chance that I leak tokens here. Probably won't stop it from happening...
 				-- display_callback = function(variable)

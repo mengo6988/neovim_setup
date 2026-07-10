@@ -159,10 +159,17 @@ keymap("x", "<M-j>", ":m '>+1<CR>gv=gv", opts)
 keymap("x", "<M-k>", ":m '<-2<CR>gv=gv", opts)
 
 -- Toggle diagnostic virtual text (off by default in lsp.lua)
+local saved_virtual_text -- preserves a table config across toggles instead of collapsing it to a boolean
 keymap("n", "<leader>vt", function()
-	local on = vim.diagnostic.config().virtual_text
-	vim.diagnostic.config({ virtual_text = not on })
-	vim.notify("diagnostic virtual_text " .. (on and "OFF" or "ON"))
+	local cur = vim.diagnostic.config().virtual_text
+	if cur then
+		saved_virtual_text = cur
+		vim.diagnostic.config({ virtual_text = false })
+		vim.notify("diagnostic virtual_text OFF")
+	else
+		vim.diagnostic.config({ virtual_text = saved_virtual_text or true })
+		vim.notify("diagnostic virtual_text ON")
+	end
 end, { desc = "Toggle diagnostic [V]irtual [T]ext" })
 
 -- LSP attach for lsp commands

@@ -10,6 +10,9 @@ return {
 		"DBUIAddConnection",
 		"DBUIFindBuffer",
 	},
+	-- ft trigger matters: without it, opening a .sql file directly leaves the plugin
+	-- (and its <leader>S map) unloaded, so <leader>se fell through to visual S = delete
+	ft = { "sql", "mysql", "plsql" },
 	init = function()
 		-- Your DBUI configuration
 		vim.g.db_ui_use_nerd_fonts = 1

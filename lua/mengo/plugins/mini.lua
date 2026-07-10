@@ -13,6 +13,9 @@ return {
 		},
 		version = false,
 		config = function()
+			-- render-markdown's mini icon provider checks _G.MiniIcons; without this
+			-- setup call it silently fell back to devicons/no icons
+			require("mini.icons").setup()
 			require("mini.surround").setup({
 				highlight_duration = 500,
 				mappings = {

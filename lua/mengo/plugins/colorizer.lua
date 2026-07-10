@@ -15,7 +15,9 @@ return {
 			options = {
 				parsers = {
 					css = true,
-					tailwind = { enable = true, lsp = true },
+					-- lsp = false: no tailwindcss language server installed, so lsp mode
+					-- never produced colors; regex matching works without it
+					tailwind = { enable = true, lsp = false },
 				},
 				display = {
 					mode = "foreground",

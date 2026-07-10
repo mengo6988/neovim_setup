@@ -11,11 +11,6 @@ return {
 		})
 		require("luasnip.loaders.from_vscode").lazy_load()
 
-		-- Load any extra snippet files from lua/custom/snippets/
-		for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/custom/snippets/*.lua", true)) do
-			loadfile(ft_path)()
-		end
-
 		vim.keymap.set({ "i", "s" }, "<c-j>", function()
 			if ls.expand_or_jumpable() then
 				ls.expand_or_jump()

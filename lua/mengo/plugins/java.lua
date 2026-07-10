@@ -1,23 +1,27 @@
-return {
-	"nvim-java/nvim-java",
-	ft = { "java" },
-	dependencies = {
-		"nvim-java/lua-async-await",
-		"nvim-java/nvim-java-refactor",
-		"nvim-java/nvim-java-core",
-		"nvim-java/nvim-java-test",
-		"nvim-java/nvim-java-dap",
-		"MunifTanjim/nui.nvim",
-		"neovim/nvim-lspconfig",
-		"mfussenegger/nvim-dap",
-		{
-			"mason-org/mason.nvim",
-			opts = {
-				registries = {
-					"github:nvim-java/mason-registry",
-					"github:mason-org/mason-registry",
-				},
-			},
-		},
-	},
-}
+-- Commented out: nvim-java never called setup() so jdtls/DAP never actually worked,
+-- and the mason registry opts here were clobbered by lsp.lua's mason.setup().
+-- Re-enable together with the dap.lua java configs and after/ftplugin/java.lua.
+-- return {
+-- 	"nvim-java/nvim-java",
+-- 	ft = { "java" },
+-- 	dependencies = {
+-- 		"nvim-java/lua-async-await",
+-- 		"nvim-java/nvim-java-refactor",
+-- 		"nvim-java/nvim-java-core",
+-- 		"nvim-java/nvim-java-test",
+-- 		"nvim-java/nvim-java-dap",
+-- 		"MunifTanjim/nui.nvim",
+-- 		"neovim/nvim-lspconfig",
+-- 		"mfussenegger/nvim-dap",
+-- 		{
+-- 			"mason-org/mason.nvim",
+-- 			opts = {
+-- 				registries = {
+-- 					"github:nvim-java/mason-registry",
+-- 					"github:mason-org/mason-registry",
+-- 				},
+-- 			},
+-- 		},
+-- 	},
+-- }
+return {}

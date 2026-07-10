@@ -15,8 +15,8 @@ return {
 				picker = "snacks", -- already have snacks.nvim
 			},
 		},
-    -- stylua: ignore
 		event = "VeryLazy",
+		-- stylua: ignore
 		keys = {
 			-- CLI keymaps
 			-- { "<C-.>",      function() require("sidekick.cli").focus() end,                                desc = "Sidekick Focus",           mode = { "n", "t", "i", "x" } },

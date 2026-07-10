@@ -2,11 +2,8 @@ local set = vim.opt_local
 set.shiftwidth = 2
 set.tabstop = 2
 
-vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = "*.tsx",
-	callback = function()
-		vim.fn.setreg("r", "diwAMath.floor(Math.random() * pa))")
-		vim.fn.setreg("s", '0f"cs"`ysa`{')
-		vim.fn.setreg("c", 'vatof>i className=""i')
-	end,
-})
+-- ftplugin already runs once per matching buffer; the old BufEnter autocmd here
+-- stacked a new global autocmd per buffer opened
+vim.fn.setreg("r", "diwAMath.floor(Math.random() * pa))")
+vim.fn.setreg("s", '0f"cs"`ysa`{')
+vim.fn.setreg("c", 'vatof>i className=""i')

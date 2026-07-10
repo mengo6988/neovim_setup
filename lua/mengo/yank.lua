@@ -10,9 +10,10 @@ end
 
 M.get_visual_bounds = function()
 	local mode = vim.fn.mode()
-	if mode ~= "v" and mode ~= "V" then
+	-- "\22" is blockwise-visual (<C-v>); getregion handles all three modes
+	if mode ~= "v" and mode ~= "V" and mode ~= "\22" then
 		error(
-			"get_visual_bounds must be called in visual or visual-line mode (current mode: " .. vim.inspect(mode) .. ")"
+			"get_visual_bounds must be called in a visual mode (current mode: " .. vim.inspect(mode) .. ")"
 		)
 	end
 	local is_visual_line_mode = mode == "V"
@@ -38,13 +39,13 @@ M.simulate_yank_highlight = function()
 	local bounds = M.get_visual_bounds()
 
 	local ns = vim.api.nvim_create_namespace("simulate_yank_highlight")
-	vim.highlight.range(
+	vim.hl.range(
 		0,
 		ns,
 		"IncSearch",
 		{ bounds.start_line - 1, bounds.start_col },
 		{ bounds.end_line - 1, bounds.end_col },
-		{ priority = 200 }
+		{ regtype = bounds.mode, priority = 200 }
 	)
 	vim.defer_fn(function()
 		vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
@@ -53,9 +54,7 @@ end
 
 M.highlight_range = function(start_line, end_line)
 	local ns = vim.api.nvim_create_namespace("simulate_yank_highlight")
-	for i = start_line - 1, end_line - 1 do
-		vim.api.nvim_buf_add_highlight(0, ns, "IncSearch", i, 0, -1)
-	end
+	vim.hl.range(0, ns, "IncSearch", { start_line - 1, 0 }, { end_line - 1, -1 }, { regtype = "V", priority = 200 })
 	vim.defer_fn(function()
 		vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 	end, 150)
