@@ -1,12 +1,8 @@
-local opts = { noremap = true, silent = true }
-
-local term_opts = { silent = true }
-
 -- Shorten function name
 local keymap = vim.keymap.set
 
 -- Remap space as leader key
-keymap("", "<Space>", "<Nop>", opts)
+keymap("", "<Space>", "<Nop>", { silent = true })
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
@@ -19,9 +15,9 @@ vim.g.maplocalleader = "\\"
 --   command_mode = "c",
 
 --  Plugin related
-keymap("n", "-", "<cmd>Oil<CR>")
-keymap("n", "<Esc>", "<cmd>nohlsearch<CR>")
-keymap("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
+keymap("n", "-", "<cmd>Oil<CR>", { desc = "Open parent directory (Oil)" })
+keymap("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
+keymap("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "Make it rain" })
 keymap("n", "<leader>bd", function()
 	Snacks.bufdelete()
 end, { desc = "Delete buffer" })
@@ -47,7 +43,7 @@ keymap("n", "<leader>nd", "<CMD>Noice dismiss<CR>", { desc = "[N]oice [D]ismiss"
 keymap("n", "<leader>nh", "<CMD>Noice history<CR>", { desc = "[N]oice [H]istory" })
 keymap("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 
-keymap("n", "<leader>so", ":source %<CR>")
+keymap("n", "<leader>so", ":source %<CR>", { desc = "Source current file" })
 keymap(
 	"n",
 	"<leader>rw",
@@ -74,13 +70,13 @@ keymap("n", "<leader>st", function()
 	vim.api.nvim_win_set_height(0, 17)
 
 	vim.g.last_term_job_id = vim.bo.channel
-end)
+end, { desc = "Open terminal in bottom split" })
 -- Save quit etc
 -- <leader>w kept prefix-free so saving is instant (no timeoutlen wait)
-keymap("n", "<leader>w", ":w!<CR>", opts)
+keymap("n", "<leader>w", ":w!<CR>", { silent = true, desc = "Write file" })
 keymap("n", "<leader>W", "<cmd>FormatEnable<CR><cmd>w<cr><cmd>FormatDisable<CR>", { desc = "Write with format" })
-keymap("n", "<leader>x", ":x!<CR>", opts)
-keymap("n", "<leader>q", ":q!<CR>", opts)
+keymap("n", "<leader>x", ":x!<CR>", { silent = true, desc = "Write and quit" })
+keymap("n", "<leader>q", ":q!<CR>", { silent = true, desc = "Quit (force)" })
 
 -- keymap("n", "]c", "<cmd>cnext<CR>", { desc = "[C]uikfix Next" })
 -- keymap("n", "[c", "<cmd>cprev<CR>", { desc = "[C]uikfix Prev" })
@@ -96,8 +92,8 @@ keymap("n", "<leader>H", "<C-w>t<C-w>H", { noremap = true, silent = true, desc =
 keymap("n", "<leader>K", "<C-w>t<C-w>K", { noremap = true, silent = true, desc = "Swap to horizontal layout" })
 
 -- Vertical Splits
-keymap("n", "<leader>v", ":vsplit<CR>", opts)
-keymap("n", "<leader>s", ":split<CR>", opts)
+keymap("n", "<leader>v", ":vsplit<CR>", { silent = true, desc = "Vertical split" })
+keymap("n", "<leader>s", ":split<CR>", { silent = true, desc = "Horizontal split" })
 keymap("n", "<leader>,", ":only<CR>", { noremap = true, silent = true, desc = "Focus" })
 keymap("n", "<leader>c", ":close<CR>", { noremap = true, silent = true, desc = "Close" })
 
@@ -112,54 +108,54 @@ keymap(
 )
 keymap("n", "yc", "yy<cmd>normal gcc<CR>p", { desc = "Copy paste and comment the line copied" })
 keymap("n", "<C-s><C-s>", ":.!sh<cr>", { noremap = true, desc = "Send current line to sh and REPLACE with the output" })
-keymap("i", "jk", "<Esc>", opts)
+keymap("i", "jk", "<Esc>", { silent = true, desc = "Exit insert mode" })
 
 -- Better navigation
-keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-keymap("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up (display line)" })
+keymap("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down (display line)" })
 
 -- Better File Navigation
-keymap("n", "<C-d>", "<C-d>zz", opts)
-keymap("n", "<C-u>", "<C-u>zz", opts)
-keymap("n", "<C-f>", "<C-f>zz", opts)
-keymap("n", "<C-b>", "<C-b>zz", opts)
-keymap("n", "n", "nzz", opts)
-keymap("n", "N", "Nzz", opts)
-keymap("n", "*", "*zz", opts)
-keymap("n", "#", "#zz", opts)
-keymap("n", "G", "Gzz", opts)
+keymap("n", "<C-d>", "<C-d>zz", { silent = true, desc = "Half page down (centered)" })
+keymap("n", "<C-u>", "<C-u>zz", { silent = true, desc = "Half page up (centered)" })
+keymap("n", "<C-f>", "<C-f>zz", { silent = true, desc = "Page down (centered)" })
+keymap("n", "<C-b>", "<C-b>zz", { silent = true, desc = "Page up (centered)" })
+keymap("n", "n", "nzz", { silent = true, desc = "Next search match (centered)" })
+keymap("n", "N", "Nzz", { silent = true, desc = "Previous search match (centered)" })
+keymap("n", "*", "*zz", { silent = true, desc = "Search word forward (centered)" })
+keymap("n", "#", "#zz", { silent = true, desc = "Search word backward (centered)" })
+keymap("n", "G", "Gzz", { silent = true, desc = "End of file (centered)" })
 
 -- Resize with arrows
-keymap("n", "<C-S-Up>", ":resize +2<CR>", opts)
-keymap("n", "<C-S-Down>", ":resize -2<CR>", opts)
-keymap("n", "<C-S-Left>", ":vertical resize +2<CR>", opts)
-keymap("n", "<C-S-Right>", ":vertical resize -2<CR>", opts)
+keymap("n", "<C-S-Up>", ":resize +2<CR>", { silent = true, desc = "Increase window height" })
+keymap("n", "<C-S-Down>", ":resize -2<CR>", { silent = true, desc = "Decrease window height" })
+keymap("n", "<C-S-Left>", ":vertical resize +2<CR>", { silent = true, desc = "Widen window" })
+keymap("n", "<C-S-Right>", ":vertical resize -2<CR>", { silent = true, desc = "Narrow window" })
 
 -- Navigate buffers
-keymap("n", "<S-l>", ":bnext<CR>", opts)
-keymap("n", "<S-h>", ":bprevious<CR>", opts)
+keymap("n", "<S-l>", ":bnext<CR>", { silent = true, desc = "Next buffer" })
+keymap("n", "<S-h>", ":bprevious<CR>", { silent = true, desc = "Previous buffer" })
 
 -- Move text up and down
-keymap("n", "<M-j>", ":m .+1<CR>==", opts)
-keymap("n", "<M-k>", ":m .-2<CR>==", opts)
+keymap("n", "<M-j>", ":m .+1<CR>==", { silent = true, desc = "Move line down" })
+keymap("n", "<M-k>", ":m .-2<CR>==", { silent = true, desc = "Move line up" })
 
 -- Visual --
 -- Stay in indent mode
-keymap("v", "<", "<gv^", opts)
-keymap("v", ">", ">gv^", opts)
-keymap("v", "<leader>y", '"+y', opts)
+keymap("v", "<", "<gv^", { silent = true, desc = "Outdent (keep selection)" })
+keymap("v", ">", ">gv^", { silent = true, desc = "Indent (keep selection)" })
+keymap("v", "<leader>y", '"+y', { silent = true, desc = "Yank to system clipboard" })
 
 -- Move text up and down
-keymap("v", "<M-k>", ":m '<-2<CR>gv=gv", opts)
-keymap("v", "<M-j>", ":m '>+1<CR>gv=gv", opts)
-keymap("v", "p", '"_dP', opts)
+keymap("v", "<M-k>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
+keymap("v", "<M-j>", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
+keymap("v", "p", '"_dP', { silent = true, desc = "Paste without overwriting register" })
 
 -- Visual Block --
 -- Move text up and down
-keymap("x", "J", ":m '>+1<CR>gv=gv", opts)
-keymap("x", "K", ":m '<-2<CR>gv=gv", opts)
-keymap("x", "<M-j>", ":m '>+1<CR>gv=gv", opts)
-keymap("x", "<M-k>", ":m '<-2<CR>gv=gv", opts)
+keymap("x", "J", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
+keymap("x", "K", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
+keymap("x", "<M-j>", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
+keymap("x", "<M-k>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
 
 -- Toggle diagnostics display. tiny-inline-diagnostic renders itself regardless
 -- of the virtual_text option, so flipping virtual_text alone no longer does
@@ -333,15 +329,16 @@ vim.keymap.set("v", "<leader>yr", function()
 	yank.yank_visual_with_path(yank.get_buffer_cwd_relative(), "relative")
 end, { desc = "[Y]ank selection with [R]elative path" })
 
-vim.keymap.set("n", "<leader>pp", ":Telescope neovim-project discover<CR>")
-vim.keymap.set("n", "<leader>pph", ":Telescope neovim-project history<CR>")
+vim.keymap.set("n", "<leader>pp", ":Telescope neovim-project discover<CR>", { desc = "Project discover" })
+vim.keymap.set("n", "<leader>pph", ":Telescope neovim-project history<CR>", { desc = "Project history" })
 
-vim.keymap.set("n", "<leader>sc", "<cmd>Scratch<cr>")
-vim.keymap.set("n", "<leader>sco", "<cmd>ScratchOpen<cr>")
+vim.keymap.set("n", "<leader>sc", "<cmd>Scratch<cr>", { desc = "New scratch buffer" })
+vim.keymap.set("n", "<leader>sco", "<cmd>ScratchOpen<cr>", { desc = "Open scratch buffer picker" })
 vim.keymap.set(
 	"n",
 	"<leader>srf",
-	":lua require('grug-far').open({ prefills = { paths = vim.fn.expand('%'), transient=true, engine='astgrep' } })<CR>"
+	":lua require('grug-far').open({ prefills = { paths = vim.fn.expand('%'), transient=true, engine='astgrep' } })<CR>",
+	{ desc = "Search & replace in current file (grug-far)" }
 )
 
 -- Treesitter: incremental selection + function/class motions
@@ -402,8 +399,18 @@ keymap(
 	treesitter_move("goto_previous_start", "@function.outer"),
 	{ desc = "Previous function start" }
 )
-keymap({ "n", "x", "o" }, "[[", treesitter_move("goto_previous_start", "@class.outer"), { desc = "Previous class start" })
-keymap({ "n", "x", "o" }, "[M", treesitter_move("goto_previous_end", "@function.outer"), { desc = "Previous function end" })
+keymap(
+	{ "n", "x", "o" },
+	"[[",
+	treesitter_move("goto_previous_start", "@class.outer"),
+	{ desc = "Previous class start" }
+)
+keymap(
+	{ "n", "x", "o" },
+	"[M",
+	treesitter_move("goto_previous_end", "@function.outer"),
+	{ desc = "Previous function end" }
+)
 
 -- ── Builtin command cheatsheet (reference, no maps needed) ──────────────────
 -- :g/pattern/norm A;           run normal-mode keys on every matching line

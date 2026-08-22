@@ -84,19 +84,19 @@ return {
 
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>ph", builtin.help_tags, { desc = "[S]earch [H]elp" })
-			vim.keymap.set("n", "<leader>pf", builtin.find_files, {})
-			vim.keymap.set("n", "<leader>pb", builtin.builtin, {})
-			vim.keymap.set("n", "<leader>pg", builtin.git_files, {})
-			vim.keymap.set("n", "<leader>pt", builtin.treesitter, {})
+			vim.keymap.set("n", "<leader>pf", builtin.find_files, { desc = "[S]earch [F]iles" })
+			vim.keymap.set("n", "<leader>pb", builtin.builtin, { desc = "[S]earch [B]uiltin pickers" })
+			vim.keymap.set("n", "<leader>pg", builtin.git_files, { desc = "[S]earch [G]it files" })
+			vim.keymap.set("n", "<leader>pt", builtin.treesitter, { desc = "[S]earch [T]reesitter symbols" })
 			-- vim.keymap.set('n', '<leader>psw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
 			vim.keymap.set("n", "<leader>ps", builtin.live_grep, { desc = "[S]earch word" })
 			vim.keymap.set("n", "<leader>psw", function()
 				local word = vim.fn.expand("<cWORD>")
 				builtin.grep_string({ search = word })
-			end)
+			end, { desc = "[S]earch current [W]ord" })
 			vim.keymap.set("n", "<leader>pss", function()
 				builtin.grep_string({ search = vim.fn.input("Grep > ") })
-			end)
+			end, { desc = "[S]earch for input [S]tring" })
 
 			-- deferred: indexing extensions.flutter at setup time force-loads
 			-- flutter-tools.nvim at startup, defeating its ft = "dart" lazy trigger

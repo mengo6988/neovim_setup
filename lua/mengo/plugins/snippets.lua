@@ -15,13 +15,13 @@ return {
 			if ls.expand_or_jumpable() then
 				ls.expand_or_jump()
 			end
-		end, { silent = true })
+		end, { silent = true, desc = "Expand or jump to next snippet node" })
 
 		vim.keymap.set({ "i", "s" }, "<c-k>", function()
 			if ls.jumpable(-1) then
 				ls.jump(-1)
 			end
-		end, { silent = true })
+		end, { silent = true, desc = "Jump to previous snippet node" })
 
 		local s = ls.s
 		local t = ls.text_node

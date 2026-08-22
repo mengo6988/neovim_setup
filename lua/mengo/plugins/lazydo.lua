@@ -7,6 +7,7 @@ return {
 				"<leader>ltd",
 				"<ESC><CMD>LazyDoToggle<CR>",
 				mode = { "n" },
+				desc = "Toggle LazyDo",
 			},
 		},
 		event = "VeryLazy",

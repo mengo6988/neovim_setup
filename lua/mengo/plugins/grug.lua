@@ -9,7 +9,12 @@ return {
 			pattern = "grug-far",
 			callback = function()
 				-- Map <Esc> to quit after ensuring we're in normal mode
-				vim.keymap.set({ "n" }, "<Esc>", "<Cmd>stopinsert | bd!<CR>", { buffer = true })
+				vim.keymap.set(
+					{ "n" },
+					"<Esc>",
+					"<Cmd>stopinsert | bd!<CR>",
+					{ buffer = true, desc = "Close grug-far" }
+				)
 			end,
 		})
 	end,
