@@ -80,10 +80,14 @@ return {
 					},
 				},
 				providers = {
+					lsp = { score_offset = 1000 }, -- extreme priority so fuzzy matches never bury real LSP results
+					path = { score_offset = 3 },
+					buffer = { score_offset = -150, min_keyword_length = 3 },
 					snippets = {
 						name = "Snippets",
 						module = "blink.cmp.sources.snippets",
-						score_offset = 10,
+						score_offset = -100,
+						min_keyword_length = 3,
 					},
 					markdown = {
 						name = "RenderMarkdown",
@@ -131,6 +135,7 @@ return {
 		dependencies = {
 			"mason-org/mason.nvim",
 			"mason-org/mason-lspconfig.nvim",
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
 			"saghen/blink.cmp",
 			"j-hui/fidget.nvim",
 			{
@@ -210,20 +215,27 @@ return {
 				end,
 			})
 
+			-- Single source of truth for what Mason installs: add an LSP server here
+			-- (and, if it needs settings, a vim.lsp.config() call above) and it's
+			-- covered; formatters mirror conform's formatters_by_ft (plugins/init.lua).
+			-- rustfmt is excluded — it comes from rustup, not Mason.
+			local servers =
+				{ "lua_ls", "rust_analyzer", "clangd", "ts_ls", "pyright", "solidity_ls_nomicfoundation", "gopls" }
+			local formatters = { "stylua", "prettier", "black", "isort", "ruff", "clang-format" }
+			local ensure_installed = {}
+			vim.list_extend(ensure_installed, servers)
+			vim.list_extend(ensure_installed, formatters)
+
 			require("mason").setup()
+			require("mason-tool-installer").setup({
+				ensure_installed = ensure_installed,
+				auto_update = true,
+				debounce_hours = 12,
+			})
 			require("mason-lspconfig").setup({
 				-- eslint-lsp is installed in mason but eslint runs via nvim-lint (eslint_d);
 				-- exclude it so diagnostics don't double-report
 				automatic_enable = { exclude = { "eslint" } },
-				ensure_installed = {
-					"lua_ls",
-					"rust_analyzer",
-					"clangd",
-					"ts_ls",
-					"pyright",
-					"solidity_ls_nomicfoundation",
-					"gopls",
-				},
 			})
 
 			vim.diagnostic.config({

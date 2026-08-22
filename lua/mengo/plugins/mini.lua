@@ -1,16 +1,9 @@
 return {
 	{
 		"echasnovski/mini.nvim",
-		dependencies = {
-			{
-				"nvim-treesitter/nvim-treesitter-textobjects",
-				init = function()
-					-- Prevent the plugin from loading its vim file (it requires the old nvim-treesitter.configs API).
-					-- We only need it for the textobjects.scm query files that mini.ai uses.
-					require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
-				end,
-			},
-		},
+		-- Full nvim-treesitter-textobjects spec (branch, setup(), move motions)
+		-- lives in treesitter.lua; mini.ai only needs its query files on rtp.
+		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
 		version = false,
 		config = function()
 			-- render-markdown's mini icon provider checks _G.MiniIcons; without this

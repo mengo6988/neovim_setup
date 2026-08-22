@@ -60,6 +60,10 @@ vim.opt.formatoptions:remove({ "c", "r", "o" }) -- don't insert the current comm
 vim.opt.runtimepath:remove("/usr/share/vim/vimfiles") -- separate vim plugins from neovim in case vim still in use
 vim.g.border_style = "rounded" ---@type "single"|"double"|"rounded"
 
+-- Built-in ftplugins (e.g. python) bind ]m/[m/]]/[[ themselves; disable them so
+-- the treesitter motions in remap.lua aren't shadowed.
+vim.g.no_plugin_maps = true
+
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -97,3 +101,14 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 vim.opt.inccommand = "split"
+
+-- Open :help in a right-hand vertical split instead of a horizontal one
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("vertical-help", { clear = true }),
+	pattern = "help",
+	callback = function()
+		vim.bo.bufhidden = "unload"
+		vim.cmd.wincmd("L")
+		vim.cmd.wincmd("=")
+	end,
+})

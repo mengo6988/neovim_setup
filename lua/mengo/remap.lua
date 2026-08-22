@@ -104,9 +104,12 @@ keymap("n", "<leader>c", ":close<CR>", { noremap = true, silent = true, desc = "
 -- Special Remaps
 keymap("n", "gV", "`[v`]", { noremap = true, desc = "Select last changed or yanked text" })
 -- mini.operators takes gx for exchange; builtin open-URL/file moves to gX
-keymap({ "n", "x" }, "gX", function()
-	vim.ui.open(vim.fn.expand("<cfile>"))
-end, { desc = "Open URL/file under cursor" })
+keymap(
+	{ "n", "x" },
+	"gX",
+	require("mengo.open_link").open_link,
+	{ desc = "Open URL/file under cursor (markdown/paren aware)" }
+)
 keymap("n", "yc", "yy<cmd>normal gcc<CR>p", { desc = "Copy paste and comment the line copied" })
 keymap("n", "<C-s><C-s>", ":.!sh<cr>", { noremap = true, desc = "Send current line to sh and REPLACE with the output" })
 keymap("i", "jk", "<Esc>", opts)
@@ -158,25 +161,51 @@ keymap("x", "K", ":m '<-2<CR>gv=gv", opts)
 keymap("x", "<M-j>", ":m '>+1<CR>gv=gv", opts)
 keymap("x", "<M-k>", ":m '<-2<CR>gv=gv", opts)
 
--- Toggle diagnostic virtual text (off by default in lsp.lua)
-local saved_virtual_text -- preserves a table config across toggles instead of collapsing it to a boolean
+-- Toggle diagnostics display. tiny-inline-diagnostic renders itself regardless
+-- of the virtual_text option, so flipping virtual_text alone no longer does
+-- anything visible — toggle the plugin directly, falling back to the native
+-- diagnostics on/off switch if it's ever not loaded.
 keymap("n", "<leader>vt", function()
-	local cur = vim.diagnostic.config().virtual_text
-	if cur then
-		saved_virtual_text = cur
-		vim.diagnostic.config({ virtual_text = false })
-		vim.notify("diagnostic virtual_text OFF")
-	else
-		vim.diagnostic.config({ virtual_text = saved_virtual_text or true })
-		vim.notify("diagnostic virtual_text ON")
+	local ok, tid = pcall(require, "tiny-inline-diagnostic")
+	if ok and tid.toggle then
+		tid.toggle()
+		return
 	end
-end, { desc = "Toggle diagnostic [V]irtual [T]ext" })
+	vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = "Toggle diagnostics display" })
+
+-- Copy the current line's diagnostic messages to the clipboard
+-- (dmmulroy uses <leader>cd, but <leader>c is a standalone "close window" map
+-- here and adding a longer <leader>c* map would make it wait out timeoutlen)
+vim.keymap.set("n", "<leader>yd", function()
+	local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+	local diagnostics = vim.diagnostic.get(0, { lnum = lnum })
+	if #diagnostics == 0 then
+		vim.notify("No diagnostics on the current line.")
+		return
+	end
+	local messages = vim.tbl_map(function(d)
+		return d.message
+	end, diagnostics)
+	vim.fn.setreg("+", table.concat(messages, "\n"))
+	vim.notify("Diagnostics copied to clipboard.")
+end, { desc = "[Y]ank line [D]iagnostics to clipboard" })
 
 -- LSP attach for lsp commands
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 	callback = function(event)
+		local bufnr = event.buf
+		local bufname = vim.api.nvim_buf_get_name(bufnr)
+		-- Detach from non-file buffers (diffview, fugitive, etc.)
+		if bufname == "" or bufname:match("^diffview://") or bufname:match("^fugitive://") then
+			vim.schedule(function()
+				vim.lsp.buf_detach_client(bufnr, event.data.client_id)
+			end)
+			return
+		end
+
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
 		local map = function(keys, func, desc)
 			vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
@@ -219,7 +248,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>vrn", function()
 			return ":IncRename " .. vim.fn.expand("<cword>")
 		end, { buffer = event.buf, expr = true, desc = "LSP: [R]e[n]ame" })
-		map("<leader>vh", vim.lsp.buf.signature_help, "Signature [Help]")
+		map("<leader>vh", function()
+			vim.lsp.buf.signature_help({ border = vim.g.border_style })
+		end, "Signature [Help]")
 
 		-- Execute a code action, usually your cursor needs to be on top of an error
 		-- or a suggestion from your LSP for this to activate.
@@ -227,7 +258,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		-- Opens a popup that displays documentation about the word under your cursor
 		--  See `:help K` for why this keymap.
-		map("K", vim.lsp.buf.hover, "Hover Documentation")
+		map("K", function()
+			vim.lsp.buf.hover({ border = vim.g.border_style })
+		end, "Hover Documentation")
 
 		-- WARN: This is not Goto Definition, this is Goto Declaration.
 		--  For example, in C this would take you to the header.
@@ -246,6 +279,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("]d", function()
 			vim.diagnostic.jump({ count = 1, float = true })
 		end, "Next [D]iagnostic")
+		map("[e", function()
+			vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.ERROR })
+		end, "Previous [E]rror")
+		map("]e", function()
+			vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.ERROR })
+		end, "Next [E]rror")
+		map("[w", function()
+			vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.WARN })
+		end, "Previous [W]arning")
+		map("]w", function()
+			vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.WARN })
+		end, "Next [W]arning")
 
 		-- Inlay hints
 		if client and client:supports_method("textDocument/inlayHint") then
@@ -298,6 +343,67 @@ vim.keymap.set(
 	"<leader>srf",
 	":lua require('grug-far').open({ prefills = { paths = vim.fn.expand('%'), transient=true, engine='astgrep' } })<CR>"
 )
+
+-- Treesitter: incremental selection + function/class motions
+-- (adapted from dmmulroy/dotfiles keymaps.lua; mini.ai already covers
+-- af/if/ac/ic-style textobjects, so only the parts mini.ai doesn't do live here)
+local treesitter_select = function()
+	if not vim.treesitter.get_parser(0, nil, { error = false }) then
+		return nil
+	end
+	local ok, select = pcall(require, "vim.treesitter._select")
+	if ok then
+		return select
+	end
+	return nil
+end
+
+local treesitter_select_parent = function()
+	local select = treesitter_select()
+	if select then
+		select.select_parent(vim.v.count1)
+	else
+		vim.lsp.buf.selection_range(vim.v.count1)
+	end
+end
+
+local treesitter_select_child = function()
+	local select = treesitter_select()
+	if select then
+		select.select_child(vim.v.count1)
+	else
+		vim.lsp.buf.selection_range(-vim.v.count1)
+	end
+end
+
+local treesitter_move = function(method, query, query_group)
+	return function()
+		require("nvim-treesitter-textobjects.move")[method](query, query_group or "textobjects")
+	end
+end
+
+keymap("n", "<C-Space>", function()
+	if treesitter_select() then
+		vim.cmd.normal({ "van", bang = true })
+	else
+		vim.lsp.buf.selection_range(1)
+	end
+end, { desc = "Treesitter: Start incremental selection" })
+
+keymap("x", "<C-Space>", treesitter_select_parent, { desc = "Treesitter: Expand selection" })
+keymap("x", "<C-h>", treesitter_select_child, { desc = "Treesitter: Shrink selection" })
+
+keymap({ "n", "x", "o" }, "]m", treesitter_move("goto_next_start", "@function.outer"), { desc = "Next function start" })
+keymap({ "n", "x", "o" }, "]]", treesitter_move("goto_next_start", "@class.outer"), { desc = "Next class start" })
+keymap({ "n", "x", "o" }, "]M", treesitter_move("goto_next_end", "@function.outer"), { desc = "Next function end" })
+keymap(
+	{ "n", "x", "o" },
+	"[m",
+	treesitter_move("goto_previous_start", "@function.outer"),
+	{ desc = "Previous function start" }
+)
+keymap({ "n", "x", "o" }, "[[", treesitter_move("goto_previous_start", "@class.outer"), { desc = "Previous class start" })
+keymap({ "n", "x", "o" }, "[M", treesitter_move("goto_previous_end", "@function.outer"), { desc = "Previous function end" })
 
 -- ── Builtin command cheatsheet (reference, no maps needed) ──────────────────
 -- :g/pattern/norm A;           run normal-mode keys on every matching line

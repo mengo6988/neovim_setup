@@ -178,6 +178,43 @@ return {
 					json = { "prettier" },
 					markdown = { "prettier" },
 				},
+				formatters = {
+					-- Only format with prettier if the project opted into it; otherwise
+					-- fall through to lsp_format (see format_on_save below) instead of
+					-- imposing prettier's defaults on repos that never asked for it.
+					prettier = {
+						condition = function(_, ctx)
+							local config = vim.fs.find({
+								".prettierrc",
+								".prettierrc.json",
+								".prettierrc.yml",
+								".prettierrc.yaml",
+								".prettierrc.json5",
+								".prettierrc.js",
+								".prettierrc.cjs",
+								".prettierrc.mjs",
+								".prettierrc.toml",
+								"prettier.config.js",
+								"prettier.config.cjs",
+								"prettier.config.mjs",
+							}, { path = ctx.filename, upward = true, stop = vim.uv.os_homedir() })[1]
+							if config then
+								return true
+							end
+
+							local pkg_json = vim.fs.find("package.json", {
+								path = ctx.filename,
+								upward = true,
+								stop = vim.uv.os_homedir(),
+							})[1]
+							if not pkg_json then
+								return false
+							end
+							local ok, data = pcall(vim.json.decode, table.concat(vim.fn.readfile(pkg_json), "\n"))
+							return ok and data.prettier ~= nil
+						end,
+					},
+				},
 				format_on_save = function(bufnr)
 					-- Disable with a global or buffer-local variable
 					if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
@@ -219,7 +256,7 @@ return {
 			end, { range = true })
 		end,
 	},
-	{ "HiPhish/rainbow-delimiters.nvim" },
+	{ "HiPhish/rainbow-delimiters.nvim", event = { "BufReadPost", "BufNewFile" } },
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
@@ -304,6 +341,7 @@ return {
 	},
 	{
 		"mg979/vim-visual-multi",
+		event = "VeryLazy",
 	},
 	{
 		"folke/flash.nvim",
