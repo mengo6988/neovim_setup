@@ -16,7 +16,8 @@ return {
 			"rafamadriz/friendly-snippets",
 			"dmitmel/cmp-digraphs",
 		},
-		version = "*",
+		-- v2 is in development with breaking changes; stay on stable 1.x until it settles
+		version = "1.*",
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
 		opts = {
