@@ -1,8 +1,8 @@
 return {
 	{
 		"saghen/blink.compat",
-		-- use the latest release, via version = '*', if you also use the latest release for blink.cmp
-		version = "*",
+		-- blink.compat majors are offset by one: 2.x pairs with blink.cmp 1.x (pinned below)
+		version = "2.*",
 		-- lazy.nvim will automatically load the plugin when it's required by blink.cmp
 		lazy = true,
 		-- make sure to set opts so that lazy.nvim calls blink.compat's setup
@@ -14,7 +14,7 @@ return {
 		dependencies = {
 			"moyiz/blink-emoji.nvim",
 			"rafamadriz/friendly-snippets",
-			"dmitmel/cmp-digraphs",
+			{ "delphinus/blink-cmp-digraphs", version = "*" },
 		},
 		-- v2 is in development with breaking changes; stay on stable 1.x until it settles
 		version = "1.*",
@@ -96,12 +96,10 @@ return {
 						fallbacks = { "lsp" },
 					},
 					digraphs = {
-						name = "digraphs",
-						module = "blink.compat.source",
-						score_offset = -3,
-						opts = {
-							cache_digraphs_on_start = true,
-						},
+						name = "Digraphs",
+						module = "blink-cmp-digraphs",
+						min_keyword_length = 0,
+						score_offset = -3, -- keep digraphs below real completions
 					},
 					emoji = {
 						module = "blink-emoji",
@@ -221,7 +219,7 @@ return {
 			-- covered; formatters mirror conform's formatters_by_ft (plugins/init.lua).
 			-- rustfmt is excluded — it comes from rustup, not Mason.
 			local servers =
-				{ "lua_ls", "rust_analyzer", "clangd", "ts_ls", "pyright", "solidity_ls_nomicfoundation", "gopls" }
+				{ "lua_ls", "rust_analyzer", "clangd", "vtsls", "pyright", "solidity_ls_nomicfoundation", "gopls" }
 			local formatters = { "stylua", "prettier", "black", "isort", "ruff", "clang-format" }
 			local ensure_installed = {}
 			vim.list_extend(ensure_installed, servers)
@@ -245,7 +243,6 @@ return {
 				float = {
 					focusable = false,
 					style = "minimal",
-					border = "rounded",
 					source = true,
 					header = "",
 					prefix = "",

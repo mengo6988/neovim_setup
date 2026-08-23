@@ -245,7 +245,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			return ":IncRename " .. vim.fn.expand("<cword>")
 		end, { buffer = event.buf, expr = true, desc = "LSP: [R]e[n]ame" })
 		map("<leader>vh", function()
-			vim.lsp.buf.signature_help({ border = vim.g.border_style })
+			vim.lsp.buf.signature_help()
 		end, "Signature [Help]")
 
 		-- Execute a code action, usually your cursor needs to be on top of an error
@@ -255,7 +255,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- Opens a popup that displays documentation about the word under your cursor
 		--  See `:help K` for why this keymap.
 		map("K", function()
-			vim.lsp.buf.hover({ border = vim.g.border_style })
+			vim.lsp.buf.hover()
 		end, "Hover Documentation")
 
 		-- WARN: This is not Goto Definition, this is Goto Declaration.
@@ -295,14 +295,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("<leader>ih", function()
 			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 		end, "Toggle [I]nlay [H]ints")
-
-		-- Attach navic for winbar breadcrumbs
-		if client and client.server_capabilities.documentSymbolProvider then
-			local ok, navic = pcall(require, "nvim-navic")
-			if ok then
-				navic.attach(client, event.buf)
-			end
-		end
 	end,
 })
 

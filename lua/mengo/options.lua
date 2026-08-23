@@ -2,7 +2,7 @@ local options = {
 	backup = false, -- creates a backup file
 	clipboard = "unnamedplus", -- allows neovim to access the system clipboard
 	cmdheight = 1, -- noice owns messages/cmdline; no need for extra rows
-	completeopt = { "menu", "menuone", "noselect" }, -- mostly just for cmp
+	completeopt = { "menu", "menuone", "noselect" }, -- native ins-completion only; blink.cmp ignores this
 	conceallevel = 2, -- so that `` is visible in markdown files
 	fileencoding = "utf-8", -- the encoding written to a file
 	hlsearch = true, -- highlight all matches on previous search pattern
@@ -59,6 +59,10 @@ vim.opt.iskeyword:append("-") -- hyphenated words recognized by searches
 vim.opt.formatoptions:remove({ "c", "r", "o" }) -- don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode.
 vim.opt.runtimepath:remove("/usr/share/vim/vimfiles") -- separate vim plugins from neovim in case vim still in use
 vim.g.border_style = "rounded" ---@type "single"|"double"|"rounded"
+-- 0.11+: default border for floats opened via nvim_open_win, incl. LSP hover,
+-- signature help, and diagnostic floats. Plugins with their own border config
+-- (blink, telescope, oil, dial) still read vim.g.border_style.
+vim.o.winborder = vim.g.border_style
 
 -- Built-in ftplugins (e.g. python) bind ]m/[m/]]/[[ themselves; disable them so
 -- the treesitter motions in remap.lua aren't shadowed.
