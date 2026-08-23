@@ -1,17 +1,5 @@
 return {
 	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		-- install without yarn or npm
-		build = function()
-			vim.fn["mkdp#util#install"]()
-		end,
-		init = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-		end,
-		ft = { "markdown" },
-	},
-	{
 		"MeanderingProgrammer/render-markdown.nvim",
 		ft = { "markdown" },
 		opts = {},
