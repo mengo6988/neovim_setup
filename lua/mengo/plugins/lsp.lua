@@ -1,14 +1,5 @@
 return {
 	{
-		"saghen/blink.compat",
-		-- blink.compat majors are offset by one: 2.x pairs with blink.cmp 1.x (pinned below)
-		version = "2.*",
-		-- lazy.nvim will automatically load the plugin when it's required by blink.cmp
-		lazy = true,
-		-- make sure to set opts so that lazy.nvim calls blink.compat's setup
-		opts = {},
-	},
-	{
 		"saghen/blink.cmp",
 		-- optional: provides snippets for the snippet source
 		dependencies = {
@@ -71,15 +62,9 @@ return {
 				preset = "luasnip",
 			},
 			sources = {
+				-- obsidian completions arrive through `lsp`: obsidian.nvim 3.x runs its own
+				-- in-process server (obsidian-ls) instead of registering cmp/blink sources.
 				default = { "lsp", "path", "snippets", "buffer", "markdown", "emoji", "digraphs" },
-				per_filetype = {
-					markdown = {
-						inherit_defaults = true,
-						"obsidian",
-						"obsidian_new",
-						"obsidian_tags",
-					},
-				},
 				providers = {
 					lsp = { score_offset = 1000 }, -- extreme priority so fuzzy matches never bury real LSP results
 					path = { score_offset = 3 },
@@ -106,21 +91,6 @@ return {
 						name = "Emoji",
 						score_offset = 15, -- Tune by preference
 						opts = { insert = true }, -- Insert emoji (default) or complete its name
-					},
-					obsidian = {
-						name = "obsidian",
-						module = "blink.compat.source",
-						score_offset = 20,
-					},
-					obsidian_new = {
-						name = "obsidian_new",
-						module = "blink.compat.source",
-						score_offset = 20,
-					},
-					obsidian_tags = {
-						name = "obsidian_tags",
-						module = "blink.compat.source",
-						score_offset = 20,
 					},
 				},
 			},

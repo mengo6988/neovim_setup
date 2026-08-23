@@ -53,58 +53,53 @@ return {
 			date_format = "%Y-%m-%d-%a",
 			time_format = "%H:%M",
 		},
-		---@return table
-		note_frontmatter_func = function(note)
-			-- Add the title of the note as an alias.
-			if note.title then
-				note:add_alias(note.title)
-			end
+		legacy_commands = false, -- new form is `Obsidian <subcommand>`
 
-			local out = { id = note.id, aliases = note.aliases, tags = note.tags }
-
-			-- `note.metadata` contains any manually added fields in the frontmatter.
-			-- So here we just make sure those fields are kept in the frontmatter.
-			if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-				for k, v in pairs(note.metadata) do
-					out[k] = v
+		frontmatter = {
+			---@return table
+			func = function(note)
+				-- Add the title of the note as an alias.
+				if note.title then
+					note:add_alias(note.title)
 				end
-			end
 
-			return out
-		end,
+				local out = { id = note.id, aliases = note.aliases, tags = note.tags }
 
-		-- Completion. nvim-cmp is not installed; blink.cmp proxies via blink.compat.
-		-- Keep nvim_cmp = true so obsidian registers its cmp sources into the cmp
-		-- registry that blink.compat polyfills.
+				-- `note.metadata` contains any manually added fields in the frontmatter.
+				-- So here we just make sure those fields are kept in the frontmatter.
+				if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+					for k, v in pairs(note.metadata) do
+						out[k] = v
+					end
+				end
+
+				return out
+			end,
+		},
+
+		-- Completion now comes from obsidian's own in-process LSP (obsidian-ls),
+		-- which blink picks up through its `lsp` source. The old nvim_cmp/blink
+		-- source registration is gone.
 		completion = {
-			nvim_cmp = true,
 			min_chars = 2,
 		},
 
-		-- Optional, configure key mappings. These are the defaults. If you don't want to set any keymappings this
-		-- way then set 'mappings = {}'.
-		mappings = {
-			-- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
-			["gf"] = {
-				action = function()
-					return require("obsidian").util.gf_passthrough()
-				end,
-				opts = { noremap = false, expr = true, buffer = true },
-			},
-			-- Toggle check-boxes.
-			["<leader>ch"] = {
-				action = function()
-					return require("obsidian").util.toggle_checkbox()
-				end,
-				opts = { buffer = true },
-			},
-			-- Smart action depending on context, either follow link or toggle checkbox.
-			["<cr>"] = {
-				action = function()
-					return require("obsidian").util.smart_action()
-				end,
-				opts = { buffer = true, expr = true },
-			},
-		},
 	},
+
+	init = function()
+		-- 3.x sets <CR> (smart action), gf (via includeexpr), and ]o/[o itself.
+		-- Only the checkbox toggle needs a keymap now; the old `mappings` option
+		-- is inert and the util functions it called no longer exist.
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "ObsidianNoteEnter",
+			callback = function(ev)
+				vim.keymap.set(
+					"n",
+					"<leader>ch",
+					"<cmd>Obsidian toggle_checkbox<cr>",
+					{ buffer = ev.buf, desc = "Obsidian: toggle checkbox" }
+				)
+			end,
+		})
+	end,
 }
