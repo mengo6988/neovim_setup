@@ -184,12 +184,24 @@ return {
 				end,
 			})
 
+			vim.lsp.config("typos_lsp", {
+				init_options = { diagnosticSeverity = "Hint" }, -- default is "Info"; Hint keeps it quiet in the gutter
+			})
+
 			-- Single source of truth for what Mason installs: add an LSP server here
 			-- (and, if it needs settings, a vim.lsp.config() call above) and it's
 			-- covered; formatters mirror conform's formatters_by_ft (plugins/init.lua).
 			-- rustfmt is excluded — it comes from rustup, not Mason.
-			local servers =
-				{ "lua_ls", "rust_analyzer", "clangd", "vtsls", "pyright", "solidity_ls_nomicfoundation", "gopls" }
+			local servers = {
+				"lua_ls",
+				"rust_analyzer",
+				"clangd",
+				"vtsls",
+				"pyright",
+				"solidity_ls_nomicfoundation",
+				"gopls",
+				"typos_lsp",
+			}
 			local formatters = { "stylua", "prettier", "black", "isort", "ruff", "clang-format" }
 			local ensure_installed = {}
 			vim.list_extend(ensure_installed, servers)
