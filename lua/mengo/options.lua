@@ -68,6 +68,13 @@ vim.o.winborder = vim.g.border_style
 -- the treesitter motions in remap.lua aren't shadowed.
 vim.g.no_plugin_maps = true
 
+-- ...which also silences matchit, so % stops jumping HTML tags / if-end pairs.
+-- b:match_words is still set by the ftplugins; only the maps need restoring.
+for mode, plug in pairs({ n = "Normal", x = "Visual", o = "Operation" }) do
+	vim.keymap.set(mode, "%", "<Plug>(Matchit" .. plug .. "Forward)", { silent = true, remap = true })
+	vim.keymap.set(mode, "g%", "<Plug>(Matchit" .. plug .. "Backward)", { silent = true, remap = true })
+end
+
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
