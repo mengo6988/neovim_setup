@@ -117,6 +117,9 @@ return {
 	{
 		"lewis6991/gitsigns.nvim",
 		event = { "BufReadPre", "BufNewFile" },
+		keys = {
+			{ "<leader>gD", "<cmd>Gitsigns diff<CR>", desc = "[G]it [D]iff panel" },
+		},
 		opts = {
 			on_attach = function(bufnr)
 				local gs = require("gitsigns")

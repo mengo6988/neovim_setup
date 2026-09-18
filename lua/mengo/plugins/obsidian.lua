@@ -54,6 +54,7 @@ return {
 			time_format = "%H:%M",
 		},
 		legacy_commands = false, -- new form is `Obsidian <subcommand>`
+		cache = { enabled = true }, -- off by default; speeds up pickers across three vaults
 
 		frontmatter = {
 			---@return table
@@ -77,13 +78,8 @@ return {
 			end,
 		},
 
-		-- Completion now comes from obsidian's own in-process LSP (obsidian-ls),
-		-- which blink picks up through its `lsp` source. The old nvim_cmp/blink
-		-- source registration is gone.
-		completion = {
-			min_chars = 2,
-		},
-
+		-- Completion comes from obsidian's own in-process LSP (obsidian-ls),
+		-- which blink picks up through its `lsp` source. Defaults are fine.
 	},
 
 	init = function()
