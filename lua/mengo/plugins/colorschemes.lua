@@ -96,7 +96,6 @@ return {
 				},
 				treesitter = true,
 				treesitter_context = true,
-				ufo = true,
 				which_key = true,
 			},
 		})

@@ -59,7 +59,7 @@ return {
 				--     return true
 				--   end
 				-- end,
-				offsets = { { filetype = "undotree", text = "", padding = 1 } },
+				offsets = { { filetype = "nvim-undotree", text = "", padding = 1 } },
 				show_buffer_icons = true,
 				show_buffer_close_icons = true,
 				show_close_icon = true,
