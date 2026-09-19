@@ -28,7 +28,7 @@ local options = {
 	cursorline = false, -- highlight the current line
 	number = true, -- set numbered lines
 	relativenumber = true, -- set relative numbered lines
-	numberwidth = 4, -- set number column width to 2 {default 4}
+	numberwidth = 4, -- set number column width to 4 {default 4}
 	foldlevel = 99, -- nvim-ufo owns folding (treesitter/indent providers)
 	foldlevelstart = 99, -- nvim-ufo: start with all folds open
 	foldenable = true,
@@ -44,8 +44,8 @@ local options = {
 	linebreak = true, -- companion to wrap, don't split words
 	scrolloff = 8, -- minimal number of screen lines to keep above and below the cursor
 	sidescrolloff = 8, -- minimal number of screen columns either side of cursor if wrap is `false`
-	guifont = "monospace:h17", -- the font used in graphical neovim applications
 	whichwrap = "bs<>[]hl", -- which "horizontal" keys are allowed to travel to prev/next line
+	inccommand = "split", -- live preview of :s in a split
 }
 
 for k, v in pairs(options) do
@@ -57,11 +57,10 @@ end
 vim.opt.shortmess:append("c") -- don't give |ins-completion-menu| messages
 vim.opt.iskeyword:append("-") -- hyphenated words recognized by searches
 vim.opt.formatoptions:remove({ "c", "r", "o" }) -- don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode.
-vim.opt.runtimepath:remove("/usr/share/vim/vimfiles") -- separate vim plugins from neovim in case vim still in use
 vim.g.border_style = "rounded" ---@type "single"|"double"|"rounded"
 -- 0.11+: default border for floats opened via nvim_open_win, incl. LSP hover,
 -- signature help, and diagnostic floats. Plugins with their own border config
--- (blink, telescope, oil, dial) still read vim.g.border_style.
+-- (blink, and anything else with its own border option) read vim.g.border_style.
 vim.o.winborder = vim.g.border_style
 
 -- Built-in ftplugins (e.g. python) bind ]m/[m/]]/[[ themselves; disable them so
@@ -77,17 +76,14 @@ end
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
+--  See `:help vim.hl.on_yank()`
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
 	callback = function()
 		vim.hl.on_yank()
 	end,
 })
-
--- (terminal number/relativenumber handling removed: builtin nvim.terminal
--- TermOpen autocmd already does this since 0.10)
 
 -- Pick up files changed outside nvim (autoread only fires on these events)
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
@@ -110,8 +106,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 		end
 	end,
 })
-
-vim.opt.inccommand = "split"
 
 -- Open :help in a right-hand vertical split instead of a horizontal one
 vim.api.nvim_create_autocmd("FileType", {

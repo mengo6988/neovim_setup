@@ -1,5 +1,6 @@
 return {
 	"stevearc/oil.nvim",
+	lazy = false, -- hijacks directory buffers so nvim <dir> works
 	opts = {
 		-- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
 		-- Set to false if you still want to use netrw.
@@ -77,7 +78,7 @@ return {
 		},
 		-- Configuration for the floating keymaps help window
 		keymaps_help = {
-			border = "rounded",
+			border = vim.g.border_style,
 		},
 		-- Set to false to disable all of the above keymaps
 		use_default_keymaps = true,
@@ -106,7 +107,7 @@ return {
 			padding = 2,
 			max_width = 0,
 			max_height = 0,
-			border = "rounded",
+			border = vim.g.border_style,
 			win_options = {
 				winblend = 0,
 			},
@@ -134,7 +135,7 @@ return {
 			min_height = { 5, 0.1 },
 			-- optionally define an integer/float for the exact height of the preview window
 			height = nil,
-			border = "rounded",
+			border = vim.g.border_style,
 			win_options = {
 				winblend = 0,
 			},
@@ -149,7 +150,7 @@ return {
 			max_height = { 10, 0.9 },
 			min_height = { 5, 0.1 },
 			height = nil,
-			border = "rounded",
+			border = vim.g.border_style,
 			minimized_border = "none",
 			win_options = {
 				winblend = 0,
@@ -157,7 +158,7 @@ return {
 		},
 		-- Configuration for the floating SSH window
 		ssh = {
-			border = "rounded",
+			border = vim.g.border_style,
 		},
 	},
 	-- Optional dependencies

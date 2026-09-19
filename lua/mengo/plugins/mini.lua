@@ -1,6 +1,7 @@
 return {
 	{
 		"echasnovski/mini.nvim",
+		-- eager: mini.icons is used by eager plugins at startup
 		-- Full nvim-treesitter-textobjects spec (branch, setup(), move motions)
 		-- lives in treesitter.lua; mini.ai only needs its query files on rtp.
 		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },

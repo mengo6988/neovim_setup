@@ -64,11 +64,6 @@ M.exit_visual_mode = function()
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
 end
 
-M.yank_path = function(path, label)
-	vim.fn.setreg("+", path)
-	print("Yanked " .. label .. " path: " .. path)
-end
-
 M.yank_visual_with_path = function(path, label)
 	local bounds = M.get_visual_bounds()
 

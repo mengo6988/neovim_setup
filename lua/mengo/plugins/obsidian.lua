@@ -87,6 +87,7 @@ return {
 		-- Only the checkbox toggle needs a keymap now; the old `mappings` option
 		-- is inert and the util functions it called no longer exist.
 		vim.api.nvim_create_autocmd("User", {
+			group = vim.api.nvim_create_augroup("obsidian-note-keymaps", { clear = true }),
 			pattern = "ObsidianNoteEnter",
 			callback = function(ev)
 				vim.keymap.set(

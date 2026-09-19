@@ -6,6 +6,7 @@ return {
 	config = function(_, opts)
 		require("grug-far").setup(opts)
 		vim.api.nvim_create_autocmd("FileType", {
+			group = vim.api.nvim_create_augroup("grug-far-close", { clear = true }),
 			pattern = "grug-far",
 			callback = function()
 				-- Map <Esc> to quit after ensuring we're in normal mode

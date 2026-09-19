@@ -22,6 +22,7 @@ return {
 		-- dadbod-ui's <leader>S runs the whole buffer in normal mode and the
 		-- selection in visual mode, so select the surrounding paragraph first.
 		vim.api.nvim_create_autocmd("FileType", {
+			group = vim.api.nvim_create_augroup("dadbod-run-statement", { clear = true }),
 			pattern = { "sql", "mysql", "plsql" },
 			callback = function(ev)
 				vim.keymap.set("n", "<leader>se", "vip<leader>S", {

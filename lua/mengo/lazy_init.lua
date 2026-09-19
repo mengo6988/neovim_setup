@@ -15,6 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	spec = "mengo.plugins",
 	change_detection = { enabled = false, notify = false },
+	rocks = { enabled = false }, -- no spec uses luarocks
 	performance = {
 		rtp = {
 			disabled_plugins = {
