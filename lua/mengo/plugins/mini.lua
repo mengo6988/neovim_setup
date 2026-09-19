@@ -45,7 +45,9 @@ return {
 				},
 			})
 			require("mini.pairs").setup({})
-			require("mini.bracketed").setup({})
+			-- quickfix suffix off: mini.bracketed loads after remap.lua and would
+			-- overwrite its centring ]q/[q maps.
+			require("mini.bracketed").setup({ quickfix = { suffix = "" } })
 			-- gx exchange, gs sort, g= evaluate, gm multiply.
 			-- replace disabled: gr belongs to LSP references; visual `p` already pastes without yanking.
 			-- builtin gx (open URL) is remapped to gX in remap.lua.

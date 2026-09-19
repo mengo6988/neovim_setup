@@ -74,7 +74,13 @@ end, { desc = "Open terminal in bottom split" })
 -- Save quit etc
 -- <leader>w kept prefix-free so saving is instant (no timeoutlen wait)
 keymap("n", "<leader>w", ":w!<CR>", { silent = true, desc = "Write file" })
-keymap("n", "<leader>W", "<cmd>FormatEnable<CR><cmd>w<cr><cmd>FormatDisable<CR>", { desc = "Write with format" })
+-- Force a formatted write without clobbering the :FormatDisable state
+keymap("n", "<leader>W", function()
+	local g, b = vim.g.disable_autoformat, vim.b.disable_autoformat
+	vim.g.disable_autoformat, vim.b.disable_autoformat = false, false
+	vim.cmd("w")
+	vim.g.disable_autoformat, vim.b.disable_autoformat = g, b
+end, { desc = "Write with format" })
 keymap("n", "<leader>x", ":x!<CR>", { silent = true, desc = "Write and quit" })
 keymap("n", "<leader>q", ":q!<CR>", { silent = true, desc = "Quit (force)" })
 
@@ -197,7 +203,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- Detach from non-file buffers (diffview, fugitive, etc.)
 		if bufname == "" or bufname:match("^diffview://") or bufname:match("^fugitive://") then
 			vim.schedule(function()
-				vim.lsp.buf_detach_client(bufnr, event.data.client_id)
+				-- the client may have detached on its own by the time this runs
+				if vim.lsp.buf_is_attached(bufnr, event.data.client_id) then
+					vim.lsp.buf_detach_client(bufnr, event.data.client_id)
+				end
 			end)
 			return
 		end
@@ -373,7 +382,8 @@ end
 
 keymap("n", "<C-Space>", function()
 	if treesitter_select() then
-		vim.cmd.normal({ "van", bang = true })
+		vim.cmd.normal({ "v", bang = true })
+		treesitter_select_parent()
 	else
 		vim.lsp.buf.selection_range(1)
 	end

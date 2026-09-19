@@ -16,7 +16,7 @@ vim.keymap.set("n", "<leader>cc", function()
 	end
 
 	vim.api.nvim_set_current_line(line)
-end, { desc = "Toggle markdown checkbox" })
+end, { buffer = true, desc = "Toggle markdown checkbox" })
 
 vim.keymap.set("x", "<leader>cc", function()
 	local start = vim.fn.line("'<")
@@ -33,7 +33,7 @@ vim.keymap.set("x", "<leader>cc", function()
 
 		vim.fn.setline(i, line)
 	end
-end, { desc = "Toggle markdown checkboxes (visual)" })
+end, { buffer = true, desc = "Toggle markdown checkboxes (visual)" })
 
-vim.keymap.set("n", "<leader>oc", "o- [ ] ", { desc = "Insert checkbox in new row" })
-vim.keymap.set("n", "<leader>ic", "I- [ ] <Esc>", { desc = "Insert checkbox in new row" })
+vim.keymap.set("n", "<leader>oc", "o- [ ] ", { buffer = true, desc = "Insert checkbox in new row" })
+vim.keymap.set("n", "<leader>ic", "I- [ ] <Esc>", { buffer = true, desc = "Insert checkbox in new row" })
