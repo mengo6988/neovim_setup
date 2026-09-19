@@ -28,6 +28,8 @@ Lua-based, lazy.nvim managed. Entry point `init.lua` -> `require("mengo")`.
   `servers`/`formatters` lists in that file — mason-tool-installer installs
   both. Add a new LSP server or formatter there, not as a separate
   `mason-lspconfig` `ensure_installed` entry, or the lists will drift.
+- `automatic_enable` starts any Mason-installed server. Add a server to
+  `servers` before installing it, or the list drifts.
 - Formatter config lives in `plugins/init.lua` (conform). A formatter that
   should only run when a project opts in (like `prettier`) gets a `condition`
   that searches upward for that tool's config file; personal-machine tools

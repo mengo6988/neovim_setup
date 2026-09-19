@@ -1,6 +1,7 @@
 return {
 	{
 		"saghen/blink.cmp",
+		event = "InsertEnter",
 		-- optional: provides snippets for the snippet source
 		dependencies = {
 			"moyiz/blink-emoji.nvim",
@@ -101,6 +102,7 @@ return {
 	},
 	{
 		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
 			"mason-org/mason.nvim",
 			"mason-org/mason-lspconfig.nvim",
@@ -190,7 +192,8 @@ return {
 
 			-- Single source of truth for what Mason installs: add an LSP server here
 			-- (and, if it needs settings, a vim.lsp.config() call above) and it's
-			-- covered; formatters mirror conform's formatters_by_ft (plugins/init.lua).
+			-- covered; the formatters list also carries linters, and mirrors conform's
+			-- formatters_by_ft (plugins/init.lua) plus nvim-lint's linters_by_ft.
 			-- rustfmt is excluded — it comes from rustup, not Mason.
 			local servers = {
 				"lua_ls",
@@ -201,8 +204,18 @@ return {
 				"solidity_ls_nomicfoundation",
 				"gopls",
 				"typos_lsp",
+				"tailwindcss",
+				"emmet_language_server",
+				"bashls",
+				"jsonls",
+				"dockerls",
+				"docker_compose_language_service",
+				"prismals",
+				"phpactor",
+				"move_analyzer",
+				"jdtls",
 			}
-			local formatters = { "stylua", "prettier", "black", "isort", "ruff", "clang-format" }
+			local formatters = { "stylua", "prettier", "black", "isort", "ruff", "clang-format", "eslint_d" }
 			local ensure_installed = {}
 			vim.list_extend(ensure_installed, servers)
 			vim.list_extend(ensure_installed, formatters)
@@ -221,7 +234,7 @@ return {
 
 			vim.diagnostic.config({
 				virtual_text = false,
-				update_in_insert = true,
+				update_in_insert = false,
 				float = {
 					focusable = false,
 					style = "minimal",

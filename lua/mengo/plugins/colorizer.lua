@@ -15,8 +15,8 @@ return {
 			options = {
 				parsers = {
 					css = true,
-					-- lsp = false: no tailwindcss language server installed, so lsp mode
-					-- never produced colors; regex matching works without it
+					-- lsp = true: tailwindcss-language-server is installed and
+					-- auto-enabled, so it supplies colors alongside regex matching
 					tailwind = { enable = true, lsp = true },
 				},
 				display = {
