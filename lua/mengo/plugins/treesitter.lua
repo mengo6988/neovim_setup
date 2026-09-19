@@ -116,6 +116,7 @@ return {
 		-- errors on load, which is why mini.lua used to rtp-disable this plugin.
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		branch = "main",
+		lazy = true, -- mini.ai and remap.lua's move maps require() it on demand
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		config = function()
 			require("nvim-treesitter-textobjects").setup({
@@ -126,6 +127,7 @@ return {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
+		lazy = true, -- already a dependency of nvim-treesitter above, which is eager
 		config = function()
 			require("treesitter-context").setup({
 				enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)

@@ -133,6 +133,7 @@ return {
 		-- theme + load_extension handled in the main telescope setup above;
 		-- a second telescope.setup() here would clobber the first
 		"nvim-telescope/telescope-ui-select.nvim",
+		lazy = true,
 		dependencies = {
 			"nvim-telescope/telescope.nvim",
 		},
@@ -156,6 +157,7 @@ return {
 			{ "nvim-telescope/telescope.nvim" },
 			{ "Shatur/neovim-session-manager" },
 		},
+		-- session restore must run before buffers load
 		lazy = false,
 		priority = 100,
 	},

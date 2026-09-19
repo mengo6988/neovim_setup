@@ -1,6 +1,7 @@
 return {
 	{
 		"folke/snacks.nvim",
+		-- dashboard must draw on the startup buffer, and Snacks.* is a global other specs call
 		lazy = false,
 		priority = 1000,
 		opts = {
@@ -113,6 +114,7 @@ return {
 	},
 	{
 		"nvim-lua/plenary.nvim",
+		lazy = true,
 	},
 	{
 		"lewis6991/gitsigns.nvim",
@@ -159,6 +161,10 @@ return {
 	},
 	{
 		"stevearc/conform.nvim",
+		event = "BufWritePre",
+		-- <leader>f / <leader>W live in remap.lua and reach conform through :Format and :w,
+		-- so no `keys` here: a lazy keys stub would replace those maps and leave nothing behind
+		cmd = { "Format", "FormatDisable", "FormatEnable" },
 		config = function()
 			require("conform").setup({
 				formatters_by_ft = {
@@ -262,6 +268,7 @@ return {
 	{ "HiPhish/rainbow-delimiters.nvim", event = { "BufReadPost", "BufNewFile" } },
 	{
 		"nvim-lualine/lualine.nvim",
+		-- statusline: must exist before first redraw
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 			"catppuccin",
@@ -362,6 +369,7 @@ return {
 	},
 	{
 		"folke/todo-comments.nvim",
+		event = { "BufReadPost", "BufNewFile" },
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = {
 			-- your configuration comes here
@@ -446,10 +454,9 @@ return {
 	},
 	{
 		"brianhuster/live-preview.nvim",
-		dependencies = {
-			-- You can choose one of the following pickers
-			"nvim-telescope/telescope.nvim",
-		},
+		cmd = "LivePreview",
+		-- no telescope dependency: it is eager anyway via neovim-project, and listing it
+		-- here would drag telescope in as a hard dep of a command-only plugin
 		opts = {
 			port = 5500, -- Port to run the live preview server on.
 			browser = "default", -- Terminal command to open the browser for live-previewing (eg. 'firefox', 'flatpak run com.vivaldi.Vivaldi'). By default, it will use the default browser.
@@ -459,11 +466,16 @@ return {
 		},
 	},
 	-- opts = {} required: without it lazy never calls setup() and the plugin does nothing
-	{ "dmmulroy/ts-error-translator.nvim", opts = {} },
+	{
+		"dmmulroy/ts-error-translator.nvim",
+		ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+		opts = {},
+	},
 	-- context-aware commentstring for gcc in jsx/tsx (native {/* */} inside JSX)
 	{ "folke/ts-comments.nvim", event = "VeryLazy", opts = {} },
 	{
 		"nacro90/numb.nvim",
+		event = "CmdlineEnter",
 		config = function()
 			require("numb").setup()
 		end,
@@ -471,6 +483,10 @@ return {
 	{
 		"shortcuts/no-neck-pain.nvim",
 		version = "*",
+		-- VimEnter, not cmd: enableOnVimEnter = "safe" below only fires if the plugin is
+		-- already loaded, and with a cmd trigger the startup auto-enable never happened
+		event = "VimEnter",
+		keys = { { "<leader>np", "<cmd>NoNeckPain<CR>", desc = "No[N]eck[Pain]" } },
 		config = function()
 			require("no-neck-pain").setup({
 				width = 150,
@@ -513,6 +529,7 @@ return {
 	},
 	{
 		"windwp/nvim-ts-autotag",
+		ft = { "html", "javascriptreact", "typescriptreact", "vue", "svelte", "xml" },
 		config = function()
 			require("nvim-ts-autotag").setup({
 				opts = {
@@ -534,6 +551,7 @@ return {
 	},
 	{
 		"josephburgess/nvumi",
+		cmd = "Nvumi",
 		dependencies = { "folke/snacks.nvim" },
 		opts = {
 			virtual_text = "newline", -- or "inline"

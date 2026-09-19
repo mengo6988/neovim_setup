@@ -10,7 +10,7 @@ return {
 				desc = "Toggle LazyDo",
 			},
 		},
-		event = "VeryLazy",
+		cmd = "LazyDoToggle",
 		-- opts was double-wrapped ({ { ... } }) before; setup() never saw the config
 		opts = {
 			title = " LazyDo Tasks ",
@@ -22,7 +22,7 @@ return {
 				metadata_position = "bottom", -- "bottom" or "right"
 			},
 			theme = {
-				border = "rounded",
+				border = vim.g.border_style,
 				colors = {
 					header = { fg = "#7aa2f7", bold = true },
 					title = { fg = "#7dcfff", bold = true },

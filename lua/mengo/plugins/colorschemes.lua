@@ -2,6 +2,7 @@ return {
 
 	"catppuccin/nvim",
 	name = "catppuccin",
+	-- colorscheme: loads eagerly so highlights are set before anything draws
 	priority = 1000,
 
 	config = function()
