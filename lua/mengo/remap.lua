@@ -41,6 +41,10 @@ keymap("n", "<leader>nl", "<CMD>Noice last<CR>", { desc = "[N]oice [L]ast" })
 keymap("n", "<leader>nd", "<CMD>Noice dismiss<CR>", { desc = "[N]oice [D]ismiss" })
 keymap("n", "<leader>nh", "<CMD>Noice history<CR>", { desc = "[N]oice [H]istory" })
 keymap("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
+keymap("n", "<leader>u", function()
+	vim.cmd.packadd("nvim.undotree")
+	require("undotree").open() -- toggles: closes if already open
+end, { desc = "Undotree toggle" })
 
 keymap("n", "<leader>so", ":source %<CR>", { desc = "Source current file" })
 keymap(

@@ -96,7 +96,10 @@ return {
 						return
 					end
 					-- Enable treesitter highlighting
-					pcall(vim.treesitter.start, buf)
+					if not pcall(vim.treesitter.start, buf) then
+						-- No parser: foldexpr has nothing to work with, fall back to indent folds
+						vim.wo.foldmethod = "indent"
+					end
 					-- Enable treesitter indentation
 					vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 				end,

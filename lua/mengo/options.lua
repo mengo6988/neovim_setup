@@ -29,9 +29,12 @@ local options = {
 	number = true, -- set numbered lines
 	relativenumber = true, -- set relative numbered lines
 	numberwidth = 4, -- set number column width to 4 {default 4}
-	foldlevel = 99, -- nvim-ufo owns folding (treesitter/indent providers)
-	foldlevelstart = 99, -- nvim-ufo: start with all folds open
+	foldlevel = 99, -- folding is the builtin treesitter foldexpr (see foldexpr below)
+	foldlevelstart = 99, -- start with all folds open
 	foldenable = true,
+	foldmethod = "expr",
+	foldexpr = "v:lua.vim.treesitter.foldexpr()",
+	foldtext = "", -- empty: nvim renders the fold line with its own syntax highlighting
 	concealcursor = "nc", -- keep markdown conceal in normal/command mode
 
 	smoothscroll = true, -- scroll by screen line through wrapped lines instead of jumping
