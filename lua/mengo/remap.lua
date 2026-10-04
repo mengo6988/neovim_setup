@@ -381,7 +381,7 @@ local treesitter_move = function(method, query, query_group)
 	end
 end
 
-keymap("n", "<C-Space>", function()
+keymap("n", "<M-o>", function()
 	if treesitter_select() then
 		vim.cmd.normal({ "v", bang = true })
 		treesitter_select_parent()
@@ -390,8 +390,8 @@ keymap("n", "<C-Space>", function()
 	end
 end, { desc = "Treesitter: Start incremental selection" })
 
-keymap("x", "<C-Space>", treesitter_select_parent, { desc = "Treesitter: Expand selection" })
-keymap("x", "<C-h>", treesitter_select_child, { desc = "Treesitter: Shrink selection" })
+keymap("x", "<M-o>", treesitter_select_parent, { desc = "Treesitter: Expand selection" })
+keymap("x", "<M-i>", treesitter_select_child, { desc = "Treesitter: Shrink selection" })
 
 keymap({ "n", "x", "o" }, "]m", treesitter_move("goto_next_start", "@function.outer"), { desc = "Next function start" })
 keymap({ "n", "x", "o" }, "]]", treesitter_move("goto_next_start", "@class.outer"), { desc = "Next class start" })
