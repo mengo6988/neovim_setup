@@ -59,7 +59,19 @@ end
 -- vim.opt.shortmess = "ilmnrx"                        -- flags to shorten vim messages, see :help 'shortmess'
 vim.opt.shortmess:append("c") -- don't give |ins-completion-menu| messages
 vim.opt.iskeyword:append("-") -- hyphenated words recognized by searches
-vim.opt.formatoptions:remove({ "c", "r", "o" }) -- don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode.
+-- Don't auto-insert the comment leader (textwidth wrap, <Enter>, o/O). A global
+-- formatoptions:remove() does nothing because ftplugins set it per buffer afterwards.
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("no-auto-comment", { clear = true }),
+	callback = function(args)
+		-- scheduled: the ftplugin autocmd runs after this one and re-adds c/r/o
+		vim.schedule(function()
+			if vim.api.nvim_buf_is_valid(args.buf) then
+				vim.bo[args.buf].formatoptions = vim.bo[args.buf].formatoptions:gsub("[cro]", "")
+			end
+		end)
+	end,
+})
 vim.g.border_style = "rounded" ---@type "single"|"double"|"rounded"
 -- 0.11+: default border for floats opened via nvim_open_win, incl. LSP hover,
 -- signature help, and diagnostic floats. Plugins with their own border config
@@ -88,8 +100,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
--- Pick up files changed outside nvim (autoread only fires on these events)
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+-- Pick up files changed outside nvim (autoread only fires on these events).
+-- CursorHold: herdr sends nvim no focus events, so agent edits in other panes never trigger FocusGained.
+vim.api.nvim_create_autocmd({ "FocusGained", "CursorHold", "TermClose", "TermLeave" }, {
 	group = vim.api.nvim_create_augroup("checktime-on-focus", { clear = true }),
 	callback = function()
 		if vim.o.buftype ~= "nofile" then
