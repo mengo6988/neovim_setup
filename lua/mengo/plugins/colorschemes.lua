@@ -43,60 +43,10 @@ return {
 			},
 			color_overrides = {},
 			custom_highlights = {},
+			-- auto_integrations (default true) enables every installed plugin's integration.
+			-- LSP diagnostic styles live in lsp_styles (defaults match what was set here).
 			integrations = {
-				blink_cmp = true,
-				bufferline = true,
-				cmp = true,
-				dap = true,
-				dap_ui = true,
-				dadbod_ui = true,
-				fidget = true,
-				flash = true,
-				fzf = true,
-				gitsigns = true,
-				grug_far = true,
-				harpoon = true,
-				indent_blankline = {
-					enabled = true,
-					scope_color = "lavender",
-					colored_indent_levels = false,
-				},
-				lsp_trouble = true,
-				lualine = {},
-				mason = true,
-				mini = {
-					enabled = true,
-					indentscope_color = "",
-				},
-				native_lsp = {
-					enabled = true,
-					virtual_text = {
-						errors = { "italic" },
-						hints = { "italic" },
-						warnings = { "italic" },
-						information = { "italic" },
-					},
-					underlines = {
-						errors = { "underline" },
-						hints = { "underline" },
-						warnings = { "underline" },
-						information = { "underline" },
-					},
-					inlay_hints = {
-						background = true,
-					},
-				},
-				noice = true,
-				notify = true,
-				rainbow_delimiters = true,
-				render_markdown = true,
-				snacks = true,
-				telescope = {
-					enabled = true,
-				},
-				treesitter = true,
-				treesitter_context = true,
-				which_key = true,
+				noice = true, -- not in catppuccin's auto-detect mapping, so it must stay explicit
 			},
 		})
 

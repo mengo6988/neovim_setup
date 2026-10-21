@@ -1,6 +1,8 @@
 return {
-	"sindrets/diffview.nvim",
-	dependencies = { "nvim-lua/plenary.nvim" },
+	-- maintained fork of sindrets/diffview.nvim (dormant since 2024); same lua/diffview module and commands
+	"dlyongemallo/diffview-plus.nvim",
+	name = "diffview.nvim", -- keeps the lock key and catppuccin's auto-detected diffview integration
+	version = "*",
 	cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles", "DiffviewFileHistory" },
 	-- Everyday diffs go through `:Gitsigns diff` (<leader>gD in plugins/init.lua).
 	-- Diffview stays for file history and the merge tool, which gitsigns lacks.

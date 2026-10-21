@@ -1,7 +1,7 @@
 return {
 	"akinsho/bufferline.nvim",
 	-- tabline: must exist before first redraw
-	dependencies = { "catppuccin/nvim" },
+	dependencies = { "catppuccin" }, -- by name: "catppuccin/nvim" would clone a second copy called `nvim`
 	config = function()
 		-- local mocha = require("catppuccin.palettes").get_palette "mocha"
 		require("bufferline").setup({
