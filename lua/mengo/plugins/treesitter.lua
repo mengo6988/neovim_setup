@@ -23,6 +23,7 @@ return {
 
 			-- Auto-install missing parsers on file open
 			local skip_ft = { oil = true, help = true, qf = true, lazy = true, mason = true, TelescopePrompt = true }
+			local available ---@type table<string, true>?
 			vim.api.nvim_create_autocmd("FileType", {
 				group = group,
 				callback = function(args)
@@ -36,7 +37,17 @@ return {
 						return
 					end
 					local lang = vim.treesitter.language.get_lang(ft)
-					if lang and not pcall(vim.treesitter.language.inspect, lang) then
+					if not lang or pcall(vim.treesitter.language.inspect, lang) then
+						return
+					end
+					-- only languages nvim-treesitter knows, or install() warns "skipping unsupported language" every time
+					if not available then
+						available = {}
+						for _, l in ipairs(require("nvim-treesitter").get_available()) do
+							available[l] = true
+						end
+					end
+					if available[lang] then
 						pcall(require("nvim-treesitter").install, lang)
 					end
 				end,
@@ -89,19 +100,21 @@ return {
 					if vim.bo[buf].filetype == "oil" then
 						return
 					end
-					-- Skip large files
-					local max_filesize = 512 * 1024 -- 512 KB
+					-- Skip treesitter on large files (512 KB)
 					local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
-					if ok and stats and stats.size > max_filesize then
-						return
+					local too_big = ok and stats and stats.size > 512 * 1024
+					local started = not too_big and pcall(vim.treesitter.start, buf)
+					-- foldmethod is window-local: set it every time or the window keeps the last buffer's value.
+					-- Big files get manual, since the global treesitter foldexpr would parse them anyway.
+					local win = vim.fn.bufwinid(buf)
+					if win ~= -1 then
+						vim.wo[win][0].foldmethod = started and "expr" or (too_big and "manual" or "indent")
 					end
-					-- Enable treesitter highlighting
-					if not pcall(vim.treesitter.start, buf) then
-						-- No parser: foldexpr has nothing to work with, fall back to indent folds
-						vim.wo.foldmethod = "indent"
+					-- TS indent only where an indents query exists; everything else keeps its Vim indent script
+					local lang = started and vim.treesitter.language.get_lang(vim.bo[buf].filetype)
+					if lang and vim.treesitter.query.get(lang, "indents") then
+						vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 					end
-					-- Enable treesitter indentation
-					vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 				end,
 			})
 
