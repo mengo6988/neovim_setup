@@ -3,6 +3,7 @@ return {
 	version = "*", -- recommended, use latest release instead of latest commit
 	lazy = true,
 	ft = "markdown",
+	cmd = "Obsidian", -- so :Obsidian today works from the dashboard or a code buffer
 	-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
 	-- event = {
 	--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
@@ -11,24 +12,33 @@ return {
 	--   "BufReadPre path/to/my-vault/*.md",
 	--   "BufNewFile path/to/my-vault/*.md",
 	-- },
-	dependencies = {
-		-- Required.
-		"nvim-lua/plenary.nvim",
-
-		-- see below for full list of optional dependencies 👇
-	},
 	opts = {
 		ui = {
 			enable = false, -- Disable UI to avoid conflicts with render-markdown
 		},
+		-- First workspace is the default when cwd is outside every vault.
 		workspaces = {
 			{
-				name = "zattlekasten",
-				path = "~/Documents/obsidian/Zattelkasten",
+				name = "vault",
+				path = "~/vault", -- live vault (symlink into iCloud); the others are archives
+				overrides = {
+					frontmatter = { enabled = false }, -- vault skill owns frontmatter shape (status:, built:)
+					daily_notes = {
+						folder = "journal",
+						date_format = "%Y-%m-%d",
+						default_tags = {},
+						template = "daily.md",
+					},
+					templates = { folder = "templates", date_format = "%Y-%m-%d", time_format = "%H:%M" },
+				},
 			},
 			{
 				name = "work",
 				path = "~/Documents/obsidian/vault",
+			},
+			{
+				name = "zattlekasten",
+				path = "~/Documents/obsidian/Zattelkasten",
 			},
 			{
 				name = "learn",
