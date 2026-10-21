@@ -155,7 +155,7 @@ keymap("v", "<leader>y", '"+y', { silent = true, desc = "Yank to system clipboar
 -- Move text up and down
 keymap("v", "<M-k>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
 keymap("v", "<M-j>", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
-keymap("v", "p", '"_dP', { silent = true, desc = "Paste without overwriting register" })
+-- no visual `p` remap: builtin v_P already pastes without overwriting the register
 
 -- Visual Block --
 -- Move text up and down
@@ -227,7 +227,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			end)
 		end, "[G]oto [D]efinition")
 		-- Find references for the word under your cursor.
-		map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+		-- nowait: the 0.11+ global grr/grn/gri/gra/grt/grx maps would make gr wait out timeoutlen
+		vim.keymap.set(
+			"n",
+			"gr",
+			require("telescope.builtin").lsp_references,
+			{ buffer = event.buf, nowait = true, desc = "LSP: [G]oto [R]eferences" }
+		)
 
 		-- Jump to the implementation of the word under your cursor.
 		--  Useful when your language has ways of declaring types without an actual implementation.
@@ -278,24 +284,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 		end, "[W]orkspace Folder [L]ist")
 
-		-- Diagnostic navigation
-		map("[d", function()
-			vim.diagnostic.jump({ count = -1, float = true })
-		end, "Previous [D]iagnostic")
-		map("]d", function()
-			vim.diagnostic.jump({ count = 1, float = true })
-		end, "Next [D]iagnostic")
+		-- Diagnostic navigation. The float comes from vim.diagnostic.config().jump.on_jump
+		-- (lsp.lua), which mini.bracketed's [d / ]d also use.
 		map("[e", function()
-			vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.ERROR })
+			vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
 		end, "Previous [E]rror")
 		map("]e", function()
-			vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.ERROR })
+			vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
 		end, "Next [E]rror")
 		map("[w", function()
-			vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.WARN })
+			vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.WARN })
 		end, "Previous [W]arning")
 		map("]w", function()
-			vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.WARN })
+			vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.WARN })
 		end, "Next [W]arning")
 
 		-- Inlay hints
@@ -336,12 +337,14 @@ vim.keymap.set("n", "<leader>pph", ":Telescope neovim-project history<CR>", { de
 
 vim.keymap.set("n", "<leader>sc", "<cmd>Scratch<cr>", { desc = "New scratch buffer" })
 vim.keymap.set("n", "<leader>sco", "<cmd>ScratchOpen<cr>", { desc = "Open scratch buffer picker" })
-vim.keymap.set(
-	"n",
-	"<leader>srf",
-	":lua require('grug-far').open({ prefills = { paths = vim.fn.expand('%'), transient=true, engine='astgrep' } })<CR>",
-	{ desc = "Search & replace in current file (grug-far)" }
-)
+vim.keymap.set("n", "<leader>srf", function()
+	-- engine/transient are top-level open() options; prefills only takes search/replacement/filesFilter/flags/paths
+	require("grug-far").open({
+		engine = "astgrep",
+		transient = true,
+		prefills = { paths = vim.fn.expand("%") },
+	})
+end, { desc = "Search & replace in current file (grug-far)" })
 
 -- Treesitter: incremental selection + function/class motions
 -- (adapted from dmmulroy/dotfiles keymaps.lua; mini.ai already covers

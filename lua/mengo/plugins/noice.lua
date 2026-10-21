@@ -6,10 +6,11 @@ return {
 			hover = {
 				-- enabled=false
 			},
+			signature = { enabled = false }, -- blink.cmp owns signature help (lsp.lua signature.enabled)
 			-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+			-- (stylize_markdown is deprecated in 0.12 and core hover no longer calls it)
 			override = {
 				["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-				["vim.lsp.util.stylize_markdown"] = true,
 				-- ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
 			},
 		},

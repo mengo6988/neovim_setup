@@ -47,10 +47,10 @@ return {
 			})
 			require("mini.pairs").setup({})
 			-- quickfix suffix off: mini.bracketed loads after remap.lua and would
-			-- overwrite its centring ]q/[q maps.
-			require("mini.bracketed").setup({ quickfix = { suffix = "" } })
+			-- overwrite its centring ]q/[q maps. comment off: ]c/[c stay the builtin diff-change jump.
+			require("mini.bracketed").setup({ quickfix = { suffix = "" }, comment = { suffix = "" } })
 			-- gx exchange, gs sort, g= evaluate, gm multiply.
-			-- replace disabled: gr belongs to LSP references; visual `p` already pastes without yanking.
+			-- replace disabled: gr belongs to LSP references; builtin visual `P` pastes without yanking.
 			-- builtin gx (open URL) is remapped to gX in remap.lua.
 			require("mini.operators").setup({
 				replace = { prefix = "" },

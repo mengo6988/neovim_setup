@@ -25,6 +25,7 @@ return {
 
 				["<Tab>"] = {},
 				["<S-Tab>"] = {},
+				["<C-k>"] = {}, -- LuaSnip jump-back (snippets.lua); blink's default preset would shadow it
 			},
 
 			appearance = {
@@ -64,8 +65,18 @@ return {
 			sources = {
 				-- obsidian completions arrive through `lsp`: obsidian.nvim 3.x runs its own
 				-- in-process server (obsidian-ls) instead of registering cmp/blink sources.
-				default = { "lsp", "path", "snippets", "buffer", "markdown", "emoji", "digraphs" },
+				default = { "lsp", "path", "snippets", "buffer", "digraphs" },
+				-- markdown in default would load render-markdown on the first completion in any filetype;
+				-- emoji triggers on `:`, so Lua method calls would pop emoji
+				per_filetype = {
+					markdown = { inherit_defaults = true, "markdown", "emoji" },
+					gitcommit = { inherit_defaults = true, "emoji" },
+					sql = { inherit_defaults = true, "dadbod" },
+					mysql = { inherit_defaults = true, "dadbod" },
+					plsql = { inherit_defaults = true, "dadbod" },
+				},
 				providers = {
+					dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
 					lsp = { score_offset = 1000 }, -- extreme priority so fuzzy matches never bury real LSP results
 					path = { score_offset = 3 },
 					buffer = { score_offset = -150, min_keyword_length = 3 },
@@ -234,6 +245,12 @@ return {
 			vim.diagnostic.config({
 				virtual_text = false,
 				update_in_insert = false,
+				-- jump({ float = true }) is deprecated in 0.12; on_jump applies to every jump incl. builtin [d / ]d
+				jump = {
+					on_jump = function(_, bufnr)
+						vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor", focus = false })
+					end,
+				},
 				float = {
 					focusable = false,
 					style = "minimal",
