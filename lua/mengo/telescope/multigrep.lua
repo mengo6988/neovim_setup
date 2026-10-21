@@ -53,10 +53,7 @@ local live_multigrep = function(opts)
 		:find()
 end
 
-M.setup = function()
-	vim.keymap.set("n", "<leader>psg", live_multigrep, { desc = "[S]earch by [G]rep (multi)" })
-end
-
--- live_multigrep()
+-- mapped to <leader>psg in plugins/telescope.lua `keys`
+M.live_multigrep = live_multigrep
 
 return M

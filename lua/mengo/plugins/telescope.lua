@@ -1,6 +1,87 @@
+-- Key callback for a telescope builtin picker; get_opts runs at keypress (cWORD, input, selection)
+local function pick(name, get_opts)
+	return function()
+		require("telescope.builtin")[name](get_opts and get_opts() or nil)
+	end
+end
+
 return {
 	{
 		"nvim-telescope/telescope.nvim",
+		-- Still loaded at startup while neovim-project (lazy = false) depends on it;
+		-- these triggers make it lazy once that dependency goes.
+		cmd = "Telescope",
+		keys = {
+			{ "<leader>ph", pick("help_tags"), desc = "[S]earch [H]elp" },
+			{ "<leader>pf", pick("find_files"), desc = "[S]earch [F]iles" },
+			{ "<leader>pb", pick("builtin"), desc = "[S]earch [B]uiltin pickers" },
+			{ "<leader>pg", pick("git_files"), desc = "[S]earch [G]it files" },
+			{ "<leader>pt", pick("treesitter"), desc = "[S]earch [T]reesitter symbols" },
+			{ "<leader>ps", pick("live_grep"), desc = "[S]earch word" },
+			{
+				"<leader>psw",
+				pick("grep_string", function()
+					return { search = vim.fn.expand("<cWORD>") }
+				end),
+				desc = "[S]earch current [W]ord",
+			},
+			{
+				"<leader>pss",
+				pick("grep_string", function()
+					return { search = vim.fn.input("Grep > ") }
+				end),
+				desc = "[S]earch for input [S]tring",
+			},
+			{
+				"<leader>ps",
+				pick("grep_string", function()
+					return { search = table.concat(vim.fn.getregion(vim.fn.getpos("v"), vim.fn.getpos(".")), "\n") }
+				end),
+				mode = "v",
+				desc = "Grep selection",
+			},
+			-- deferred: indexing extensions.flutter at setup time force-loads
+			-- flutter-tools.nvim at startup, defeating its ft = "dart" lazy trigger
+			{
+				"<leader>pr",
+				function()
+					require("telescope").extensions.flutter.commands()
+				end,
+				desc = "Open command Flutter",
+			},
+			{
+				"<leader>psn",
+				pick("find_files", function()
+					return { cwd = vim.fn.stdpath("config") }
+				end),
+				desc = "[S]earch [N]eovim files",
+			},
+			{
+				"<leader>psp",
+				pick("find_files", function()
+					return { cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") }
+				end),
+				desc = "[S]earch [P]ackages",
+			},
+			{
+				"<leader>psc",
+				function()
+					require("telescope").extensions.luasnip.luasnip()
+				end,
+				desc = "[S]earch [S]nippets",
+			},
+			{
+				"<leader>psg",
+				function()
+					require("mengo.telescope.multigrep").live_multigrep()
+				end,
+				desc = "[S]earch by [G]rep (multi)",
+			},
+			{ "<leader>p.", pick("resume"), desc = "Resume last picker" },
+			{ "<leader>po", pick("oldfiles"), desc = "Recent files" },
+			{ "<leader>p/", pick("current_buffer_fuzzy_find"), desc = "Fuzzy find in buffer" },
+			{ "<leader>pk", pick("keymaps"), desc = "Search keymaps" },
+		},
 
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -81,52 +162,7 @@ return {
 			require("telescope").load_extension("luasnip")
 			-- pcall(require('telescope').load_extension, 'fzf')
 			-- pcall(require('telescope').load_extension, 'ui-select')
-
-			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<leader>ph", builtin.help_tags, { desc = "[S]earch [H]elp" })
-			vim.keymap.set("n", "<leader>pf", builtin.find_files, { desc = "[S]earch [F]iles" })
-			vim.keymap.set("n", "<leader>pb", builtin.builtin, { desc = "[S]earch [B]uiltin pickers" })
-			vim.keymap.set("n", "<leader>pg", builtin.git_files, { desc = "[S]earch [G]it files" })
-			vim.keymap.set("n", "<leader>pt", builtin.treesitter, { desc = "[S]earch [T]reesitter symbols" })
-			-- vim.keymap.set('n', '<leader>psw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-			vim.keymap.set("n", "<leader>ps", builtin.live_grep, { desc = "[S]earch word" })
-			vim.keymap.set("n", "<leader>psw", function()
-				local word = vim.fn.expand("<cWORD>")
-				builtin.grep_string({ search = word })
-			end, { desc = "[S]earch current [W]ord" })
-			vim.keymap.set("n", "<leader>pss", function()
-				builtin.grep_string({ search = vim.fn.input("Grep > ") })
-			end, { desc = "[S]earch for input [S]tring" })
-
-			-- deferred: indexing extensions.flutter at setup time force-loads
-			-- flutter-tools.nvim at startup, defeating its ft = "dart" lazy trigger
-			vim.keymap.set("n", "<leader>pr", function()
-				require("telescope").extensions.flutter.commands()
-			end, { desc = "Open command Flutter" })
-
-			-- Shortcut for searching your Neovim configuration files
-			vim.keymap.set("n", "<leader>psn", function()
-				builtin.find_files({ cwd = vim.fn.stdpath("config") })
-			end, { desc = "[S]earch [N]eovim files" })
-
-			vim.keymap.set("n", "<leader>psp", function()
-				builtin.find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") })
-			end, { desc = "[S]earch [P]ackages" })
-
-			vim.keymap.set("n", "<leader>psc", function()
-				require("telescope").extensions.luasnip.luasnip()
-			end, { desc = "[S]earch [S]nippets" })
-
-			vim.keymap.set("n", "<leader>p.", builtin.resume, { desc = "Resume last picker" })
-			vim.keymap.set("n", "<leader>po", builtin.oldfiles, { desc = "Recent files" })
-			vim.keymap.set("n", "<leader>p/", builtin.current_buffer_fuzzy_find, { desc = "Fuzzy find in buffer" })
-			vim.keymap.set("n", "<leader>pk", builtin.keymaps, { desc = "Search keymaps" })
-			vim.keymap.set("v", "<leader>ps", function()
-				local text = table.concat(vim.fn.getregion(vim.fn.getpos("v"), vim.fn.getpos(".")), "\n")
-				builtin.grep_string({ search = text })
-			end, { desc = "Grep selection" })
-
-			require("mengo.telescope.multigrep").setup()
+			-- keymaps live in `keys` above so they exist before telescope loads
 		end,
 	},
 	{
