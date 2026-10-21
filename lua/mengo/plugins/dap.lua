@@ -83,7 +83,8 @@ return {
 			require("dap-go").setup()
 			dap.adapters.lldb = {
 				type = "executable",
-				command = "/opt/homebrew/opt/llvm/bin/lldb-dap", -- adjust as needed, must be absolute path
+				command = "xcrun", -- Xcode's lldb-dap; Homebrew llvm is not installed
+				args = { "lldb-dap" },
 				name = "lldb",
 			}
 			dap.configurations.cpp = {
