@@ -7,6 +7,8 @@ return {
 		opts = {
 			lazygit = { enabled = true },
 			bufdelete = { enabled = true },
+			-- minified bundles / huge JSON get a plain `bigfile` filetype before LSP, treesitter etc. attach
+			bigfile = { enabled = true },
 			indent = { enabled = true, animate = { enabled = false } },
 			notifier = { enabled = true },
 			zen = { enabled = true },
