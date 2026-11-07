@@ -70,7 +70,12 @@ keymap("n", "<leader>st", function()
 	vim.cmd.vnew()
 	vim.cmd.term()
 	vim.cmd.wincmd("J")
-	vim.api.nvim_win_set_height(0, 17)
+	-- nvim_win_set_height is deprecated in 0.13 in favour of nvim_win_resize
+	if vim.api.nvim_win_resize then
+		vim.api.nvim_win_resize(0, -1, 17, {})
+	else
+		vim.api.nvim_win_set_height(0, 17)
+	end
 end, { desc = "Open terminal in bottom split" })
 -- Save quit etc
 -- <leader>w kept prefix-free so saving is instant (no timeoutlen wait)

@@ -1,16 +1,14 @@
-return {
-	-- REST/GraphQL/gRPC client. Replaces curl.nvim, whose keymaps were already
-	-- commented out over a <leader>c / <leader>f prefix collision. Reads the
-	-- JetBrains .http spec, so request files stay portable outside nvim.
-	"mistweaverco/kulala.nvim",
-	ft = { "http", "rest" },
-	keys = {
-		{ "<leader>R", "", desc = "+REST (kulala)" },
-	},
-	opts = {
-		-- <leader>Rs send, <leader>Ra send all, <leader>Rb scratchpad.
-		-- <leader>R is otherwise unused, so no timeoutlen collision.
-		global_keymaps = true,
-		global_keymaps_prefix = "<leader>R",
-	},
-}
+-- REST client disabled 2026-11-07. kulala.nvim v7 went closed-source: it
+-- downloads a kulala-core binary and needs KULALA_CORE_LICENSE_TOKEN, and the
+-- repo moved to dont-be-evil-company/kulala.nvim. v7 also renamed $kulalaShared
+-- to $kulala in env files and dropped TS/Lua request scripts.
+-- To revisit: request a token (README "Kulala License Tokens"), or find an open
+-- replacement that reads the JetBrains .http format. Old spec for reference:
+--
+-- {
+-- 	"dont-be-evil-company/kulala.nvim",
+-- 	ft = { "http", "rest" },
+-- 	keys = { { "<leader>R", "", desc = "+REST (kulala)" } },
+-- 	opts = { global_keymaps = true, global_keymaps_prefix = "<leader>R" },
+-- }
+return {}

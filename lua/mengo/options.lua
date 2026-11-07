@@ -91,12 +91,16 @@ end
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
---  See `:help vim.hl.on_yank()`
+--  See `:help vim.hl.hl_op()` (0.13+; on_yank is deprecated there, removed in 0.14)
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
 	callback = function()
-		vim.hl.on_yank()
+		if vim.hl.hl_op then
+			vim.hl.hl_op()
+		else
+			vim.hl.on_yank()
+		end
 	end,
 })
 
