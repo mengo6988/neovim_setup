@@ -121,7 +121,7 @@ return {
 			-- Catch buffers already open before this config ran (startup file / :Lazy reload)
 			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
 				if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].filetype ~= "" then
-					vim.api.nvim_exec_autocmds("FileType", { buffer = buf })
+					vim.api.nvim_exec_autocmds("FileType", { buf = buf })
 				end
 			end
 		end,

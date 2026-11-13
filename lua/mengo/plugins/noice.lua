@@ -6,6 +6,7 @@ return {
 			hover = {
 				-- enabled=false
 			},
+			progress = { enabled = false }, -- fidget owns LSP progress (lsp.lua)
 			signature = { enabled = false }, -- blink.cmp owns signature help (lsp.lua signature.enabled)
 			-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
 			-- (stylize_markdown is deprecated in 0.12 and core hover no longer calls it)
