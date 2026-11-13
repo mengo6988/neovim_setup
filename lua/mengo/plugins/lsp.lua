@@ -209,7 +209,7 @@ return {
 				"lua_ls",
 				"rust_analyzer",
 				"clangd",
-				"vtsls",
+				"tsc", -- TypeScript 7 native LSP; no tsserver plugins (Vue, Next), use vtsls if a project needs one
 				"pyright",
 				"solidity_ls_nomicfoundation",
 				"gopls",
