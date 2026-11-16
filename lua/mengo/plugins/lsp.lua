@@ -200,6 +200,31 @@ return {
 				init_options = { diagnosticSeverity = "Hint" }, -- default is "Info"; Hint keeps it quiet in the gutter
 			})
 
+			-- TS 7 removed baseUrl (NestJS's default tsconfig still sets it), so tsc can't
+			-- resolve `src/...` imports there. Such projects get vtsls; everything else gets tsc.
+			-- shortcut: reads only the nearest tsconfig, not its `extends` chain; follow it if a monorepo base sets baseUrl.
+			local function uses_base_url(bufnr)
+				local dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+				local tsconfig = vim.fs.find({ "tsconfig.json", "jsconfig.json" }, { upward = true, path = dir })[1]
+				local ok, lines = pcall(vim.fn.readfile, tsconfig or "")
+				for _, line in ipairs(ok and lines or {}) do
+					if line:find('^%s*"baseUrl"%s*:') then
+						return true
+					end
+				end
+				return false
+			end
+			for name, want in pairs({ tsc = false, vtsls = true }) do
+				local default_root_dir = vim.lsp.config[name].root_dir
+				vim.lsp.config(name, {
+					root_dir = function(bufnr, on_dir)
+						if uses_base_url(bufnr) == want then
+							default_root_dir(bufnr, on_dir)
+						end
+					end,
+				})
+			end
+
 			-- Single source of truth for what Mason installs: add an LSP server here
 			-- (and, if it needs settings, a vim.lsp.config() call above) and it's
 			-- covered; the formatters list also carries linters, and mirrors conform's
@@ -210,6 +235,7 @@ return {
 				"rust_analyzer",
 				"clangd",
 				"tsc", -- TypeScript 7 native LSP; no tsserver plugins (Vue, Next), use vtsls if a project needs one
+				"vtsls", -- only for projects whose tsconfig sets baseUrl (see uses_base_url above)
 				"pyright",
 				"solidity_ls_nomicfoundation",
 				"gopls",
