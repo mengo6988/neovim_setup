@@ -2,7 +2,33 @@ return {
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
 		ft = { "markdown" },
-		opts = {},
+		-- Defaults paint full-width bars on every heading and code block (darker
+		-- still with Catppuccin's transparent background) and flip the cursor line
+		-- to raw text while reading. These keep them to the text's width, render
+		-- in every mode, and show raw text only on the line being edited.
+		opts = {
+			render_modes = true,
+			anti_conceal = { disabled_modes = { "n", "c" } },
+			heading = {
+				sign = false,
+				icons = { "# ", "## ", "### ", "#### ", "##### ", "###### " },
+				position = "inline",
+				width = "block",
+				left_pad = 1,
+				right_pad = 2,
+			},
+			code = {
+				sign = false,
+				width = "block",
+				left_pad = 2,
+				right_pad = 2,
+				min_width = 60,
+				border = "thin",
+				language_icon = false,
+			},
+			bullet = { icons = { "•", "◦" } },
+			pipe_table = { preset = "round" },
+		},
 		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
 		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
 		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
